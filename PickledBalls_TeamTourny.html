@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickleball Synthwave Dynamic Wave Manager</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap');
+
+        :root {
+            --bg-dark: #0a0612;
+            --card-bg: #130c24;
+            --neon-pink: #ff007f;
+            --neon-cyan: #00f0ff;
+            --neon-orange: #ff5e00;
+            --neon-purple: #9d00ff;
+            --neon-green: #7fff00;
+            --text-light: #f1ebfc;
+            --text-muted: #8b7fa3;
+            --border-glow: 0 0 8px rgba(255, 0, 127, 0.4);
+            --cyan-glow: 0 0 8px rgba(0, 240, 255, 0.4);
+            --green-glow: 0 0 10px rgba(127, 255, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Rajdhani', -apple-system, sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0 20px 20px 20px;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            background-image: linear-gradient(180deg, #0a0612 0%, #17072b 100%);
+            min-height: 100vh;
+        }
+
+        .container { max-width: 1300px; margin: 0 auto; }
+        
+        header { 
+            text-align: center; 
+            margin-bottom: 40px;
+            border-bottom: 2px dashed var(--neon-green);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(5, 12, 5, 0.92); 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px -5px rgba(127, 255, 0, 0.3);
+        }
+        
+        h1 { 
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0 0 5px 0; 
+            color: #fff; 
+            text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-green), 0 0 20px var(--neon-green), 0 0 40px var(--neon-green);
+        }
+
+        h2, h3 {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+            margin-top: 0;
+        }
+
+        p { color: var(--text-muted); }
+
+        .card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--neon-pink);
+            box-shadow: var(--border-glow);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 255, 0, 0.06));
+            z-index: 2;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
+        textarea {
+            width: 100%; height: 150px; padding: 12px;
+            box-sizing: border-box; 
+            background-color: rgba(10, 6, 18, 0.7);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 6px; 
+            font-family: inherit;
+            color: var(--text-light);
+            font-size: 16px;
+            box-shadow: inset 0 0 8px rgba(0, 240, 255, 0.2);
+        }
+
+        button {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            background-color: transparent; 
+            color: var(--neon-cyan); 
+            border: 2px solid var(--neon-cyan);
+            padding: 10px 22px; font-size: 14px; border-radius: 6px;
+            cursor: pointer; font-weight: bold; margin-right: 12px;
+            transition: all 0.3s ease;
+            box-shadow: var(--cyan-glow);
+            margin-top: 5px; margin-bottom: 5px;
+        }
+        button:hover { 
+            background-color: var(--neon-cyan);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px var(--neon-cyan);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+        }
+
+        .court-title {
+            background: linear-gradient(90deg, var(--neon-purple), rgba(157,0,255,0)); 
+            color: var(--text-light);
+            margin: -25px -25px 20px -25px; padding: 12px 25px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            border-bottom: 1px solid var(--neon-pink);
+            letter-spacing: 1px;
+        }
+
+        .bracket-title {
+            background: linear-gradient(90deg, var(--neon-orange), rgba(255,94,0,0)); 
+            color: var(--text-light);
+            margin: -25px -25px 20px -25px; padding: 12px 25px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            border-bottom: 1px solid var(--neon-orange);
+            letter-spacing: 1px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .wave-toggle-container { margin-bottom: 30px; display: flex; flex-wrap: wrap; gap: 15px; align-items: center; }
+        
+        .btn-wave { border-color: #4c3a70; color: #8b7fa3; box-shadow: none; }
+        .btn-wave.active { border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: var(--border-glow); }
+        .btn-wave.active:hover { background-color: var(--neon-pink); color: var(--bg-dark); box-shadow: 0 0 15px var(--neon-pink); }
+
+        .match-row { border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding: 15px 0; }
+        .match-row:last-child { border-bottom: none; }
+        
+        .team-input { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; }
+        
+        .control-set { display: flex; align-items: center; gap: 4px; }
+
+        .score-input { 
+            width: 50px; padding: 6px; text-align: center; 
+            background-color: rgba(10, 6, 18, 0.8);
+            border: 1px solid rgba(0, 240, 255, 0.4); 
+            border-radius: 6px; 
+            color: var(--neon-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 15px;
+        }
+        .score-input:focus {
+            outline: none;
+            border-color: var(--neon-pink);
+            box-shadow: var(--border-glow);
+            color: var(--neon-pink);
+        }
+        .score-input.pickled {
+            color: var(--neon-green) !important;
+            border-color: var(--neon-green) !important;
+            text-shadow: 0 0 8px var(--neon-green);
+        }
+
+        .btn-max { padding: 4px 8px; font-size: 11px; border-radius: 4px; margin: 0; border-color: rgba(0, 240, 255, 0.4); }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { text-align: left; padding: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        th { background-color: rgba(255, 255, 255, 0.03); color: var(--neon-cyan); font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 1px; }
+        
+        .hidden { display: none !important; }
+        
+        .bracket-flex { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-around; margin-top: 20px; align-items: stretch;}
+        .bracket-column { flex: 1; min-width: 290px; }
+        
+        .champion-banner { 
+            background: linear-gradient(135deg, #2c1a04 0%, #130c24 100%); border: 2px dashed var(--neon-orange); 
+            padding: 20px; text-align: center; font-family: 'Orbitron', sans-serif; font-size: 1.4em; font-weight: bold; margin-top: 25px; border-radius: 8px;
+            color: var(--neon-orange); text-shadow: 0 0 10px rgba(255,94,0,0.5); box-shadow: 0 0 15px rgba(255,94,0,0.2);
+        }
+
+        .hud-inline-stat {
+            background: rgba(10,6,18,0.8); border: 1px solid var(--neon-green);
+            box-shadow: var(--green-glow); color: var(--neon-green);
+            font-family: 'Orbitron', sans-serif; font-size: 13px; letter-spacing: 1px;
+            padding: 8px 16px; border-radius: 6px; font-weight: bold; margin-left: auto;
+            position: relative;
+        }
+        
+        .auto-save-indicator {
+            position: absolute; right: 0; top: -20px; font-size: 11px;
+            color: var(--neon-cyan); text-shadow: 0 0 5px var(--neon-cyan);
+            opacity: 0; transition: opacity 0.5s ease;
+        }
+        .auto-save-indicator.pulse { opacity: 1; }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 2, 10, 0.85);
+            display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-box {
+            background: var(--card-bg); border: 3px dashed #7fff00; box-shadow: 0 0 25px rgba(127, 255, 0, 0.5);
+            padding: 40px; border-radius: 16px; text-align: center; max-width: 450px; width: 90%; transform: scale(0.7); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .modal-title { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: bold; color: #7fff00; text-shadow: 0 0 15px rgba(127, 255, 0, 0.8); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
+        .modal-body { font-size: 1.3rem; margin-bottom: 20px; color: var(--text-light); }
+        .loser-callout { font-family: 'Orbitron', sans-serif; color: var(--neon-pink); font-size: 1.4rem; font-weight: bold; text-shadow: 0 0 8px rgba(255, 0, 127, 0.5); background: rgba(255, 0, 127, 0.1); padding: 10px; border-radius: 6px; margin-bottom: 25px; border: 1px dashed rgba(255, 0, 127, 0.3); }
+        .modal-btn { border-color: #7fff00; color: #7fff00; box-shadow: 0 0 8px rgba(127, 255, 0, 0.3); }
+        .modal-btn:hover { background-color: #7fff00; color: var(--bg-dark); box-shadow: 0 0 20px #7fff00; }
+
+        .champ-box { border-color: var(--neon-orange); box-shadow: 0 0 40px rgba(255, 94, 0, 0.5); background: linear-gradient(135deg, #2c1a04 0%, #130c24 100%); max-width: 600px;}
+        .champ-title { color: var(--neon-orange); text-shadow: 0 0 20px var(--neon-orange); font-size: 2.8rem; }
+        .champ-btn { border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 8px rgba(255, 94, 0, 0.4); font-size: 18px; padding: 12px 30px; }
+        .champ-btn:hover { background-color: var(--neon-orange); color: var(--bg-dark); box-shadow: 0 0 25px var(--neon-orange); }
+        .champ-name-highlight { font-size: 2.2rem; color: #fff; text-shadow: 0 0 15px var(--neon-cyan), 0 0 30px var(--neon-pink); margin: 25px 0; font-family: 'Orbitron', sans-serif; text-transform: uppercase; line-height: 1.3; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--card-bg); border: 1px solid var(--neon-pink); border-radius: 4px; }
+        
+        .btn-panic {
+            position: absolute; right: 20px; top: 35px; 
+            border-color: #ff003c; color: #ff003c; 
+            font-size: 11px; padding: 5px 10px; 
+            box-shadow: 0 0 8px rgba(255,0,60,0.4); margin: 0;
+        }
+        .btn-panic:hover { background-color: #ff003c; color: #fff; box-shadow: 0 0 15px #ff003c; }
+
+        .system-clock {
+            position: absolute; left: 20px; bottom: 10px;
+            font-family: 'Orbitron', sans-serif; color: var(--neon-cyan);
+            font-size: 14px; letter-spacing: 2px; text-shadow: 0 0 8px rgba(0, 240, 255, 0.6); margin: 0;
+        }
+
+        .tb-grid { display: flex; flex-wrap: wrap; gap: 30px; margin-top: 15px; }
+        .tb-col { flex: 1; min-width: 300px; background: rgba(0,0,0,0.4); border: 1px solid rgba(0, 240, 255, 0.2); padding: 20px; border-radius: 8px; }
+        .tb-chip { display: inline-block; padding: 8px 16px; background: rgba(0, 240, 255, 0.1); border: 1px solid var(--neon-cyan); border-radius: 20px; cursor: pointer; margin: 6px; font-size: 15px; transition: all 0.2s ease; }
+        .tb-chip:hover { background: rgba(0, 240, 255, 0.3); box-shadow: 0 0 10px var(--neon-cyan); }
+        .tb-chip.selected { background: var(--neon-pink); border-color: var(--neon-pink); color: #fff; box-shadow: 0 0 12px var(--neon-pink); }
+        .tb-formed-team { border: 1px solid var(--neon-purple); background: rgba(157, 0, 255, 0.1); padding: 10px 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 0 8px rgba(157, 0, 255, 0.2); }
+        .tb-formed-team span { color: #fff; text-shadow: 0 0 5px var(--neon-purple); letter-spacing: 1px; }
+        
+        .toggle-switch { display: flex; align-items: center; gap: 10px; font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); font-size: 14px; text-shadow: 0 0 5px rgba(0,240,255,0.5); cursor: pointer;}
+        .toggle-switch input { width: 18px; height: 18px; cursor: pointer; accent-color: var(--neon-pink); }
+
+        @media (max-width: 768px) {
+            .btn-panic { top: 10px; right: 10px; font-size: 9px; padding: 4px 6px; }
+            .system-clock { bottom: 10px; left: 10px; font-size: 10px; }
+            .score-input { width: 40px; padding: 4px; font-size: 14px;}
+        }
+    </style>
+</head>
+<body>
+
+<div id="shot-modal" class="modal-overlay" onclick="closeShotModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-title">🚨 PICKLED! 🚨</div>
+        <div class="modal-body">Pickle Juice shots required for:</div>
+        <div class="loser-callout" id="modal-loser-names">---</div>
+        <button class="modal-btn" onclick="closeShotModal()">Bottoms Up</button>
+    </div>
+</div>
+
+<div id="champ-modal" class="modal-overlay" onclick="closeChampModal()">
+    <div class="modal-box champ-box" onclick="event.stopPropagation()">
+        <div class="modal-title champ-title">🏆 CHAMPIONS 🏆</div>
+        <div class="modal-body">The Picklers have been conquered by:</div>
+        <div class="champ-name-highlight" id="modal-champ-names">---</div>
+        <button class="modal-btn champ-btn" onclick="closeChampModal()">Congrats!</button>
+    </div>
+</div>
+
+<div class="container">
+    <header>
+        <div id="system-clock" class="system-clock">SYS.TIME // 00:00:00</div>
+        <button class="btn-panic" onclick="hardReset()">⚠️ HARD RESET</button>
+        <h1>Pickled Balls Free For Alls!</h1>
+        <p id="mainframe-subhead" style="font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 2px; color: var(--neon-cyan); margin-bottom: 0;">
+            STANDBY // INITIALIZATION PROTOCOL REQUIRED
+        </p>
+    </header>
+
+    <div id="setup-stage" class="card">
+        <h2>1. Registration Terminal</h2>
+        <p>Drop your player pool below. Play a classic Free-For-All mixer, or generate Fixed Teams.</p>
+        <textarea id="player-names-input"></textarea>
+        
+        <div style="margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px;">
+            <button onclick="loadDemoPlayers(24)" style="font-size:12px; padding:6px 12px; border-color: #4c3a70; color: #8b7fa3; box-shadow:none;">Demo 24</button>
+            <button onclick="loadDemoPlayers(16)" style="font-size:12px; padding:6px 12px; border-color: #4c3a70; color: #8b7fa3; box-shadow:none;">Demo 16</button>
+            <button onclick="loadDemoPlayers(12)" style="font-size:12px; padding:6px 12px; border-color: #4c3a70; color: #8b7fa3; box-shadow:none;">Demo 12</button>
+            <input type="file" id="state-upload" accept=".json" style="display:none;" onchange="loadState(event)">
+            <button onclick="document.getElementById('state-upload').click()" style="font-size:12px; padding:6px 12px; border-color: var(--neon-purple); color: var(--neon-purple); box-shadow: 0 0 8px rgba(157,0,255,0.4); margin-left: auto;">📂 Load Backup</button>
+        </div>
+
+        <div style="margin-top: 25px; border-top: 1px solid rgba(0, 240, 255, 0.2); padding-top: 20px; display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+            <button onclick="startTournament(false)" style="border-color: var(--neon-cyan); color: var(--neon-cyan); box-shadow: var(--cyan-glow);">Initialize Free-For-All</button>
+            <button onclick="generateRandomTeams()" style="border-color: var(--neon-green); color: var(--neon-green); box-shadow: var(--green-glow);">🎲 Randomize Teams</button>
+            <button onclick="openManualTeamBuilder()" style="border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: var(--border-glow);">🛠️ Build Manual Teams</button>
+        </div>
+    </div>
+
+    <!-- TEAM BUILDER UI -->
+    <div id="team-builder-stage" class="card hidden" style="border-color: var(--neon-purple); box-shadow: 0 0 15px rgba(157,0,255,0.4);">
+        <h2>Team Constructor Matrix</h2>
+        <p>Click any two players to bind them into a fixed duo.</p>
+        
+        <div class="tb-grid">
+            <div class="tb-col">
+                <h3 style="font-size: 16px; color: var(--text-muted); text-shadow:none;">Unassigned Elements</h3>
+                <div id="tb-unassigned-mount"></div>
+                <div style="margin-top: 15px;">
+                    <button onclick="forceSoloTeam()" style="font-size:11px; padding: 6px 10px; border-color: #8b7fa3; color: #8b7fa3; box-shadow:none;">Force Solo Team (1P)</button>
+                </div>
+            </div>
+            <div class="tb-col">
+                <h3 style="font-size: 16px; color: var(--neon-purple);">Locked Squadrons</h3>
+                <div id="tb-teams-mount"></div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px; text-align: right; border-top: 1px solid rgba(157,0,255,0.3); padding-top: 20px;">
+            <button onclick="cancelTeamBuilder()" style="border-color: #8b7fa3; color: #8b7fa3; box-shadow:none;">Cancel</button>
+            <button onclick="launchManualTeams()" style="border-color: var(--neon-green); color: var(--neon-green); box-shadow: var(--green-glow); font-size: 16px;">🚀 Launch Team Bracket</button>
+        </div>
+    </div>
+
+    <div id="tournament-stage" class="hidden">
+        <div class="card" style="border-color: var(--neon-cyan); box-shadow: var(--cyan-glow);">
+            <h2 id="leaderboard-title">Player Standings</h2>
+            <table id="leaderboard">
+                <thead>
+                    <tr><th>Rank</th><th id="th-name">Player Name</th><th>Pool</th><th>Node</th><th>Wins</th><th>Points Scored</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: center;">
+                <button onclick="saveStateFile()" style="border-color: var(--neon-purple); color: var(--neon-purple); box-shadow: 0 0 8px rgba(157,0,255,0.4);">💾 Download Manual Backup</button>
+                <button onclick="lockAndBuildBracket()" style="border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 8px rgba(255,94,0,0.4);">Lock Matrix & Start Bracket</button>
+            </div>
+        </div>
+
+        <div id="qualifier-section">
+            <h2>Active Court Matrix & Logs</h2>
+            <p>Cycle local grid channels to log match datasets:</p>
+            <div class="wave-toggle-container">
+                <div id="wave-buttons-mount" style="display:inline-block;"></div>
+                <button onclick="simulateScores()" style="border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 8px rgba(255,94,0,0.4);">⚡ Inject Random Scores</button>
+                <div class="hud-inline-stat" id="hud-skunk-count">
+                    ⚡ PICKLE ALERTS LOGGED: 0
+                    <span class="auto-save-indicator" id="auto-save-flash">Memory Synced</span>
+                </div>
+            </div>
+            <div id="courts-mount-zone"></div>
+        </div>
+
+        <div id="bracket-section" class="card hidden" style="border-color: var(--neon-orange); box-shadow: 0 0 12px rgba(255,94,0,0.3);">
+            <div class="bracket-title">
+                <h2>2. Neon Finals</h2>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="bo3-toggle" onchange="toggleBo3UI()"> Enable Best 2 of 3 (SF/Finals)
+                </label>
+            </div>
+            <div class="bracket-flex">
+                
+                <!-- QUARTERFINALS -->
+                <div class="bracket-column hidden" id="col-qf">
+                    <h3>Quarterfinals</h3>
+                    <!-- QF Match 1 -->
+                    <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
+                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 1 (Court 8) - Seed 1 v 8</strong>
+                        <div class="team-input" style="margin-top:10px;">
+                            <span id="qf1-t1-name">Seed 1</span>
+                            <div class="control-set">
+                                <input type="number" class="score-input bracket-score-input" id="qf1-t1-g1" min="0" oninput="handleBracketManualInput('qf1-t1-g1', 'qf1-t2-g1', 'qf1-t1-name', 'qf1-t2-name')">
+                                <button class="btn-max" onclick="quickSetBracket('qf1-t1', 'qf1-t2', 'qf1-t1-name')">15</button>
+                            </div>
+                        </div>
+                        <div class="team-input">
+                            <span id="qf1-t2-name">Seed 8</span>
+                            <div class="control-set">
+                                <input type="number" class="score-input bracket-score-input" id="qf1-t2-g1" min="0" oninput="handleBracketManualInput('qf1-t2-g1', 'qf1-t1-g1', 'qf1-t2-name', 'qf1-t1-name')">
+                                <button class="btn-max" onclick="quickSetBracket('qf1-t2', 'qf1-t1', 'qf1-t2-name')">15</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- QF Match 2 -->
+                    <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
+                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 2 (Court 9) - Seed 4 v 5</strong>
+                        <div class="team-input" style="margin-top:10px;">
+                            <span id="qf2-t1-name">Seed 4</span>
+                            <div class="control-set">
+                                <input type="number" class="score-input bracket-score-input" id="qf2-t1-g1" min="0" oninput="handleBracketManualInput('qf2-t1-g1', 'qf2-t2-g1', 'qf2-t1-name', 'qf2-t2-name')">
+                                <button class="btn-max" onclick="quickSetBracket('qf2-t1', 'qf2-t2', 'qf2-t1-name')">15</button>
+                            </div>
+                        </div>
+                        <div class="team-input">
+                            <span id="qf2-t2-name">Seed 5</span>
+                            <div class="control-set">
+                                <input type="number" class="score-input bracket-score-input" id="qf2-t2-g1" min="0" oninput="handleBracketManualInput('qf2-t2-g1', 'qf2-t1-g1', 'qf2-t2-name', 'qf2-t1-name')">
+                                <button class="btn-max" onclick="quickSetBracket('qf2-t2', 'qf2-t1', 'qf2-t2-name')">15</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- QF Match 3 -->
+                    <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
+                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 3 (Court 10) - Seed 2 v 7</strong>
+                        <div class="team-input" style="margin-top:10px;">
+                            <span id="qf3-t1-name">Seed 2</span>
+                            <div class="control-set">
+                                <input type="number" class="score-input bracket-score-input" id="qf3-t1-g1" min="0" oninput="handleBracketManualInput('qf3-t1-g1', 'qf3-t2-g1', 'qf3-t1-name', 'qf3-t2-name')">
+                                <button class="btn-max" onclick="quickSetBracket('qf3-t1', 'qf3-t2', 'qf3-t1-name')">15</button>
+                            </div>
+                        </div>
+                        <div class="team-input">
+                            <span id="qf3-t2-name">Seed 7</span>
+                            <div class="control-set">
+                                <input type="number" class="score-input bracket-score-input" id="qf3-t2-g1" min="0" oninput="handleBracketManualInput('qf3-t2-g1', 'qf3-t1-g1', 'qf3-t2-name', 'qf3-t1-name')">
+                                <button class="btn-max" onclick="quickSetBracket('qf3-t2', 'qf3-t1', 'qf3-t2-name')">15</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- QF Match 4 -->
+                    <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
+                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 4 (Court 8) - Seed 3 v 6</strong>
+                        <div class="team-input" style="margin-top:10px;">
+                            <span id="qf4-t1-name">Seed 3</span>
+                            <div class="control-set">
+                                <input type="number" class="score-input bracket-score-input" id="qf4-t1-g1" min="0" oninput="handleBracketManualInput('qf4-t1-g1', 'qf4-t2-g1', 'qf4-t1-name', 'qf4-t2-name')">
+                                <button class="btn-max" onclick="quickSetBracket('qf4-t1', 'qf4-t2', 'qf4-t1-name')">15</button>
+                            </div>
+                        </div>
+                        <div class="team-input">
+                            <span id="qf4-t2-name">Seed 6</span>
+                            <div class="control-set">
+                                <input type="number" class="score-input bracket-score-input" id="qf4-t2-g1" min="0" oninput="handleBracketManualInput('qf4-t2-g1', 'qf4-t1-g1', 'qf4-t2-name', 'qf4-t1-name')">
+                                <button class="btn-max" onclick="quickSetBracket('qf4-t2', 'qf4-t1', 'qf4-t2-name')">15</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEMIFINALS -->
+                <div class="bracket-column">
+                    <h3>Semifinals</h3>
+                    <!-- SF Match 1 -->
+                    <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
+                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 5 (Court 9)</strong>
+                        <div class="team-input" style="margin-top:10px;">
+                            <span id="sf1-t1-name">Seed 1</span>
+                            <div class="control-set">
+                                <input type="number" class="score-input bracket-score-input" id="sf1-t1-g1" min="0" oninput="handleBracketManualInput('sf1-t1-g1', 'sf1-t2-g1', 'sf1-t1-name', 'sf1-t2-name')">
+                                <input type="number" class="score-input bracket-score-input bo3-input hidden" id="sf1-t1-g2" min="0" oninput="handleBracketManualInput('sf1-t1-g2', 'sf1-t2-g2', 'sf1-t1-name', 'sf1-t2-name')">
+                                <input type="number" class="score-input bracket-score-input bo3-input hidden" id="sf1-t1-g3" min="0" oninput="handleBracketManualInput('sf1-t1-g3', 'sf1-t2-g3', 'sf1-t1-name', 'sf1-t2-name')">
+                                <button class="btn-max" onclick="quickSetBracket('sf1-t1', 'sf1-t2', 'sf1-t1-name')">15</button>
+                            </div>
+                        </div>
+                        <div class="team-input">
+                            <span id="sf1-t2-name">Seed 4</span>
+                            <div class="control-set">
+                                <input type="number" class="score-input bracket-score-input" id="sf1-t2-g1" min="0" oninput="handleBracketManualInput('sf1-t2-g1', 'sf1-t1-g1', 'sf1-t2-name', 'sf1-t1-name')">
+                                <input type="number" class="score-input bracket-score-input bo3-input hidden" id="sf1-t2-g2" min="0" oninput="handleBracketManualInput('sf1-t2-g2', 'sf1-t1-g2', 'sf1-t2-name', 'sf1-t1-name')">
+                                <input type="number" class="score-input bracket-score-input bo3-input hidden" id="sf1-t2-g3" min="0" oninput="handleBracketManualInput('sf1-t2-g3', 'sf1-t1-g3', 'sf1-t2-name', 'sf1-t1-name')">
+                                <button class="btn-max" onclick="quickSetBracket('sf1-t2', 'sf1-t1', 'sf1-t2-name')">15</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- SF Match 2 -->
+                    <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
+                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 6 (Court 10)</strong>
+                        <div class="team-input" style="margin-top:10px;">
+                            <span id="sf2-t1-name">Seed 2</span>
+                            <div class="control-set">
+                                <input type="number" class="score-input bracket-score-input" id="sf2-t1-g1" min="0" oninput="handleBracketManualInput('sf2-t1-g1', 'sf2-t2-g1', 'sf2-t1-name', 'sf2-t2-name')">
+                                <input type="number" class="score-input bracket-score-input bo3-input hidden" id="sf2-t1-g2" min="0" oninput="handleBracketManualInput('sf2-t1-g2', 'sf2-t2-g2', 'sf2-t1-name', 'sf2-t2-name')">
+                                <input type="number" class="score-input bracket-score-input bo3-input hidden" id="sf2-t1-g3" min="0" oninput="handleBracketManualInput('sf2-t1-g3', 'sf2-t2-g3', 'sf2-t1-name', 'sf2-t2-name')">
+                                <button class="btn-max" onclick="quickSetBracket('sf2-t1', 'sf2-t2', 'sf2-t1-name')">15</button>
+                            </div>
+                        </div>
+                        <div class="team-input">
+                            <span id="sf2-t2-name">Seed 3</span>
+                            <div class="control-set">
+                                <input type="number" class="score-input bracket-score-input" id="sf2-t2-g1" min="0" oninput="handleBracketManualInput('sf2-t2-g1', 'sf2-t1-g1', 'sf2-t2-name', 'sf2-t1-name')">
+                                <input type="number" class="score-input bracket-score-input bo3-input hidden" id="sf2-t2-g2" min="0" oninput="handleBracketManualInput('sf2-t2-g2', 'sf2-t1-g2', 'sf2-t2-name', 'sf2-t1-name')">
+                                <input type="number" class="score-input bracket-score-input bo3-input hidden" id="sf2-t2-g3" min="0" oninput="handleBracketManualInput('sf2-t2-g3', 'sf2-t1-g3', 'sf2-t2-name', 'sf2-t1-name')">
+                                <button class="btn-max" onclick="quickSetBracket('sf2-t2', 'sf2-t1', 'sf2-t2-name')">15</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHAMPIONSHIP -->
+                <div class="bracket-column">
+                    <h3>Championship!</h3>
+                    <div class="card" style="background: rgba(255, 94, 0, 0.04); border-color: var(--neon-orange); box-shadow: 0 0 10px rgba(255, 94, 0, 0.15); padding: 15px;">
+                        <strong style="color: var(--neon-orange); font-size:14px;">Gold Tier Apex (Court 8)</strong>
+                        <div class="team-input" style="margin-top:10px;">
+                            <span id="f1-t1-name" style="color: var(--text-muted)">Awaiting Node 5...</span>
+                            <div class="control-set">
+                                <input type="number" class="score-input bracket-score-input" id="f1-t1-g1" min="0" oninput="handleBracketManualInput('f1-t1-g1', 'f1-t2-g1', 'f1-t1-name', 'f1-t2-name')">
+                                <input type="number" class="score-input bracket-score-input bo3-input hidden" id="f1-t1-g2" min="0" oninput="handleBracketManualInput('f1-t1-g2', 'f1-t2-g2', 'f1-t1-name', 'f1-t2-name')">
+                                <input type="number" class="score-input bracket-score-input bo3-input hidden" id="f1-t1-g3" min="0" oninput="handleBracketManualInput('f1-t1-g3', 'f1-t2-g3', 'f1-t1-name', 'f1-t2-name')">
+                                <button class="btn-max" onclick="quickSetBracket('f1-t1', 'f1-t2', 'f1-t1-name')">15</button>
+                            </div>
+                        </div>
+                        <div class="team-input">
+                            <span id="f1-t2-name" style="color: var(--text-muted)">Awaiting Node 6...</span>
+                            <div class="control-set">
+                                <input type="number" class="score-input bracket-score-input" id="f1-t2-g1" min="0" oninput="handleBracketManualInput('f1-t2-g1', 'f1-t1-g1', 'f1-t2-name', 'f1-t1-name')">
+                                <input type="number" class="score-input bracket-score-input bo3-input hidden" id="f1-t2-g2" min="0" oninput="handleBracketManualInput('f1-t2-g2', 'f1-t1-g2', 'f1-t2-name', 'f1-t1-name')">
+                                <input type="number" class="score-input bracket-score-input bo3-input hidden" id="f1-t2-g3" min="0" oninput="handleBracketManualInput('f1-t2-g3', 'f1-t1-g3', 'f1-t2-name', 'f1-t1-name')">
+                                <button class="btn-max" onclick="quickSetBracket('f1-t2', 'f1-t1', 'f1-t2-name')">15</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="champ-display" class="champion-banner hidden">🏆 GRAND CHAMPIONS: <span id="champ-names">---</span></div>
+                </div>
+            </div>
+            <div id="reset-container" class="hidden" style="margin-top: 35px; text-align: center;">
+                <button onclick="resetSystemTerminal()" style="border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 15px rgba(255,94,0,0.5); font-size: 16px; padding: 14px 30px;">🔄 Reset Matrix Terminal</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 🕒 SYSTEM CLOCK ENGINE
+function updateSystemClock() {
+    const now = new Date();
+    let hours = now.getHours();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const clockEl = document.getElementById('system-clock');
+    if (clockEl) clockEl.innerText = `SYS.TIME // ${hours}:${minutes}:${seconds} ${ampm}`;
+}
+setInterval(updateSystemClock, 1000);
+updateSystemClock();
+
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+function initAudio() { if (!audioCtx) audioCtx = new AudioCtx(); }
+function playBleep(freq = 600, duration = 0.08, type = 'square') {
+    try { initAudio(); let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain(); osc.type = type; osc.frequency.value = freq; gain.gain.setValueAtTime(0.15, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + duration); } catch(e){}
+}
+function playSkunkSiren() {
+    try { initAudio(); let now = audioCtx.currentTime; [0, 0.2, 0.4].forEach(delay => { let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain(); osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, now + delay); osc.frequency.linearRampToValueAtTime(700, now + delay + 0.15); gain.gain.setValueAtTime(0.2, now + delay); gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.18); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(now + delay); osc.stop(now + delay + 0.18); }); } catch(e){}
+}
+function playLockBass() {
+    try { initAudio(); let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain(); osc.type = 'sine'; osc.frequency.setValueAtTime(120, audioCtx.currentTime); osc.frequency.linearRampToValueAtTime(40, audioCtx.currentTime + 0.4); gain.gain.setValueAtTime(0.3, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.4); } catch(e){}
+}
+function playVictoryFanfare() {
+    try { initAudio(); let now = audioCtx.currentTime; const notes = [440, 554, 659, 880]; notes.forEach((freq, idx) => { let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + (idx * 0.15)); gain.gain.setValueAtTime(0.2, now + (idx * 0.15)); gain.gain.exponentialRampToValueAtTime(0.001, now + (idx * 0.15) + 0.3); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(now + (idx * 0.15)); osc.stop(now + (idx * 0.15) + 0.3); }); } catch(e){}
+}
+
+// ---------------------------------------------------------
+// MATRIX DEFINITIONS (FREE-FOR-ALL)
+// ---------------------------------------------------------
+const MATRIX_6P = [ { round: 1, t1: [0, 1], t2: [2, 3] }, { round: 2, t1: [0, 4], t2: [1, 5] }, { round: 3, t1: [2, 4], t2: [3, 5] }, { round: 4, t1: [0, 2], t2: [1, 4] }, { round: 5, t1: [1, 3], t2: [2, 5] } ];
+const MATRIX_5P = [ { round: 1, t1: [0, 3], t2: [1, 2] }, { round: 2, t1: [0, 1], t2: [2, 4] }, { round: 3, t1: [0, 4], t2: [3, 1] }, { round: 4, t1: [0, 2], t2: [4, 3] }, { round: 5, t1: [1, 4], t2: [2, 3] } ];
+const MATRIX_4P = [ { round: 1, t1: [0, 1], t2: [2, 3] }, { round: 2, t1: [0, 2], t2: [1, 3] }, { round: 3, t1: [0, 3], t2: [1, 2] } ];
+
+// ---------------------------------------------------------
+// MATRIX DEFINITIONS (FIXED TEAMS - Round Robins)
+// ---------------------------------------------------------
+const T_MATRIX_3 = [ { round: 1, matches: [{t1: 0, t2: 1}] }, { round: 2, matches: [{t1: 0, t2: 2}] }, { round: 3, matches: [{t1: 1, t2: 2}] } ];
+const T_MATRIX_4 = [ { round: 1, matches: [{t1: 0, t2: 1}, {t1: 2, t2: 3}] }, { round: 2, matches: [{t1: 0, t2: 2}, {t1: 1, t2: 3}] }, { round: 3, matches: [{t1: 0, t2: 3}, {t1: 1, t2: 2}] } ];
+const T_MATRIX_5 = [ { round: 1, matches: [{t1: 0, t2: 1}, {t1: 2, t2: 3}] }, { round: 2, matches: [{t1: 0, t2: 2}, {t1: 1, t2: 4}] }, { round: 3, matches: [{t1: 0, t2: 3}, {t1: 2, t2: 4}] }, { round: 4, matches: [{t1: 0, t2: 4}, {t1: 1, t2: 3}] }, { round: 5, matches: [{t1: 1, t2: 2}, {t1: 3, t2: 4}] } ];
+const T_MATRIX_6 = [ { round: 1, matches: [{t1: 0, t2: 1}, {t1: 2, t2: 3}, {t1: 4, t2: 5}] }, { round: 2, matches: [{t1: 0, t2: 2}, {t1: 1, t2: 4}, {t1: 3, t2: 5}] }, { round: 3, matches: [{t1: 0, t2: 3}, {t1: 1, t2: 5}, {t1: 2, t2: 4}] }, { round: 4, matches: [{t1: 0, t2: 4}, {t1: 1, t2: 3}, {t1: 2, t2: 5}] }, { round: 5, matches: [{t1: 0, t2: 5}, {t1: 1, t2: 2}, {t1: 3, t2: 4}] } ];
+
+let players = []; let waveSchedules = {}; let skunkAlertsCount = 0; let globalMuteShots = false; let topList = []; let lastAnnouncedChamp = "";
+let isTeamMode = false; let bracketMode = 'SF';
+
+// MANUAL TEAM BUILDER VARIABLES
+let unassignedTemp = []; let manualTeamsTemp = []; let selectedForTeam = [];
+
+// 💾 ZERO-FRICTION AUTO-SAVE ENGINE 
+function getCurrentStateObject() {
+    const matchScores = {};
+    Object.keys(waveSchedules).forEach(wKey => {
+        waveSchedules[wKey].forEach((courtPlayers, courtIdx) => {
+            if (isTeamMode) {
+                let matrix = courtPlayers.length >= 6 ? T_MATRIX_6 : courtPlayers.length === 5 ? T_MATRIX_5 : courtPlayers.length === 4 ? T_MATRIX_4 : T_MATRIX_3;
+                matrix.forEach((m, roundIdx) => {
+                    m.matches.forEach((_, gameIdx) => {
+                        const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
+                        const el1 = document.getElementById(`score_t1_${uid}`);
+                        const el2 = document.getElementById(`score_t2_${uid}`);
+                        if (el1 && el2) matchScores[uid] = { t1: el1.value, t2: el2.value };
+                    });
+                });
+            } else {
+                let matrix = courtPlayers.length >= 6 ? MATRIX_6P : courtPlayers.length === 5 ? MATRIX_5P : MATRIX_4P;
+                matrix.forEach((_, matchIdx) => {
+                    const uid = `${wKey}_${courtIdx}_${matchIdx}`;
+                    const el1 = document.getElementById(`score_t1_${uid}`);
+                    const el2 = document.getElementById(`score_t2_${uid}`);
+                    if (el1 && el2) matchScores[uid] = { t1: el1.value, t2: el2.value };
+                });
+            }
+        });
+    });
+
+    const bracketScores = {};
+    document.querySelectorAll('.bracket-score-input').forEach(el => {
+        bracketScores[el.id] = el.value;
+    });
+
+    return {
+        players, waveSchedules, skunkAlertsCount, lastAnnouncedChamp, isTeamMode, bracketMode,
+        matchScores, bracketScores,
+        isBo3Active: document.getElementById('bo3-toggle').checked,
+        isBracketActive: !document.getElementById('bracket-section').classList.contains('hidden'),
+        rawNamesInput: document.getElementById('player-names-input').value
+    };
+}
+
+function autoSaveState() {
+    if (players.length === 0) return; 
+    const state = getCurrentStateObject();
+    localStorage.setItem('pickleMatrixAutoSave', JSON.stringify(state));
+    const flash = document.getElementById('auto-save-flash');
+    if (flash) {
+        flash.classList.add('pulse');
+        setTimeout(() => flash.classList.remove('pulse'), 800);
+    }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const savedData = localStorage.getItem('pickleMatrixAutoSave');
+    if (savedData) {
+        try {
+            const state = JSON.parse(savedData);
+            if (state.players && state.players.length > 0) {
+                restoreStateData(state);
+            }
+        } catch(e) {}
+    }
+});
+
+function loadDemoPlayers(count) {
+    playBleep(440, 0.05);
+    let demo = Array.from({length: count}, (_, i) => `Neon_Racer_${i+1}`);
+    demo[0] = "Joseph Sánchez"; 
+    document.getElementById('player-names-input').value = demo.join('\n');
+}
+
+// ---------------------------------------------------------
+// TEAM BUILDER LOGIC
+// ---------------------------------------------------------
+function openManualTeamBuilder() {
+    const rawNames = document.getElementById('player-names-input').value.split('\n').map(n => n.replace(/\r/g, '').trim()).filter(n => n !== "");
+    if(rawNames.length < 4) { alert("Matrix Error: Need at least 4 active entities."); return; }
+    
+    playBleep(600, 0.1, 'sawtooth');
+    unassignedTemp = [...rawNames];
+    manualTeamsTemp = [];
+    selectedForTeam = [];
+    
+    document.getElementById('setup-stage').classList.add('hidden');
+    document.getElementById('team-builder-stage').classList.remove('hidden');
+    renderTeamBuilder();
+}
+
+function renderTeamBuilder() {
+    const unassMount = document.getElementById('tb-unassigned-mount');
+    unassMount.innerHTML = '';
+    unassignedTemp.forEach((name, idx) => {
+        const isSel = selectedForTeam.includes(idx);
+        unassMount.innerHTML += `<div class="tb-chip ${isSel ? 'selected' : ''}" onclick="toggleTbSelect(${idx})">${name}</div>`;
+    });
+
+    const teamsMount = document.getElementById('tb-teams-mount');
+    teamsMount.innerHTML = '';
+    manualTeamsTemp.forEach((team, idx) => {
+        teamsMount.innerHTML += `
+            <div class="tb-formed-team">
+                <span>${team}</span> 
+                <button class="btn-max" style="border-color:#ff003c; color:#ff003c;" onclick="removeTbTeam(${idx})">X</button>
+            </div>`;
+    });
+}
+
+function toggleTbSelect(idx) {
+    playBleep(400, 0.05);
+    if(selectedForTeam.includes(idx)) {
+        selectedForTeam = selectedForTeam.filter(i => i !== idx);
+    } else {
+        selectedForTeam.push(idx);
+        if(selectedForTeam.length === 2) {
+            const p1 = unassignedTemp[selectedForTeam[0]];
+            const p2 = unassignedTemp[selectedForTeam[1]];
+            manualTeamsTemp.push(`${p1} & ${p2}`);
+            selectedForTeam.sort((a,b) => b-a).forEach(i => unassignedTemp.splice(i, 1));
+            selectedForTeam = [];
+            playBleep(800, 0.1, 'triangle');
+        }
+    }
+    renderTeamBuilder();
+}
+
+function forceSoloTeam() {
+    if(selectedForTeam.length === 1) {
+        const p = unassignedTemp[selectedForTeam[0]];
+        manualTeamsTemp.push(`${p} (Solo)`);
+        unassignedTemp.splice(selectedForTeam[0], 1);
+        selectedForTeam = [];
+        playBleep(800, 0.1, 'triangle');
+        renderTeamBuilder();
+    }
+}
+
+function removeTbTeam(idx) {
+    const t = manualTeamsTemp[idx];
+    manualTeamsTemp.splice(idx, 1);
+    const parts = t.replace(' (Solo)', '').split(' & ');
+    unassignedTemp.push(...parts);
+    renderTeamBuilder();
+}
+
+function cancelTeamBuilder() {
+    document.getElementById('team-builder-stage').classList.add('hidden');
+    document.getElementById('setup-stage').classList.remove('hidden');
+}
+
+function launchManualTeams() {
+    if(unassignedTemp.length > 0) {
+        if(!confirm("Warning: You have unassigned players. They will be ignored. Launch anyway?")) return;
+    }
+    if(manualTeamsTemp.length < 4) { alert("Matrix Error: Need at least 4 formed teams."); return; }
+    
+    document.getElementById('team-builder-stage').classList.add('hidden');
+    startTournament(true, manualTeamsTemp);
+}
+
+function generateRandomTeams() {
+    const rawNames = document.getElementById('player-names-input').value.split('\n').map(n => n.replace(/\r/g, '').trim()).filter(n => n !== "");
+    if(rawNames.length < 4) { alert("Matrix Error: Need at least 4 active entities."); return; }
+    
+    // Fisher-Yates Shuffle
+    for (let i = rawNames.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [rawNames[i], rawNames[j]] = [rawNames[j], rawNames[i]];
+    }
+
+    const randomTeams = [];
+    for(let i=0; i < rawNames.length; i+=2) {
+        if(i+1 < rawNames.length) randomTeams.push(`${rawNames[i]} & ${rawNames[i+1]}`);
+        else randomTeams.push(`${rawNames[i]} (Solo)`);
+    }
+    
+    startTournament(true, randomTeams);
+}
+
+// ---------------------------------------------------------
+// TOURNAMENT BOOT SEQUENCE
+// ---------------------------------------------------------
+function startTournament(teamsFormat = false, prebuiltTeams = null) {
+    isTeamMode = teamsFormat;
+    let entities = [];
+    
+    if (isTeamMode && prebuiltTeams) {
+        entities = prebuiltTeams;
+    } else {
+        entities = document.getElementById('player-names-input').value.split('\n').map(n => n.replace(/\r/g, '').trim()).filter(n => n !== "");
+    }
+        
+    if (entities.length < (isTeamMode ? 4 : 12)) {
+        alert(`Mainframe exception: Minimum ${isTeamMode ? 4 : 12} system nodes needed to establish integrity.`);
+        return;
+    }
+    playBleep(800, 0.15, 'triangle');
+
+    players = entities.map((name, idx) => ({ id: idx, name: name, wave: 'A', poolId: 8, wins: 0, points: 0 }));
+    
+    let totalPlayers = players.length;
+    let waveSize = Math.ceil(totalPlayers / 2);
+    if (totalPlayers <= 15) waveSize = totalPlayers; 
+
+    waveSchedules = {};
+    let waveLetter = 'A';
+    
+    for (let i = 0; i < totalPlayers; i += waveSize) {
+        let waveChunk = players.slice(i, i + waveSize);
+        waveChunk.forEach(p => p.wave = waveLetter);
+        
+        let numCourts = Math.floor(waveChunk.length / (isTeamMode ? 6 : 4)); // In teams, max 6 teams per pool
+        if (numCourts > 3) numCourts = 3;
+        if (numCourts === 0) numCourts = 1;
+        
+        let courtsArray = Array.from({length: numCourts}, () => []);
+        waveChunk.forEach((p, cIdx) => {
+            let targetCourt = cIdx % numCourts;
+            courtsArray[targetCourt].push(p);
+            p.poolId = targetCourt + 8; // Start at 8
+        });
+
+        waveSchedules[waveLetter] = courtsArray;
+        waveLetter = String.fromCharCode(waveLetter.charCodeAt(0) + 1);
+    }
+
+    document.getElementById('mainframe-subhead').innerText = `${totalPlayers} ${isTeamMode ? 'TEAMS' : 'PLAYERS'} // ${Object.keys(waveSchedules).length} WAVES MODULE`;
+    buildInterface();
+}
+
+function buildInterface() {
+    document.getElementById('setup-stage').classList.add('hidden');
+    document.getElementById('tournament-stage').classList.remove('hidden');
+
+    let mountBtn = document.getElementById('wave-buttons-mount');
+    mountBtn.innerHTML = '';
+    let waveKeys = Object.keys(waveSchedules);
+    waveKeys.forEach((wKey, idx) => {
+        mountBtn.innerHTML += `<button id="btn-wave${wKey}" class="btn-wave ${idx===0?'active':''}" onclick="switchWave('${wKey}')">Channel Wave ${wKey}</button>`;
+    });
+
+    let mountZone = document.getElementById('courts-mount-zone');
+    mountZone.innerHTML = '';
+
+    waveKeys.forEach(wKey => {
+        let waveWrapper = document.createElement('div');
+        waveWrapper.id = `courts-wave${wKey}`;
+        waveWrapper.className = `grid ${wKey !== waveKeys[0] ? 'hidden' : ''}`;
+        
+        waveSchedules[wKey].forEach((courtPlayers, courtIdx) => {
+            let courtHtml = `<div class="card"><div class="court-title">/// MATCH POOL ${courtIdx + 8} (${wKey})</div>`;
+            
+            if (isTeamMode) {
+                let matrix = courtPlayers.length >= 6 ? T_MATRIX_6 : courtPlayers.length === 5 ? T_MATRIX_5 : courtPlayers.length === 4 ? T_MATRIX_4 : T_MATRIX_3;
+                matrix.forEach((m, roundIdx) => {
+                    courtHtml += `<div class="match-row"><strong style="color:var(--neon-pink)">MATCH ${m.round}</strong>`;
+                    m.matches.forEach((game, gameIdx) => {
+                        const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
+                        courtHtml += `
+                            <div class="team-input" style="margin-top: 10px;">
+                                <span id="name_t1_${uid}">${courtPlayers[game.t1]?.name}</span>
+                                <div class="control-set">
+                                    <input type="number" class="score-input" id="score_t1_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't1', 't2')">
+                                    <button class="btn-max" onclick="quickSetInputOnly('score_t1_${uid}', '${uid}', 't1', 't2', 'name_t1_${uid}', 'name_t2_${uid}')">11</button>
+                                </div>
+                            </div>
+                            <div class="team-input">
+                                <span id="name_t2_${uid}">${courtPlayers[game.t2]?.name}</span>
+                                <div class="control-set">
+                                    <input type="number" class="score-input" id="score_t2_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't2', 't1')">
+                                    <button class="btn-max" onclick="quickSetInputOnly('score_t2_${uid}', '${uid}', 't2', 't1', 'name_t2_${uid}', 'name_t1_${uid}')">11</button>
+                                </div>
+                            </div>
+                            <div style="border-bottom: 1px solid rgba(0,240,255,0.1); margin: 10px 0; width: 100%;"></div>`;
+                    });
+                    courtHtml += `</div>`;
+                });
+            } else {
+                let matrix = courtPlayers.length >= 6 ? MATRIX_6P : courtPlayers.length === 5 ? MATRIX_5P : MATRIX_4P;
+                matrix.forEach((m, matchIdx) => {
+                    const uid = `${wKey}_${courtIdx}_${matchIdx}`;
+                    courtHtml += `
+                        <div class="match-row">
+                            <strong style="color:var(--neon-pink)">MATCH ${m.round}</strong>
+                            <div class="team-input">
+                                <span id="name_t1_${uid}">${courtPlayers[m.t1[0]]?.name} + ${courtPlayers[m.t1[1]]?.name}</span>
+                                <div class="control-set">
+                                    <input type="number" class="score-input" id="score_t1_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't1', 't2')">
+                                    <button class="btn-max" onclick="quickSetInputOnly('score_t1_${uid}', '${uid}', 't1', 't2', 'name_t1_${uid}', 'name_t2_${uid}')">11</button>
+                                </div>
+                            </div>
+                            <div class="team-input">
+                                <span id="name_t2_${uid}">${courtPlayers[m.t2[0]]?.name} + ${courtPlayers[m.t2[1]]?.name}</span>
+                                <div class="control-set">
+                                    <input type="number" class="score-input" id="score_t2_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't2', 't1')">
+                                    <button class="btn-max" onclick="quickSetInputOnly('score_t2_${uid}', '${uid}', 't2', 't1', 'name_t2_${uid}', 'name_t1_${uid}')">11</button>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+            }
+            waveWrapper.innerHTML += courtHtml + `</div>`;
+        });
+        mountZone.appendChild(waveWrapper);
+    });
+
+    calculateScores();
+}
+
+function switchWave(wave) {
+    playBleep(500, 0.05);
+    document.querySelectorAll('.btn-wave').forEach(b => b.classList.remove('active'));
+    document.getElementById(`btn-wave${wave}`).classList.add('active');
+    Object.keys(waveSchedules).forEach(wKey => {
+        document.getElementById(`courts-wave${wKey}`).classList.toggle('hidden', wKey !== wave);
+    });
+}
+
+function triggerShotPopup(loserString) {
+    if (globalMuteShots) return;
+    skunkAlertsCount++;
+    document.getElementById('hud-skunk-count').innerHTML = `⚡ PICKLE ALERTS LOGGED: ${skunkAlertsCount} <span class="auto-save-indicator" id="auto-save-flash">Memory Synced</span>`;
+    document.getElementById('modal-loser-names').innerText = loserString;
+    playSkunkSiren();
+    document.getElementById('shot-modal').classList.add('active');
+}
+function closeShotModal() { document.getElementById('shot-modal').classList.remove('active'); }
+
+function triggerChampPopup(champString) {
+    document.getElementById('modal-champ-names').innerText = champString;
+    playVictoryFanfare();
+    document.getElementById('champ-modal').classList.add('active');
+}
+function closeChampModal() { document.getElementById('champ-modal').classList.remove('active'); }
+
+function handleManualInput(uid, currentKey, opposingKey) {
+    const el1 = document.getElementById(`score_${currentKey}_${uid}`);
+    const el2 = document.getElementById(`score_${opposingKey}_${uid}`);
+    if (!el1 || !el2) return;
+    
+    const v1 = parseInt(el1.value, 10);
+    const v2 = parseInt(el2.value, 10);
+    if (!isNaN(v1)) playBleep(550 + (v1 * 15), 0.04);
+    if ((v1 === 11 && v2 === 0) || (v1 === 0 && v2 === 11)) {
+        triggerShotPopup(v1 === 0 ? document.getElementById(`name_${currentKey}_${uid}`).innerText : document.getElementById(`name_${opposingKey}_${uid}`).innerText);
+    }
+    calculateScores();
+}
+
+function handleBracketManualInput(currentId, opposingId, currentNamesId, opposingNamesId) {
+    const el1 = document.getElementById(currentId);
+    const el2 = document.getElementById(opposingId);
+    if (!el1 || !el2) return;
+    
+    const s1 = parseInt(el1.value, 10);
+    const s2 = parseInt(el2.value, 10);
+    if (!isNaN(s1)) playBleep(550 + (s1 * 15), 0.04);
+    
+    if ((s1 === 15 && s2 === 0) || (s1 === 0 && s2 === 15)) {
+        triggerShotPopup(s1 === 0 ? document.getElementById(currentNamesId).innerText : document.getElementById(opposingNamesId).innerText);
+    }
+    updateBracketLogic();
+}
+
+function quickSetInputOnly(inputId, uid, currentKey, opposingKey, currentNameId, opposingNameId) {
+    const target = document.getElementById(inputId);
+    if (!target) return;
+    target.value = 11; playBleep(900, 0.08);
+    
+    let opposingEl;
+    if (uid) opposingEl = document.getElementById(`score_${opposingKey}_${uid}`);
+    else opposingEl = document.getElementById(opposingKey);
+
+    if (opposingEl && parseInt(opposingEl.value, 10) === 0) {
+        triggerShotPopup(document.getElementById(opposingNameId).innerText);
+    }
+    
+    calculateScores();
+}
+
+function quickSetBracket(teamPrefix, opposingPrefix, nameId) {
+    const isBo3 = document.getElementById('bo3-toggle').checked;
+    const isQF = teamPrefix.startsWith('qf');
+    const games = (isBo3 && !isQF) ? [1, 2, 3] : [1];
+    
+    for (let g of games) {
+        let el = document.getElementById(`${teamPrefix}-g${g}`);
+        if (el && el.value === '') {
+            el.value = 15;
+            playBleep(900, 0.08);
+            
+            let oppEl = document.getElementById(`${opposingPrefix}-g${g}`);
+            if (oppEl && parseInt(oppEl.value, 10) === 0) {
+                let oppTeamKey = opposingPrefix.split('-')[1]; 
+                let currentTeamKey = teamPrefix.split('-')[1]; 
+                let loserName = document.getElementById(nameId.replace(currentTeamKey, oppTeamKey)).innerText;
+                triggerShotPopup(loserName);
+            }
+            updateBracketLogic();
+            return;
+        }
+    }
+}
+
+function simulateScores() {
+    globalMuteShots = true; let lastLoserString = "";
+    Object.keys(waveSchedules).forEach(wKey => {
+        waveSchedules[wKey].forEach((courtPlayers, courtIdx) => {
+            if (isTeamMode) {
+                let matrix = courtPlayers.length >= 6 ? T_MATRIX_6 : courtPlayers.length === 5 ? T_MATRIX_5 : courtPlayers.length === 4 ? T_MATRIX_4 : T_MATRIX_3;
+                matrix.forEach((m, roundIdx) => {
+                    m.matches.forEach((_, gameIdx) => {
+                        const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
+                        const t1Wins = Math.random() > 0.5;
+                        const score1 = t1Wins ? 11 : Math.floor(Math.random() * 11);
+                        const score2 = t1Wins ? Math.floor(Math.random() * 11) : 11;
+                        document.getElementById(`score_t1_${uid}`).value = score1;
+                        document.getElementById(`score_t2_${uid}`).value = score2;
+                        if (score1 === 11 && score2 === 0) lastLoserString = document.getElementById(`name_t2_${uid}`).innerText;
+                        else if (score1 === 0 && score2 === 11) lastLoserString = document.getElementById(`name_t1_${uid}`).innerText;
+                    });
+                });
+            } else {
+                let matrix = courtPlayers.length >= 6 ? MATRIX_6P : courtPlayers.length === 5 ? MATRIX_5P : MATRIX_4P;
+                matrix.forEach((_, matchIdx) => {
+                    const uid = `${wKey}_${courtIdx}_${matchIdx}`;
+                    const t1Wins = Math.random() > 0.5;
+                    const score1 = t1Wins ? 11 : Math.floor(Math.random() * 11);
+                    const score2 = t1Wins ? Math.floor(Math.random() * 11) : 11;
+                    document.getElementById(`score_t1_${uid}`).value = score1;
+                    document.getElementById(`score_t2_${uid}`).value = score2;
+                    if (score1 === 11 && score2 === 0) lastLoserString = document.getElementById(`name_t2_${uid}`).innerText;
+                    else if (score1 === 0 && score2 === 11) lastLoserString = document.getElementById(`name_t1_${uid}`).innerText;
+                });
+            }
+        });
+    });
+    calculateScores(); globalMuteShots = false;
+    if (lastLoserString !== "") triggerShotPopup(lastLoserString);
+    else playBleep(700, 0.1, 'sawtooth');
+}
+
+function calculateScores() {
+    players.forEach(p => { p.wins = 0; p.points = 0; });
+    Object.keys(waveSchedules).forEach(wKey => {
+        waveSchedules[wKey].forEach((courtPlayers, courtIdx) => {
+            if (isTeamMode) {
+                let matrix = courtPlayers.length >= 6 ? T_MATRIX_6 : courtPlayers.length === 5 ? T_MATRIX_5 : courtPlayers.length === 4 ? T_MATRIX_4 : T_MATRIX_3;
+                matrix.forEach((m, roundIdx) => {
+                    m.matches.forEach((game, gameIdx) => {
+                        const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
+                        const s1Input = document.getElementById(`score_t1_${uid}`);
+                        const s2Input = document.getElementById(`score_t2_${uid}`);
+                        if (!s1Input || !s2Input) return;
+                        
+                        const s1 = parseInt(s1Input.value, 10); const s2 = parseInt(s2Input.value, 10);
+                        s1Input.classList.toggle('pickled', s1 === 11 && s2 === 0);
+                        s2Input.classList.toggle('pickled', s2 === 11 && s1 === 0);
+                        
+                        if (!isNaN(s1) && !isNaN(s2)) {
+                            if(courtPlayers[game.t1]) courtPlayers[game.t1].points += s1;
+                            if(courtPlayers[game.t2]) courtPlayers[game.t2].points += s2;
+                            if (s1 > s2) { if(courtPlayers[game.t1]) courtPlayers[game.t1].wins++; } 
+                            else if (s2 > s1) { if(courtPlayers[game.t2]) courtPlayers[game.t2].wins++; }
+                        }
+                    });
+                });
+            } else {
+                let matrix = courtPlayers.length >= 6 ? MATRIX_6P : courtPlayers.length === 5 ? MATRIX_5P : MATRIX_4P;
+                matrix.forEach((m, matchIdx) => {
+                    const uid = `${wKey}_${courtIdx}_${matchIdx}`;
+                    const s1Input = document.getElementById(`score_t1_${uid}`);
+                    const s2Input = document.getElementById(`score_t2_${uid}`);
+                    if (!s1Input || !s2Input) return;
+                    
+                    const s1 = parseInt(s1Input.value, 10); const s2 = parseInt(s2Input.value, 10);
+                    s1Input.classList.toggle('pickled', s1 === 11 && s2 === 0);
+                    s2Input.classList.toggle('pickled', s2 === 11 && s1 === 0);
+                    
+                    if (!isNaN(s1) && !isNaN(s2)) {
+                        if(courtPlayers[m.t1[0]]) courtPlayers[m.t1[0]].points += s1; 
+                        if(courtPlayers[m.t1[1]]) courtPlayers[m.t1[1]].points += s1;
+                        if(courtPlayers[m.t2[0]]) courtPlayers[m.t2[0]].points += s2; 
+                        if(courtPlayers[m.t2[1]]) courtPlayers[m.t2[1]].points += s2;
+                        
+                        if (s1 > s2) { 
+                            if(courtPlayers[m.t1[0]]) courtPlayers[m.t1[0]].wins++; 
+                            if(courtPlayers[m.t1[1]]) courtPlayers[m.t1[1]].wins++; 
+                        } else if (s2 > s1) { 
+                            if(courtPlayers[m.t2[0]]) courtPlayers[m.t2[0]].wins++; 
+                            if(courtPlayers[m.t2[1]]) courtPlayers[m.t2[1]].wins++; 
+                        }
+                    }
+                });
+            }
+        });
+    });
+    updateLeaderboard();
+    autoSaveState(); 
+}
+
+function updateLeaderboard() {
+    const sorted = [...players].sort((a, b) => b.wins - a.wins || b.points - a.points);
+    topList = sorted.slice(0, 16); 
+    
+    let advanceCutoff = 4; 
+    if (isTeamMode) {
+        advanceCutoff = players.length >= 8 ? 8 : 4;
+        document.getElementById('leaderboard-title').innerText = `Team Standings (Top ${advanceCutoff} Advance)`;
+        document.getElementById('th-name').innerText = "Squad Name";
+    } else {
+        advanceCutoff = players.length >= 16 ? 16 : 8;
+        document.getElementById('leaderboard-title').innerText = `Player Standings (Top ${advanceCutoff} Advance)`;
+        document.getElementById('th-name').innerText = "Player Name";
+    }
+
+    const tbody = document.querySelector('#leaderboard tbody'); if (!tbody) return;
+    tbody.innerHTML = '';
+    
+    sorted.forEach((p, idx) => {
+        const rowStyle = idx < advanceCutoff ? 'style="background-color: rgba(0, 240, 255, 0.08); color: #fff; font-weight: bold; border-left: 3px solid var(--neon-cyan);"' : '';
+        tbody.innerHTML += `<tr ${rowStyle}><td>${idx + 1}</td><td>${p.name} ⚡</td><td>Wave ${p.wave}</td><td>Pool ${p.poolId}</td><td><strong style="color: var(--neon-pink)">${p.wins}</strong></td><td>${p.points}</td></tr>`;
+    });
+}
+
+// ---------------------------------------------------------
+// DYNAMIC BRACKET ENGINE
+// ---------------------------------------------------------
+function toggleBo3UI() {
+    playBleep(300, 0.05);
+    const isBo3 = document.getElementById('bo3-toggle').checked;
+    document.querySelectorAll('.bo3-input').forEach(el => {
+        if(isBo3) el.classList.remove('hidden');
+        else { el.classList.add('hidden'); el.value = ''; }
+    });
+    updateBracketLogic();
+}
+
+function resetBracketText(nodePrefix) {
+    document.getElementById(`${nodePrefix}1-t1-name`).innerText = `Awaiting Connection...`;
+    document.getElementById(`${nodePrefix}1-t2-name`).innerText = `Awaiting Connection...`;
+    if(document.getElementById(`${nodePrefix}2-t1-name`)) {
+        document.getElementById(`${nodePrefix}2-t1-name`).innerText = `Awaiting Connection...`;
+        document.getElementById(`${nodePrefix}2-t2-name`).innerText = `Awaiting Connection...`;
+    }
+}
+
+function lockAndBuildBracket() {
+    let requiredSize = isTeamMode ? 4 : 8;
+    if (topList.length < requiredSize) {
+        alert(`Matrix Error: Need top ${requiredSize} established to build playoff bracket.`);
+        return;
+    }
+    
+    playLockBass();
+    
+    if (isTeamMode) {
+        bracketMode = (players.length >= 8) ? 'QF' : 'SF';
+    } else {
+        bracketMode = (players.length >= 16) ? 'QF' : 'SF';
+    }
+
+    if (bracketMode === 'QF') {
+        document.getElementById('col-qf').classList.remove('hidden');
+        if (isTeamMode) {
+            document.getElementById('qf1-t1-name').innerText = topList[0].name; document.getElementById('qf1-t2-name').innerText = topList[7].name;
+            document.getElementById('qf2-t1-name').innerText = topList[3].name; document.getElementById('qf2-t2-name').innerText = topList[4].name;
+            document.getElementById('qf3-t1-name').innerText = topList[1].name; document.getElementById('qf3-t2-name').innerText = topList[6].name;
+            document.getElementById('qf4-t1-name').innerText = topList[2].name; document.getElementById('qf4-t2-name').innerText = topList[5].name;
+        } else {
+            document.getElementById('qf1-t1-name').innerText = `${topList[0].name} / ${topList[15].name}`; document.getElementById('qf1-t2-name').innerText = `${topList[7].name} / ${topList[8].name}`;
+            document.getElementById('qf2-t1-name').innerText = `${topList[3].name} / ${topList[12].name}`; document.getElementById('qf2-t2-name').innerText = `${topList[4].name} / ${topList[11].name}`;
+            document.getElementById('qf3-t1-name').innerText = `${topList[1].name} / ${topList[14].name}`; document.getElementById('qf3-t2-name').innerText = `${topList[6].name} / ${topList[9].name}`;
+            document.getElementById('qf4-t1-name').innerText = `${topList[2].name} / ${topList[13].name}`; document.getElementById('qf4-t2-name').innerText = `${topList[5].name} / ${topList[10].name}`;
+        }
+        resetBracketText('sf'); resetBracketText('f');
+    } else {
+        document.getElementById('col-qf').classList.add('hidden');
+        if (isTeamMode) {
+            document.getElementById('sf1-t1-name').innerText = topList[0].name; document.getElementById('sf1-t2-name').innerText = topList[3].name;
+            document.getElementById('sf2-t1-name').innerText = topList[1].name; document.getElementById('sf2-t2-name').innerText = topList[2].name;
+        } else {
+            document.getElementById('sf1-t1-name').innerText = `${topList[0].name} / ${topList[7].name}`; document.getElementById('sf1-t2-name').innerText = `${topList[3].name} / ${topList[4].name}`;
+            document.getElementById('sf2-t1-name').innerText = `${topList[1].name} / ${topList[6].name}`; document.getElementById('sf2-t2-name').innerText = `${topList[2].name} / ${topList[5].name}`;
+        }
+        resetBracketText('f');
+    }
+    
+    document.getElementById('bracket-section').classList.remove('hidden'); document.getElementById('qualifier-section').classList.add('hidden');
+    document.getElementById('bracket-section').scrollIntoView({ behavior: 'smooth' });
+    autoSaveState();
+}
+
+function getMatchWinner(prefix, allowBo3) {
+    const isBo3 = allowBo3 && document.getElementById('bo3-toggle').checked;
+    const t1Name = document.getElementById(`${prefix}-t1-name`).innerText;
+    const t2Name = document.getElementById(`${prefix}-t2-name`).innerText;
+    if(t1Name.includes("Awaiting") || t2Name.includes("Awaiting")) return null;
+
+    let winsT1 = 0; let winsT2 = 0;
+    const games = isBo3 ? [1, 2, 3] : [1];
+    
+    for(let g of games) {
+        const s1 = parseInt(document.getElementById(`${prefix}-t1-g${g}`)?.value, 10);
+        const s2 = parseInt(document.getElementById(`${prefix}-t2-g${g}`)?.value, 10);
+        if(!isNaN(s1) && !isNaN(s2) && s1 !== s2) {
+            if (s1 > s2) winsT1++; else winsT2++;
+        }
+    }
+
+    const reqWins = isBo3 ? 2 : 1;
+    if (winsT1 >= reqWins) return t1Name;
+    if (winsT2 >= reqWins) return t2Name;
+    return null;
+}
+
+function updateBracketLogic() {
+    // 1. Resolve QF -> SF
+    if (bracketMode === 'QF') {
+        const qf1W = getMatchWinner('qf1', false); const qf2W = getMatchWinner('qf2', false);
+        const qf3W = getMatchWinner('qf3', false); const qf4W = getMatchWinner('qf4', false);
+        
+        document.getElementById('sf1-t1-name').innerText = qf1W || "Awaiting Node 1...";
+        document.getElementById('sf1-t2-name').innerText = qf2W || "Awaiting Node 2...";
+        document.getElementById('sf2-t1-name').innerText = qf3W || "Awaiting Node 3...";
+        document.getElementById('sf2-t2-name').innerText = qf4W || "Awaiting Node 4...";
+        
+        ['sf1-t1', 'sf1-t2', 'sf2-t1', 'sf2-t2'].forEach(id => {
+            document.getElementById(id+'-name').style.color = document.getElementById(id+'-name').innerText.includes("Awaiting") ? "var(--text-muted)" : "var(--neon-cyan)";
+        });
+    }
+
+    // 2. Resolve SF -> Finals
+    const sf1W = getMatchWinner('sf1', true);
+    const sf2W = getMatchWinner('sf2', true);
+    
+    document.getElementById('f1-t1-name').innerText = sf1W || "Awaiting Semifinal 1...";
+    document.getElementById('f1-t2-name').innerText = sf2W || "Awaiting Semifinal 2...";
+    
+    ['f1-t1', 'f1-t2'].forEach(id => {
+        document.getElementById(id+'-name').style.color = document.getElementById(id+'-name').innerText.includes("Awaiting") ? "var(--text-muted)" : "var(--neon-cyan)";
+    });
+
+    // 3. Resolve Finals -> Champ
+    const champ = getMatchWinner('f1', true);
+    if (champ) {
+        document.getElementById('champ-names').innerText = champ;
+        document.getElementById('champ-display').classList.remove('hidden');
+        document.getElementById('reset-container').classList.remove('hidden');
+        
+        if (lastAnnouncedChamp !== champ) {
+            triggerChampPopup(champ);
+            lastAnnouncedChamp = champ;
+        }
+    } else { 
+        document.getElementById('champ-display').classList.add('hidden'); 
+        document.getElementById('reset-container').classList.add('hidden'); 
+        lastAnnouncedChamp = "";
+    }
+    autoSaveState(); 
+}
+
+// ⚠️ THE ULTIMATE EMERGENCY RESET
+function hardReset() {
+    if (confirm("WARNING: This will permanently erase the current tournament and wipe all auto-saves. Are you sure?")) {
+        localStorage.removeItem('pickleMatrixAutoSave');
+        location.reload();
+    }
+}
+
+function resetSystemTerminal() {
+    playBleep(300, 0.4, 'sawtooth'); document.getElementById('player-names-input').value = '';
+    players = []; waveSchedules = {}; skunkAlertsCount = 0; lastAnnouncedChamp = ""; isTeamMode = false;
+    document.getElementById('hud-skunk-count').innerHTML = `⚡ PICKLE ALERTS LOGGED: 0 <span class="auto-save-indicator" id="auto-save-flash">Memory Synced</span>`;
+    
+    document.querySelectorAll('.bracket-score-input').forEach(el => el.value = '');
+    resetBracketText('sf'); resetBracketText('f'); resetBracketText('qf');
+    document.getElementById('champ-names').innerText = "---";
+    
+    document.getElementById('bracket-section').classList.add('hidden'); document.getElementById('champ-display').classList.add('hidden'); document.getElementById('reset-container').classList.add('hidden'); document.getElementById('tournament-stage').classList.add('hidden'); document.getElementById('qualifier-section').classList.remove('hidden'); document.getElementById('setup-stage').classList.remove('hidden');
+    
+    localStorage.removeItem('pickleMatrixAutoSave');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function saveStateFile() {
+    playBleep(400, 0.1, 'sine');
+    const state = getCurrentStateObject();
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "pickleball_matrix_state.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+
+function restoreStateData(state) {
+    players = state.players || [];
+    isTeamMode = state.isTeamMode || false;
+    bracketMode = state.bracketMode || 'SF';
+    let loadedSchedules = state.waveSchedules || {};
+
+    Object.keys(loadedSchedules).forEach(wKey => {
+        loadedSchedules[wKey].forEach(court => {
+            for (let i = 0; i < court.length; i++) {
+                court[i] = players.find(p => p.name === court[i].name) || court[i];
+            }
+        });
+    });
+    waveSchedules = loadedSchedules;
+
+    skunkAlertsCount = state.skunkAlertsCount || 0;
+    lastAnnouncedChamp = state.lastAnnouncedChamp || "";
+    
+    document.getElementById('player-names-input').value = state.rawNamesInput || "";
+    document.getElementById('hud-skunk-count').innerHTML = `⚡ PICKLE ALERTS LOGGED: ${skunkAlertsCount} <span class="auto-save-indicator" id="auto-save-flash">Memory Synced</span>`;
+    document.getElementById('mainframe-subhead').innerText = `${players.length} ${isTeamMode ? 'TEAMS' : 'PLAYERS'} // ${Object.keys(waveSchedules).length} WAVES MODULE`;
+
+    if (isTeamMode) {
+        document.getElementById('leaderboard-title').innerText = `Team Standings (Top ${players.length >= 8 ? 8 : 4} Advance)`;
+        document.getElementById('th-name').innerText = "Squad Name";
+    } else {
+        document.getElementById('leaderboard-title').innerText = `Player Standings (Top ${players.length >= 16 ? 16 : 8} Advance)`;
+        document.getElementById('th-name').innerText = "Player Name";
+    }
+
+    document.getElementById('setup-stage').classList.add('hidden');
+    document.getElementById('tournament-stage').classList.remove('hidden');
+
+    buildInterface(); 
+
+    if (state.matchScores) {
+        Object.keys(state.matchScores).forEach(uid => {
+            const el1 = document.getElementById(`score_t1_${uid}`);
+            const el2 = document.getElementById(`score_t2_${uid}`);
+            if (el1) el1.value = state.matchScores[uid].t1;
+            if (el2) el2.value = state.matchScores[uid].t2;
+        });
+    }
+
+    calculateScores();
+
+    if (state.isBracketActive) {
+        lockAndBuildBracket();
+        if(state.isBo3Active) {
+            document.getElementById('bo3-toggle').checked = true;
+            toggleBo3UI();
+        }
+        if (state.bracketScores) {
+            Object.keys(state.bracketScores).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = state.bracketScores[id];
+            });
+        }
+        updateBracketLogic();
+    }
+}
+
+function loadState(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const state = JSON.parse(e.target.result);
+            restoreStateData(state);
+            playBleep(800, 0.2, 'square');
+        } catch (err) {
+            alert("Mainframe exception: Data file corrupted or invalid.");
+        }
+    };
+    reader.readAsText(file);
+    event.target.value = ''; 
+}
+</script>
+</body>
+</html>
