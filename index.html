@@ -268,7 +268,7 @@
         .toggle-switch { display: flex; align-items: center; gap: 10px; font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); font-size: 14px; text-shadow: 0 0 5px rgba(0,240,255,0.5); cursor: pointer;}
         .toggle-switch input { width: 18px; height: 18px; cursor: pointer; accent-color: var(--neon-pink); }
 
-        /* WINNER HIGHLIGHT STYLING */
+        /* WINNER HIGHLIGHT & PICKLE ICON STYLING */
         .match-winner {
             background-color: rgba(127, 255, 0, 0.15);
             padding: 4px 10px;
@@ -287,6 +287,12 @@
             color: var(--neon-green);
             text-shadow: 0 0 5px var(--neon-green);
             opacity: 0.9;
+        }
+        .pickle-icon {
+            color: var(--neon-green);
+            font-size: 1.1em;
+            margin-left: 5px;
+            text-shadow: 0 0 5px var(--neon-green);
         }
 
         @media (max-width: 768px) {
@@ -309,7 +315,7 @@
 
 <div id="champ-modal" class="modal-overlay" onclick="closeChampModal()">
     <div class="modal-box champ-box" onclick="event.stopPropagation()">
-        <div class="modal-title champ-title">🏆CHAMPIONS🏆</div>
+        <div class="modal-title champ-title">🏆 CHAMPIONS 🏆</div>
         <div class="modal-body">All Picklers have been conquered by:</div>
         <div class="champ-name-highlight" id="modal-champ-names">---</div>
         <button class="modal-btn champ-btn" onclick="closeChampModal()">Congrats!</button>
@@ -407,7 +413,6 @@
                 </label>
             </div>
             <div class="bracket-flex">
-                
                 <div class="bracket-column hidden" id="col-qf">
                     <h3>Quarterfinals</h3>
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
@@ -479,7 +484,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="bracket-column">
                     <h3>Semifinals</h3>
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
@@ -525,7 +529,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="bracket-column">
                     <h3>Championship!</h3>
                     <div class="card" style="background: rgba(255, 94, 0, 0.04); border-color: var(--neon-orange); box-shadow: 0 0 10px rgba(255, 94, 0, 0.15); padding: 15px;">
@@ -560,7 +563,6 @@
 </div>
 
 <script>
-// 🕒 SYSTEM CLOCK ENGINE
 function updateSystemClock() {
     const now = new Date();
     let hours = now.getHours();
@@ -590,16 +592,10 @@ function playVictoryFanfare() {
     try { initAudio(); let now = audioCtx.currentTime; const notes = [440, 554, 659, 880]; notes.forEach((freq, idx) => { let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + (idx * 0.15)); gain.gain.setValueAtTime(0.2, now + (idx * 0.15)); gain.gain.exponentialRampToValueAtTime(0.001, now + (idx * 0.15) + 0.3); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(now + (idx * 0.15)); osc.stop(now + (idx * 0.15) + 0.3); }); } catch(e){}
 }
 
-// ---------------------------------------------------------
-// MATRIX DEFINITIONS (FREE-FOR-ALL)
-// ---------------------------------------------------------
 const MATRIX_6P = [ { round: 1, t1: [0, 1], t2: [2, 3] }, { round: 2, t1: [0, 4], t2: [1, 5] }, { round: 3, t1: [2, 4], t2: [3, 5] }, { round: 4, t1: [0, 2], t2: [1, 4] }, { round: 5, t1: [1, 3], t2: [2, 5] } ];
 const MATRIX_5P = [ { round: 1, t1: [0, 3], t2: [1, 2] }, { round: 2, t1: [0, 1], t2: [2, 4] }, { round: 3, t1: [0, 4], t2: [3, 1] }, { round: 4, t1: [0, 2], t2: [4, 3] }, { round: 5, t1: [1, 4], t2: [2, 3] } ];
 const MATRIX_4P = [ { round: 1, t1: [0, 1], t2: [2, 3] }, { round: 2, t1: [0, 2], t2: [1, 3] }, { round: 3, t1: [0, 3], t2: [1, 2] } ];
 
-// ---------------------------------------------------------
-// MATRIX DEFINITIONS (FIXED TEAMS - Round Robins)
-// ---------------------------------------------------------
 const T_MATRIX_3 = [ { round: 1, matches: [{t1: 0, t2: 1}] }, { round: 2, matches: [{t1: 0, t2: 2}] }, { round: 3, matches: [{t1: 1, t2: 2}] } ];
 const T_MATRIX_4 = [ { round: 1, matches: [{t1: 0, t2: 1}, {t1: 2, t2: 3}] }, { round: 2, matches: [{t1: 0, t2: 2}, {t1: 1, t2: 3}] }, { round: 3, matches: [{t1: 0, t2: 3}, {t1: 1, t2: 2}] } ];
 const T_MATRIX_5 = [ { round: 1, matches: [{t1: 0, t2: 1}, {t1: 2, t2: 3}] }, { round: 2, matches: [{t1: 0, t2: 2}, {t1: 1, t2: 4}] }, { round: 3, matches: [{t1: 0, t2: 3}, {t1: 2, t2: 4}] }, { round: 4, matches: [{t1: 0, t2: 4}, {t1: 1, t2: 3}] }, { round: 5, matches: [{t1: 1, t2: 2}, {t1: 3, t2: 4}] } ];
@@ -607,11 +603,8 @@ const T_MATRIX_6 = [ { round: 1, matches: [{t1: 0, t2: 1}, {t1: 2, t2: 3}, {t1: 
 
 let players = []; let waveSchedules = {}; let skunkAlertsCount = 0; let globalMuteShots = false; let topList = []; let lastAnnouncedChamp = "";
 let isTeamMode = false; let bracketMode = 'SF';
-
-// MANUAL TEAM BUILDER VARIABLES
 let unassignedTemp = []; let manualTeamsTemp = []; let selectedForTeam = [];
 
-// 💾 ZERO-FRICTION AUTO-SAVE ENGINE 
 function getCurrentStateObject() {
     const matchScores = {};
     Object.keys(waveSchedules).forEach(wKey => {
@@ -682,18 +675,11 @@ function loadDemoPlayers(count) {
     document.getElementById('player-names-input').value = demo.join('\n');
 }
 
-// ---------------------------------------------------------
-// TEAM BUILDER LOGIC
-// ---------------------------------------------------------
 function openManualTeamBuilder() {
     const rawNames = document.getElementById('player-names-input').value.split('\n').map(n => n.replace(/\r/g, '').trim()).filter(n => n !== "");
     if(rawNames.length < 4) { alert("Matrix Error: Need at least 4 active entities."); return; }
-    
     playBleep(600, 0.1, 'sawtooth');
-    unassignedTemp = [...rawNames];
-    manualTeamsTemp = [];
-    selectedForTeam = [];
-    
+    unassignedTemp = [...rawNames]; manualTeamsTemp = []; selectedForTeam = [];
     document.getElementById('setup-stage').classList.add('hidden');
     document.getElementById('team-builder-stage').classList.remove('hidden');
     renderTeamBuilder();
@@ -706,7 +692,6 @@ function renderTeamBuilder() {
         const isSel = selectedForTeam.includes(idx);
         unassMount.innerHTML += `<div class="tb-chip ${isSel ? 'selected' : ''}" onclick="toggleTbSelect(${idx})">${name}</div>`;
     });
-
     const teamsMount = document.getElementById('tb-teams-mount');
     teamsMount.innerHTML = '';
     manualTeamsTemp.forEach((team, idx) => {
@@ -765,7 +750,6 @@ function launchManualTeams() {
         if(!confirm("Warning: You have unassigned players. They will be ignored. Launch anyway?")) return;
     }
     if(manualTeamsTemp.length < 4) { alert("Matrix Error: Need at least 4 formed teams."); return; }
-    
     document.getElementById('team-builder-stage').classList.add('hidden');
     startTournament(true, manualTeamsTemp);
 }
@@ -773,69 +757,52 @@ function launchManualTeams() {
 function generateRandomTeams() {
     const rawNames = document.getElementById('player-names-input').value.split('\n').map(n => n.replace(/\r/g, '').trim()).filter(n => n !== "");
     if(rawNames.length < 4) { alert("Matrix Error: Need at least 4 active entities."); return; }
-    
-    // Fisher-Yates Shuffle
     for (let i = rawNames.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [rawNames[i], rawNames[j]] = [rawNames[j], rawNames[i]];
     }
-
     const randomTeams = [];
     for(let i=0; i < rawNames.length; i+=2) {
         if(i+1 < rawNames.length) randomTeams.push(`${rawNames[i]} & ${rawNames[i+1]}`);
         else randomTeams.push(`${rawNames[i]} (Solo)`);
     }
-    
     startTournament(true, randomTeams);
 }
 
-// ---------------------------------------------------------
-// TOURNAMENT BOOT SEQUENCE
-// ---------------------------------------------------------
 function startTournament(teamsFormat = false, prebuiltTeams = null) {
     isTeamMode = teamsFormat;
     let entities = [];
-    
     if (isTeamMode && prebuiltTeams) {
         entities = prebuiltTeams;
     } else {
         entities = document.getElementById('player-names-input').value.split('\n').map(n => n.replace(/\r/g, '').trim()).filter(n => n !== "");
     }
-        
     if (entities.length < (isTeamMode ? 4 : 12)) {
         alert(`Mainframe exception: Minimum ${isTeamMode ? 4 : 12} system nodes needed to establish integrity.`);
         return;
     }
     playBleep(800, 0.15, 'triangle');
-
     players = entities.map((name, idx) => ({ id: idx, name: name, wave: 'A', poolId: 8, wins: 0, points: 0 }));
-    
     let totalPlayers = players.length;
     let waveSize = Math.ceil(totalPlayers / 2);
     if (totalPlayers <= 15) waveSize = totalPlayers; 
-
     waveSchedules = {};
     let waveLetter = 'A';
-    
     for (let i = 0; i < totalPlayers; i += waveSize) {
         let waveChunk = players.slice(i, i + waveSize);
         waveChunk.forEach(p => p.wave = waveLetter);
-        
-        let numCourts = Math.floor(waveChunk.length / (isTeamMode ? 6 : 4)); // In teams, max 6 teams per pool
+        let numCourts = Math.floor(waveChunk.length / (isTeamMode ? 6 : 4));
         if (numCourts > 3) numCourts = 3;
         if (numCourts === 0) numCourts = 1;
-        
         let courtsArray = Array.from({length: numCourts}, () => []);
         waveChunk.forEach((p, cIdx) => {
             let targetCourt = cIdx % numCourts;
             courtsArray[targetCourt].push(p);
-            p.poolId = targetCourt + 8; // Start at 8
+            p.poolId = targetCourt + 8;
         });
-
         waveSchedules[waveLetter] = courtsArray;
         waveLetter = String.fromCharCode(waveLetter.charCodeAt(0) + 1);
     }
-
     document.getElementById('mainframe-subhead').innerText = `${totalPlayers} ${isTeamMode ? 'TEAMS' : 'PLAYERS'} // ${Object.keys(waveSchedules).length} WAVES MODULE`;
     buildInterface();
 }
@@ -843,25 +810,20 @@ function startTournament(teamsFormat = false, prebuiltTeams = null) {
 function buildInterface() {
     document.getElementById('setup-stage').classList.add('hidden');
     document.getElementById('tournament-stage').classList.remove('hidden');
-
     let mountBtn = document.getElementById('wave-buttons-mount');
     mountBtn.innerHTML = '';
     let waveKeys = Object.keys(waveSchedules);
     waveKeys.forEach((wKey, idx) => {
         mountBtn.innerHTML += `<button id="btn-wave${wKey}" class="btn-wave ${idx===0?'active':''}" onclick="switchWave('${wKey}')">Channel Wave ${wKey}</button>`;
     });
-
     let mountZone = document.getElementById('courts-mount-zone');
     mountZone.innerHTML = '';
-
     waveKeys.forEach(wKey => {
         let waveWrapper = document.createElement('div');
         waveWrapper.id = `courts-wave${wKey}`;
         waveWrapper.className = `grid ${wKey !== waveKeys[0] ? 'hidden' : ''}`;
-        
         waveSchedules[wKey].forEach((courtPlayers, courtIdx) => {
             let courtHtml = `<div class="card"><div class="court-title">/// MATCH POOL ${courtIdx + 8} (${wKey})</div>`;
-            
             if (isTeamMode) {
                 let matrix = courtPlayers.length >= 6 ? T_MATRIX_6 : courtPlayers.length === 5 ? T_MATRIX_5 : courtPlayers.length === 4 ? T_MATRIX_4 : T_MATRIX_3;
                 matrix.forEach((m, roundIdx) => {
@@ -870,14 +832,14 @@ function buildInterface() {
                         const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
                         courtHtml += `
                             <div class="team-input" style="margin-top: 10px;">
-                                <span id="name_t1_${uid}">${courtPlayers[game.t1]?.name}</span>
+                                <span id="name_t1_${uid}">${courtPlayers[game.t1]?.name} <span class="pickle-icon hidden" id="pickle_t1_${uid}">🥒</span></span>
                                 <div class="control-set">
                                     <input type="number" class="score-input" id="score_t1_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't1', 't2')">
                                     <button class="btn-max" onclick="quickSetInputOnly('score_t1_${uid}', '${uid}', 't1', 't2', 'name_t1_${uid}', 'name_t2_${uid}')">11</button>
                                 </div>
                             </div>
                             <div class="team-input">
-                                <span id="name_t2_${uid}">${courtPlayers[game.t2]?.name}</span>
+                                <span id="name_t2_${uid}">${courtPlayers[game.t2]?.name} <span class="pickle-icon hidden" id="pickle_t2_${uid}">🥒</span></span>
                                 <div class="control-set">
                                     <input type="number" class="score-input" id="score_t2_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't2', 't1')">
                                     <button class="btn-max" onclick="quickSetInputOnly('score_t2_${uid}', '${uid}', 't2', 't1', 'name_t2_${uid}', 'name_t1_${uid}')">11</button>
@@ -895,14 +857,14 @@ function buildInterface() {
                         <div class="match-row">
                             <strong style="color:var(--neon-pink)">MATCH ${m.round}</strong>
                             <div class="team-input">
-                                <span id="name_t1_${uid}">${courtPlayers[m.t1[0]]?.name} + ${courtPlayers[m.t1[1]]?.name}</span>
+                                <span id="name_t1_${uid}">${courtPlayers[m.t1[0]]?.name} + ${courtPlayers[m.t1[1]]?.name} <span class="pickle-icon hidden" id="pickle_t1_${uid}">🥒</span></span>
                                 <div class="control-set">
                                     <input type="number" class="score-input" id="score_t1_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't1', 't2')">
                                     <button class="btn-max" onclick="quickSetInputOnly('score_t1_${uid}', '${uid}', 't1', 't2', 'name_t1_${uid}', 'name_t2_${uid}')">11</button>
                                 </div>
                             </div>
                             <div class="team-input">
-                                <span id="name_t2_${uid}">${courtPlayers[m.t2[0]]?.name} + ${courtPlayers[m.t2[1]]?.name}</span>
+                                <span id="name_t2_${uid}">${courtPlayers[m.t2[0]]?.name} + ${courtPlayers[m.t2[1]]?.name} <span class="pickle-icon hidden" id="pickle_t2_${uid}">🥒</span></span>
                                 <div class="control-set">
                                     <input type="number" class="score-input" id="score_t2_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't2', 't1')">
                                     <button class="btn-max" onclick="quickSetInputOnly('score_t2_${uid}', '${uid}', 't2', 't1', 'name_t2_${uid}', 'name_t1_${uid}')">11</button>
@@ -915,7 +877,6 @@ function buildInterface() {
         });
         mountZone.appendChild(waveWrapper);
     });
-
     calculateScores();
 }
 
@@ -949,9 +910,7 @@ function handleManualInput(uid, currentKey, opposingKey) {
     const el1 = document.getElementById(`score_${currentKey}_${uid}`);
     const el2 = document.getElementById(`score_${opposingKey}_${uid}`);
     if (!el1 || !el2) return;
-    
-    const v1 = parseInt(el1.value, 10);
-    const v2 = parseInt(el2.value, 10);
+    const v1 = parseInt(el1.value, 10); const v2 = parseInt(el2.value, 10);
     if (!isNaN(v1)) playBleep(550 + (v1 * 15), 0.04);
     if ((v1 === 11 && v2 === 0) || (v1 === 0 && v2 === 11)) {
         triggerShotPopup(v1 === 0 ? document.getElementById(`name_${currentKey}_${uid}`).innerText : document.getElementById(`name_${opposingKey}_${uid}`).innerText);
@@ -963,11 +922,8 @@ function handleBracketManualInput(currentId, opposingId, currentNamesId, opposin
     const el1 = document.getElementById(currentId);
     const el2 = document.getElementById(opposingId);
     if (!el1 || !el2) return;
-    
-    const s1 = parseInt(el1.value, 10);
-    const s2 = parseInt(el2.value, 10);
+    const s1 = parseInt(el1.value, 10); const s2 = parseInt(el2.value, 10);
     if (!isNaN(s1)) playBleep(550 + (s1 * 15), 0.04);
-    
     if ((s1 === 15 && s2 === 0) || (s1 === 0 && s2 === 15)) {
         triggerShotPopup(s1 === 0 ? document.getElementById(currentNamesId).innerText : document.getElementById(opposingNamesId).innerText);
     }
@@ -978,15 +934,6 @@ function quickSetInputOnly(inputId, uid, currentKey, opposingKey, currentNameId,
     const target = document.getElementById(inputId);
     if (!target) return;
     target.value = 11; playBleep(900, 0.08);
-    
-    let opposingEl;
-    if (uid) opposingEl = document.getElementById(`score_${opposingKey}_${uid}`);
-    else opposingEl = document.getElementById(opposingKey);
-
-    if (opposingEl && parseInt(opposingEl.value, 10) === 0) {
-        triggerShotPopup(document.getElementById(opposingNameId).innerText);
-    }
-    
     calculateScores();
 }
 
@@ -994,20 +941,11 @@ function quickSetBracket(teamPrefix, opposingPrefix, nameId) {
     const isBo3 = document.getElementById('bo3-toggle').checked;
     const isQF = teamPrefix.startsWith('qf');
     const games = (isBo3 && !isQF) ? [1, 2, 3] : [1];
-    
     for (let g of games) {
         let el = document.getElementById(`${teamPrefix}-g${g}`);
         if (el && el.value === '') {
             el.value = 15;
             playBleep(900, 0.08);
-            
-            let oppEl = document.getElementById(`${opposingPrefix}-g${g}`);
-            if (oppEl && parseInt(oppEl.value, 10) === 0) {
-                let oppTeamKey = opposingPrefix.split('-')[1]; 
-                let currentTeamKey = teamPrefix.split('-')[1]; 
-                let loserName = document.getElementById(nameId.replace(currentTeamKey, oppTeamKey)).innerText;
-                triggerShotPopup(loserName);
-            }
             updateBracketLogic();
             return;
         }
@@ -1065,22 +1003,27 @@ function calculateScores() {
                         const s2Input = document.getElementById(`score_t2_${uid}`);
                         const name1 = document.getElementById(`name_t1_${uid}`);
                         const name2 = document.getElementById(`name_t2_${uid}`);
-                        
+                        const p1Pickle = document.getElementById(`pickle_t1_${uid}`);
+                        const p2Pickle = document.getElementById(`pickle_t2_${uid}`);
+
                         if (name1) name1.classList.remove('match-winner');
                         if (name2) name2.classList.remove('match-winner');
-                        
+                        if (p1Pickle) p1Pickle.classList.add('hidden');
+                        if (p2Pickle) p2Pickle.classList.add('hidden');
+
                         if (!s1Input || !s2Input) return;
-                        
                         const s1 = parseInt(s1Input.value, 10); const s2 = parseInt(s2Input.value, 10);
                         s1Input.classList.toggle('pickled', s1 === 11 && s2 === 0);
                         s2Input.classList.toggle('pickled', s2 === 11 && s1 === 0);
                         
                         if (!isNaN(s1) && !isNaN(s2)) {
+                            if (s1 === 0 && s2 === 11 && p1Pickle) p1Pickle.classList.remove('hidden');
+                            if (s2 === 0 && s1 === 11 && p2Pickle) p2Pickle.classList.remove('hidden');
+                            
                             if (s1 >= 11 || s2 >= 11) {
                                 if (s1 > s2 && name1) name1.classList.add('match-winner');
                                 else if (s2 > s1 && name2) name2.classList.add('match-winner');
                             }
-                            
                             if(courtPlayers[game.t1]) courtPlayers[game.t1].points += s1;
                             if(courtPlayers[game.t2]) courtPlayers[game.t2].points += s2;
                             if (s1 > s2) { if(courtPlayers[game.t1]) courtPlayers[game.t1].wins++; } 
@@ -1096,27 +1039,31 @@ function calculateScores() {
                     const s2Input = document.getElementById(`score_t2_${uid}`);
                     const name1 = document.getElementById(`name_t1_${uid}`);
                     const name2 = document.getElementById(`name_t2_${uid}`);
-                    
+                    const p1Pickle = document.getElementById(`pickle_t1_${uid}`);
+                    const p2Pickle = document.getElementById(`pickle_t2_${uid}`);
+
                     if (name1) name1.classList.remove('match-winner');
                     if (name2) name2.classList.remove('match-winner');
-                    
+                    if (p1Pickle) p1Pickle.classList.add('hidden');
+                    if (p2Pickle) p2Pickle.classList.add('hidden');
+
                     if (!s1Input || !s2Input) return;
-                    
                     const s1 = parseInt(s1Input.value, 10); const s2 = parseInt(s2Input.value, 10);
                     s1Input.classList.toggle('pickled', s1 === 11 && s2 === 0);
                     s2Input.classList.toggle('pickled', s2 === 11 && s1 === 0);
                     
                     if (!isNaN(s1) && !isNaN(s2)) {
+                        if (s1 === 0 && s2 === 11 && p1Pickle) p1Pickle.classList.remove('hidden');
+                        if (s2 === 0 && s1 === 11 && p2Pickle) p2Pickle.classList.remove('hidden');
+
                         if (s1 >= 11 || s2 >= 11) {
                             if (s1 > s2 && name1) name1.classList.add('match-winner');
                             else if (s2 > s1 && name2) name2.classList.add('match-winner');
                         }
-                        
                         if(courtPlayers[m.t1[0]]) courtPlayers[m.t1[0]].points += s1; 
                         if(courtPlayers[m.t1[1]]) courtPlayers[m.t1[1]].points += s1;
                         if(courtPlayers[m.t2[0]]) courtPlayers[m.t2[0]].points += s2; 
                         if(courtPlayers[m.t2[1]]) courtPlayers[m.t2[1]].points += s2;
-                        
                         if (s1 > s2) { 
                             if(courtPlayers[m.t1[0]]) courtPlayers[m.t1[0]].wins++; 
                             if(courtPlayers[m.t1[1]]) courtPlayers[m.t1[1]].wins++; 
@@ -1147,27 +1094,12 @@ function updateLeaderboard() {
         document.getElementById('leaderboard-title').innerText = `Player Standings (Top ${advanceCutoff} Advance)`;
         document.getElementById('th-name').innerText = "Player Name";
     }
-
     const tbody = document.querySelector('#leaderboard tbody'); if (!tbody) return;
     tbody.innerHTML = '';
-    
     sorted.forEach((p, idx) => {
         const rowStyle = idx < advanceCutoff ? 'style="background-color: rgba(0, 240, 255, 0.08); color: #fff; font-weight: bold; border-left: 3px solid var(--neon-cyan);"' : '';
         tbody.innerHTML += `<tr ${rowStyle}><td>${idx + 1}</td><td>${p.name} ⚡</td><td>Wave ${p.wave}</td><td>Pool ${p.poolId}</td><td><strong style="color: var(--neon-pink)">${p.wins}</strong></td><td>${p.points}</td></tr>`;
     });
-}
-
-// ---------------------------------------------------------
-// DYNAMIC BRACKET ENGINE
-// ---------------------------------------------------------
-function toggleBo3UI() {
-    playBleep(300, 0.05);
-    const isBo3 = document.getElementById('bo3-toggle').checked;
-    document.querySelectorAll('.bo3-input').forEach(el => {
-        if(isBo3) el.classList.remove('hidden');
-        else { el.classList.add('hidden'); el.value = ''; }
-    });
-    updateBracketLogic();
 }
 
 function resetBracketText(nodePrefix) {
@@ -1185,15 +1117,8 @@ function lockAndBuildBracket() {
         alert(`Matrix Error: Need top ${requiredSize} established to build playoff bracket.`);
         return;
     }
-    
     playLockBass();
-    
-    if (isTeamMode) {
-        bracketMode = (players.length >= 8) ? 'QF' : 'SF';
-    } else {
-        bracketMode = (players.length >= 16) ? 'QF' : 'SF';
-    }
-
+    if (isTeamMode) { bracketMode = (players.length >= 8) ? 'QF' : 'SF'; } else { bracketMode = (players.length >= 16) ? 'QF' : 'SF'; }
     if (bracketMode === 'QF') {
         document.getElementById('col-qf').classList.remove('hidden');
         if (isTeamMode) {
@@ -1219,7 +1144,6 @@ function lockAndBuildBracket() {
         }
         resetBracketText('f');
     }
-    
     document.getElementById('bracket-section').classList.remove('hidden'); document.getElementById('qualifier-section').classList.add('hidden');
     document.getElementById('bracket-section').scrollIntoView({ behavior: 'smooth' });
     autoSaveState();
@@ -1276,47 +1200,33 @@ function getMatchWinner(prefix, allowBo3) {
 }
 
 function updateBracketLogic() {
-    // 1. Resolve QF -> SF
     if (bracketMode === 'QF') {
         const qf1W = getMatchWinner('qf1', false); const qf2W = getMatchWinner('qf2', false);
         const qf3W = getMatchWinner('qf3', false); const qf4W = getMatchWinner('qf4', false);
-        
         document.getElementById('sf1-t1-name').innerText = qf1W || "Awaiting Node 1...";
         document.getElementById('sf1-t2-name').innerText = qf2W || "Awaiting Node 2...";
         document.getElementById('sf2-t1-name').innerText = qf3W || "Awaiting Node 3...";
         document.getElementById('sf2-t2-name').innerText = qf4W || "Awaiting Node 4...";
-        
         ['sf1-t1', 'sf1-t2', 'sf2-t1', 'sf2-t2'].forEach(id => {
             document.getElementById(id+'-name').style.color = document.getElementById(id+'-name').innerText.includes("Awaiting") ? "var(--text-muted)" : "var(--neon-cyan)";
         });
-        
         applyBracketHighlight('qf1', false); applyBracketHighlight('qf2', false);
         applyBracketHighlight('qf3', false); applyBracketHighlight('qf4', false);
     }
-
-    // 2. Resolve SF -> Finals
     const sf1W = getMatchWinner('sf1', true);
     const sf2W = getMatchWinner('sf2', true);
-    
     document.getElementById('f1-t1-name').innerText = sf1W || "Awaiting Semifinal 1...";
     document.getElementById('f1-t2-name').innerText = sf2W || "Awaiting Semifinal 2...";
-    
     ['f1-t1', 'f1-t2'].forEach(id => {
         document.getElementById(id+'-name').style.color = document.getElementById(id+'-name').innerText.includes("Awaiting") ? "var(--text-muted)" : "var(--neon-cyan)";
     });
-
-    applyBracketHighlight('sf1', true);
-    applyBracketHighlight('sf2', true);
-
-    // 3. Resolve Finals -> Champ
+    applyBracketHighlight('sf1', true); applyBracketHighlight('sf2', true);
     const champ = getMatchWinner('f1', true);
     applyBracketHighlight('f1', true);
-
     if (champ) {
         document.getElementById('champ-names').innerText = champ;
         document.getElementById('champ-display').classList.remove('hidden');
         document.getElementById('reset-container').classList.remove('hidden');
-        
         if (lastAnnouncedChamp !== champ) {
             triggerChampPopup(champ);
             lastAnnouncedChamp = champ;
@@ -1329,7 +1239,6 @@ function updateBracketLogic() {
     autoSaveState(); 
 }
 
-// ⚠️ THE ULTIMATE EMERGENCY RESET
 function hardReset() {
     if (confirm("WARNING: This will permanently erase the current tournament and wipe all auto-saves. Are you sure?")) {
         localStorage.removeItem('pickleMatrixAutoSave');
@@ -1345,11 +1254,10 @@ function resetSystemTerminal() {
     document.querySelectorAll('.bracket-score-input').forEach(el => el.value = '');
     resetBracketText('sf'); resetBracketText('f'); resetBracketText('qf');
     document.getElementById('champ-names').innerText = "---";
-    
     document.querySelectorAll('.match-winner').forEach(el => el.classList.remove('match-winner'));
+    document.querySelectorAll('.pickle-icon').forEach(el => el.classList.add('hidden'));
     
     document.getElementById('bracket-section').classList.add('hidden'); document.getElementById('champ-display').classList.add('hidden'); document.getElementById('reset-container').classList.add('hidden'); document.getElementById('tournament-stage').classList.add('hidden'); document.getElementById('qualifier-section').classList.remove('hidden'); document.getElementById('setup-stage').classList.remove('hidden');
-    
     localStorage.removeItem('pickleMatrixAutoSave');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1371,7 +1279,6 @@ function restoreStateData(state) {
     isTeamMode = state.isTeamMode || false;
     bracketMode = state.bracketMode || 'SF';
     let loadedSchedules = state.waveSchedules || {};
-
     Object.keys(loadedSchedules).forEach(wKey => {
         loadedSchedules[wKey].forEach(court => {
             for (let i = 0; i < court.length; i++) {
@@ -1380,14 +1287,11 @@ function restoreStateData(state) {
         });
     });
     waveSchedules = loadedSchedules;
-
     skunkAlertsCount = state.skunkAlertsCount || 0;
     lastAnnouncedChamp = state.lastAnnouncedChamp || "";
-    
     document.getElementById('player-names-input').value = state.rawNamesInput || "";
     document.getElementById('hud-skunk-count').innerHTML = `⚡ PICKLE ALERTS LOGGED: ${skunkAlertsCount} <span class="auto-save-indicator" id="auto-save-flash">Memory Synced</span>`;
     document.getElementById('mainframe-subhead').innerText = `${players.length} ${isTeamMode ? 'TEAMS' : 'PLAYERS'} // ${Object.keys(waveSchedules).length} WAVES MODULE`;
-
     if (isTeamMode) {
         document.getElementById('leaderboard-title').innerText = `Team Standings (Top ${players.length >= 8 ? 8 : 4} Advance)`;
         document.getElementById('th-name').innerText = "Squad Name";
@@ -1395,12 +1299,9 @@ function restoreStateData(state) {
         document.getElementById('leaderboard-title').innerText = `Player Standings (Top ${players.length >= 16 ? 16 : 8} Advance)`;
         document.getElementById('th-name').innerText = "Player Name";
     }
-
     document.getElementById('setup-stage').classList.add('hidden');
     document.getElementById('tournament-stage').classList.remove('hidden');
-
     buildInterface(); 
-
     if (state.matchScores) {
         Object.keys(state.matchScores).forEach(uid => {
             const el1 = document.getElementById(`score_t1_${uid}`);
@@ -1409,9 +1310,7 @@ function restoreStateData(state) {
             if (el2) el2.value = state.matchScores[uid].t2;
         });
     }
-
     calculateScores();
-
     if (state.isBracketActive) {
         lockAndBuildBracket();
         if(state.isBo3Active) {
@@ -1431,7 +1330,6 @@ function restoreStateData(state) {
 function loadState(event) {
     const file = event.target.files[0];
     if (!file) return;
-    
     const reader = new FileReader();
     reader.onload = function(e) {
         try {
