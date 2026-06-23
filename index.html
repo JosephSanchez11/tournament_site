@@ -268,6 +268,27 @@
         .toggle-switch { display: flex; align-items: center; gap: 10px; font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); font-size: 14px; text-shadow: 0 0 5px rgba(0,240,255,0.5); cursor: pointer;}
         .toggle-switch input { width: 18px; height: 18px; cursor: pointer; accent-color: var(--neon-pink); }
 
+        /* WINNER HIGHLIGHT STYLING */
+        .match-winner {
+            background-color: rgba(127, 255, 0, 0.15);
+            padding: 4px 10px;
+            border-radius: 6px;
+            color: var(--neon-green) !important;
+            text-shadow: 0 0 8px var(--neon-green);
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .match-winner::after {
+            content: " 🏆 WINNER";
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7em;
+            vertical-align: middle;
+            margin-left: 8px;
+            color: var(--neon-green);
+            text-shadow: 0 0 5px var(--neon-green);
+            opacity: 0.9;
+        }
+
         @media (max-width: 768px) {
             .btn-panic { top: 10px; right: 10px; font-size: 9px; padding: 4px 6px; }
             .system-clock { bottom: 10px; left: 10px; font-size: 10px; }
@@ -288,7 +309,7 @@
 
 <div id="champ-modal" class="modal-overlay" onclick="closeChampModal()">
     <div class="modal-box champ-box" onclick="event.stopPropagation()">
-        <div class="modal-title champ-title">🏆 CHAMPIONS 🏆</div>
+        <div class="modal-title champ-title">🏆CHAMPIONS🏆</div>
         <div class="modal-body">All Picklers have been conquered by:</div>
         <div class="champ-name-highlight" id="modal-champ-names">---</div>
         <button class="modal-btn champ-btn" onclick="closeChampModal()">Congrats!</button>
@@ -325,7 +346,6 @@
         </div>
     </div>
 
-    <!-- TEAM BUILDER UI -->
     <div id="team-builder-stage" class="card hidden" style="border-color: var(--neon-purple); box-shadow: 0 0 15px rgba(157,0,255,0.4);">
         <h2>Team Constructor Matrix</h2>
         <p>Click any two players to bind them into a fixed duo.</p>
@@ -361,7 +381,7 @@
             </table>
             <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: center;">
                 <button onclick="saveStateFile()" style="border-color: var(--neon-purple); color: var(--neon-purple); box-shadow: 0 0 8px rgba(157,0,255,0.4);">💾 Download Manual Backup</button>
-                <button onclick="lockAndBuildBracket()" style="border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 8px rgba(255,94,0,0.4);">Lock Matrix & Start Bracket</button>
+                <button onclick="lockAndBuildBracket()" style="border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 8px rgba(255,94,0,0.4);">FINALIZE GROUPS & START BRACKET</button>
             </div>
         </div>
 
@@ -388,10 +408,8 @@
             </div>
             <div class="bracket-flex">
                 
-                <!-- QUARTERFINALS -->
                 <div class="bracket-column hidden" id="col-qf">
                     <h3>Quarterfinals</h3>
-                    <!-- QF Match 1 -->
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
                         <strong style="color: var(--neon-cyan); font-size:14px;">Node 1 (Court 8) - Seed 1 v 8</strong>
                         <div class="team-input" style="margin-top:10px;">
@@ -409,7 +427,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- QF Match 2 -->
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
                         <strong style="color: var(--neon-cyan); font-size:14px;">Node 2 (Court 9) - Seed 4 v 5</strong>
                         <div class="team-input" style="margin-top:10px;">
@@ -427,7 +444,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- QF Match 3 -->
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
                         <strong style="color: var(--neon-cyan); font-size:14px;">Node 3 (Court 10) - Seed 2 v 7</strong>
                         <div class="team-input" style="margin-top:10px;">
@@ -445,7 +461,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- QF Match 4 -->
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
                         <strong style="color: var(--neon-cyan); font-size:14px;">Node 4 (Court 8) - Seed 3 v 6</strong>
                         <div class="team-input" style="margin-top:10px;">
@@ -465,10 +480,8 @@
                     </div>
                 </div>
 
-                <!-- SEMIFINALS -->
                 <div class="bracket-column">
                     <h3>Semifinals</h3>
-                    <!-- SF Match 1 -->
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
                         <strong style="color: var(--neon-cyan); font-size:14px;">Node 5 (Court 9)</strong>
                         <div class="team-input" style="margin-top:10px;">
@@ -490,7 +503,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- SF Match 2 -->
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
                         <strong style="color: var(--neon-cyan); font-size:14px;">Node 6 (Court 10)</strong>
                         <div class="team-input" style="margin-top:10px;">
@@ -514,7 +526,6 @@
                     </div>
                 </div>
 
-                <!-- CHAMPIONSHIP -->
                 <div class="bracket-column">
                     <h3>Championship!</h3>
                     <div class="card" style="background: rgba(255, 94, 0, 0.04); border-color: var(--neon-orange); box-shadow: 0 0 10px rgba(255, 94, 0, 0.15); padding: 15px;">
@@ -1052,6 +1063,12 @@ function calculateScores() {
                         const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
                         const s1Input = document.getElementById(`score_t1_${uid}`);
                         const s2Input = document.getElementById(`score_t2_${uid}`);
+                        const name1 = document.getElementById(`name_t1_${uid}`);
+                        const name2 = document.getElementById(`name_t2_${uid}`);
+                        
+                        if (name1) name1.classList.remove('match-winner');
+                        if (name2) name2.classList.remove('match-winner');
+                        
                         if (!s1Input || !s2Input) return;
                         
                         const s1 = parseInt(s1Input.value, 10); const s2 = parseInt(s2Input.value, 10);
@@ -1059,6 +1076,11 @@ function calculateScores() {
                         s2Input.classList.toggle('pickled', s2 === 11 && s1 === 0);
                         
                         if (!isNaN(s1) && !isNaN(s2)) {
+                            if (s1 >= 11 || s2 >= 11) {
+                                if (s1 > s2 && name1) name1.classList.add('match-winner');
+                                else if (s2 > s1 && name2) name2.classList.add('match-winner');
+                            }
+                            
                             if(courtPlayers[game.t1]) courtPlayers[game.t1].points += s1;
                             if(courtPlayers[game.t2]) courtPlayers[game.t2].points += s2;
                             if (s1 > s2) { if(courtPlayers[game.t1]) courtPlayers[game.t1].wins++; } 
@@ -1072,6 +1094,12 @@ function calculateScores() {
                     const uid = `${wKey}_${courtIdx}_${matchIdx}`;
                     const s1Input = document.getElementById(`score_t1_${uid}`);
                     const s2Input = document.getElementById(`score_t2_${uid}`);
+                    const name1 = document.getElementById(`name_t1_${uid}`);
+                    const name2 = document.getElementById(`name_t2_${uid}`);
+                    
+                    if (name1) name1.classList.remove('match-winner');
+                    if (name2) name2.classList.remove('match-winner');
+                    
                     if (!s1Input || !s2Input) return;
                     
                     const s1 = parseInt(s1Input.value, 10); const s2 = parseInt(s2Input.value, 10);
@@ -1079,6 +1107,11 @@ function calculateScores() {
                     s2Input.classList.toggle('pickled', s2 === 11 && s1 === 0);
                     
                     if (!isNaN(s1) && !isNaN(s2)) {
+                        if (s1 >= 11 || s2 >= 11) {
+                            if (s1 > s2 && name1) name1.classList.add('match-winner');
+                            else if (s2 > s1 && name2) name2.classList.add('match-winner');
+                        }
+                        
                         if(courtPlayers[m.t1[0]]) courtPlayers[m.t1[0]].points += s1; 
                         if(courtPlayers[m.t1[1]]) courtPlayers[m.t1[1]].points += s1;
                         if(courtPlayers[m.t2[0]]) courtPlayers[m.t2[0]].points += s2; 
@@ -1192,6 +1225,33 @@ function lockAndBuildBracket() {
     autoSaveState();
 }
 
+function applyBracketHighlight(prefix, allowBo3) {
+    const name1 = document.getElementById(`${prefix}-t1-name`);
+    const name2 = document.getElementById(`${prefix}-t2-name`);
+    if(!name1 || !name2) return;
+    
+    name1.classList.remove('match-winner');
+    name2.classList.remove('match-winner');
+
+    if (name1.innerText.includes("Awaiting") || name2.innerText.includes("Awaiting")) return;
+
+    const isBo3 = allowBo3 && document.getElementById('bo3-toggle').checked;
+    let winsT1 = 0; let winsT2 = 0;
+    const games = isBo3 ? [1, 2, 3] : [1];
+    
+    for(let g of games) {
+        const s1 = parseInt(document.getElementById(`${prefix}-t1-g${g}`)?.value, 10);
+        const s2 = parseInt(document.getElementById(`${prefix}-t2-g${g}`)?.value, 10);
+        if(!isNaN(s1) && !isNaN(s2) && s1 !== s2) {
+            if (s1 > s2) winsT1++; else winsT2++;
+        }
+    }
+
+    const reqWins = isBo3 ? 2 : 1;
+    if (winsT1 >= reqWins) name1.classList.add('match-winner');
+    else if (winsT2 >= reqWins) name2.classList.add('match-winner');
+}
+
 function getMatchWinner(prefix, allowBo3) {
     const isBo3 = allowBo3 && document.getElementById('bo3-toggle').checked;
     const t1Name = document.getElementById(`${prefix}-t1-name`).innerText;
@@ -1229,6 +1289,9 @@ function updateBracketLogic() {
         ['sf1-t1', 'sf1-t2', 'sf2-t1', 'sf2-t2'].forEach(id => {
             document.getElementById(id+'-name').style.color = document.getElementById(id+'-name').innerText.includes("Awaiting") ? "var(--text-muted)" : "var(--neon-cyan)";
         });
+        
+        applyBracketHighlight('qf1', false); applyBracketHighlight('qf2', false);
+        applyBracketHighlight('qf3', false); applyBracketHighlight('qf4', false);
     }
 
     // 2. Resolve SF -> Finals
@@ -1242,8 +1305,13 @@ function updateBracketLogic() {
         document.getElementById(id+'-name').style.color = document.getElementById(id+'-name').innerText.includes("Awaiting") ? "var(--text-muted)" : "var(--neon-cyan)";
     });
 
+    applyBracketHighlight('sf1', true);
+    applyBracketHighlight('sf2', true);
+
     // 3. Resolve Finals -> Champ
     const champ = getMatchWinner('f1', true);
+    applyBracketHighlight('f1', true);
+
     if (champ) {
         document.getElementById('champ-names').innerText = champ;
         document.getElementById('champ-display').classList.remove('hidden');
@@ -1277,6 +1345,8 @@ function resetSystemTerminal() {
     document.querySelectorAll('.bracket-score-input').forEach(el => el.value = '');
     resetBracketText('sf'); resetBracketText('f'); resetBracketText('qf');
     document.getElementById('champ-names').innerText = "---";
+    
+    document.querySelectorAll('.match-winner').forEach(el => el.classList.remove('match-winner'));
     
     document.getElementById('bracket-section').classList.add('hidden'); document.getElementById('champ-display').classList.add('hidden'); document.getElementById('reset-container').classList.add('hidden'); document.getElementById('tournament-stage').classList.add('hidden'); document.getElementById('qualifier-section').classList.remove('hidden'); document.getElementById('setup-stage').classList.remove('hidden');
     
