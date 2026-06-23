@@ -413,19 +413,20 @@
                 </label>
             </div>
             <div class="bracket-flex">
+                
                 <div class="bracket-column hidden" id="col-qf">
                     <h3>Quarterfinals</h3>
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
                         <strong style="color: var(--neon-cyan); font-size:14px;">Node 1 (Court 8) - Seed 1 v 8</strong>
                         <div class="team-input" style="margin-top:10px;">
-                            <span id="qf1-t1-name">Seed 1</span>
+                            <span><span id="qf1-t1-name">Seed 1</span><span class="pickle-icon hidden" id="pickle_qf1-t1">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="qf1-t1-g1" min="0" oninput="handleBracketManualInput('qf1-t1-g1', 'qf1-t2-g1', 'qf1-t1-name', 'qf1-t2-name')">
                                 <button class="btn-max" onclick="quickSetBracket('qf1-t1', 'qf1-t2', 'qf1-t1-name')">15</button>
                             </div>
                         </div>
                         <div class="team-input">
-                            <span id="qf1-t2-name">Seed 8</span>
+                            <span><span id="qf1-t2-name">Seed 8</span><span class="pickle-icon hidden" id="pickle_qf1-t2">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="qf1-t2-g1" min="0" oninput="handleBracketManualInput('qf1-t2-g1', 'qf1-t1-g1', 'qf1-t2-name', 'qf1-t1-name')">
                                 <button class="btn-max" onclick="quickSetBracket('qf1-t2', 'qf1-t1', 'qf1-t2-name')">15</button>
@@ -435,14 +436,14 @@
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
                         <strong style="color: var(--neon-cyan); font-size:14px;">Node 2 (Court 9) - Seed 4 v 5</strong>
                         <div class="team-input" style="margin-top:10px;">
-                            <span id="qf2-t1-name">Seed 4</span>
+                            <span><span id="qf2-t1-name">Seed 4</span><span class="pickle-icon hidden" id="pickle_qf2-t1">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="qf2-t1-g1" min="0" oninput="handleBracketManualInput('qf2-t1-g1', 'qf2-t2-g1', 'qf2-t1-name', 'qf2-t2-name')">
                                 <button class="btn-max" onclick="quickSetBracket('qf2-t1', 'qf2-t2', 'qf2-t1-name')">15</button>
                             </div>
                         </div>
                         <div class="team-input">
-                            <span id="qf2-t2-name">Seed 5</span>
+                            <span><span id="qf2-t2-name">Seed 5</span><span class="pickle-icon hidden" id="pickle_qf2-t2">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="qf2-t2-g1" min="0" oninput="handleBracketManualInput('qf2-t2-g1', 'qf2-t1-g1', 'qf2-t2-name', 'qf2-t1-name')">
                                 <button class="btn-max" onclick="quickSetBracket('qf2-t2', 'qf2-t1', 'qf2-t2-name')">15</button>
@@ -452,14 +453,14 @@
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
                         <strong style="color: var(--neon-cyan); font-size:14px;">Node 3 (Court 10) - Seed 2 v 7</strong>
                         <div class="team-input" style="margin-top:10px;">
-                            <span id="qf3-t1-name">Seed 2</span>
+                            <span><span id="qf3-t1-name">Seed 2</span><span class="pickle-icon hidden" id="pickle_qf3-t1">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="qf3-t1-g1" min="0" oninput="handleBracketManualInput('qf3-t1-g1', 'qf3-t2-g1', 'qf3-t1-name', 'qf3-t2-name')">
                                 <button class="btn-max" onclick="quickSetBracket('qf3-t1', 'qf3-t2', 'qf3-t1-name')">15</button>
                             </div>
                         </div>
                         <div class="team-input">
-                            <span id="qf3-t2-name">Seed 7</span>
+                            <span><span id="qf3-t2-name">Seed 7</span><span class="pickle-icon hidden" id="pickle_qf3-t2">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="qf3-t2-g1" min="0" oninput="handleBracketManualInput('qf3-t2-g1', 'qf3-t1-g1', 'qf3-t2-name', 'qf3-t1-name')">
                                 <button class="btn-max" onclick="quickSetBracket('qf3-t2', 'qf3-t1', 'qf3-t2-name')">15</button>
@@ -469,14 +470,14 @@
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
                         <strong style="color: var(--neon-cyan); font-size:14px;">Node 4 (Court 8) - Seed 3 v 6</strong>
                         <div class="team-input" style="margin-top:10px;">
-                            <span id="qf4-t1-name">Seed 3</span>
+                            <span><span id="qf4-t1-name">Seed 3</span><span class="pickle-icon hidden" id="pickle_qf4-t1">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="qf4-t1-g1" min="0" oninput="handleBracketManualInput('qf4-t1-g1', 'qf4-t2-g1', 'qf4-t1-name', 'qf4-t2-name')">
                                 <button class="btn-max" onclick="quickSetBracket('qf4-t1', 'qf4-t2', 'qf4-t1-name')">15</button>
                             </div>
                         </div>
                         <div class="team-input">
-                            <span id="qf4-t2-name">Seed 6</span>
+                            <span><span id="qf4-t2-name">Seed 6</span><span class="pickle-icon hidden" id="pickle_qf4-t2">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="qf4-t2-g1" min="0" oninput="handleBracketManualInput('qf4-t2-g1', 'qf4-t1-g1', 'qf4-t2-name', 'qf4-t1-name')">
                                 <button class="btn-max" onclick="quickSetBracket('qf4-t2', 'qf4-t1', 'qf4-t2-name')">15</button>
@@ -484,12 +485,13 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="bracket-column">
                     <h3>Semifinals</h3>
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
                         <strong style="color: var(--neon-cyan); font-size:14px;">Node 5 (Court 9)</strong>
                         <div class="team-input" style="margin-top:10px;">
-                            <span id="sf1-t1-name">Seed 1</span>
+                            <span><span id="sf1-t1-name">Seed 1</span><span class="pickle-icon hidden" id="pickle_sf1-t1">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="sf1-t1-g1" min="0" oninput="handleBracketManualInput('sf1-t1-g1', 'sf1-t2-g1', 'sf1-t1-name', 'sf1-t2-name')">
                                 <input type="number" class="score-input bracket-score-input bo3-input hidden" id="sf1-t1-g2" min="0" oninput="handleBracketManualInput('sf1-t1-g2', 'sf1-t2-g2', 'sf1-t1-name', 'sf1-t2-name')">
@@ -498,7 +500,7 @@
                             </div>
                         </div>
                         <div class="team-input">
-                            <span id="sf1-t2-name">Seed 4</span>
+                            <span><span id="sf1-t2-name">Seed 4</span><span class="pickle-icon hidden" id="pickle_sf1-t2">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="sf1-t2-g1" min="0" oninput="handleBracketManualInput('sf1-t2-g1', 'sf1-t1-g1', 'sf1-t2-name', 'sf1-t1-name')">
                                 <input type="number" class="score-input bracket-score-input bo3-input hidden" id="sf1-t2-g2" min="0" oninput="handleBracketManualInput('sf1-t2-g2', 'sf1-t1-g2', 'sf1-t2-name', 'sf1-t1-name')">
@@ -510,7 +512,7 @@
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
                         <strong style="color: var(--neon-cyan); font-size:14px;">Node 6 (Court 10)</strong>
                         <div class="team-input" style="margin-top:10px;">
-                            <span id="sf2-t1-name">Seed 2</span>
+                            <span><span id="sf2-t1-name">Seed 2</span><span class="pickle-icon hidden" id="pickle_sf2-t1">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="sf2-t1-g1" min="0" oninput="handleBracketManualInput('sf2-t1-g1', 'sf2-t2-g1', 'sf2-t1-name', 'sf2-t2-name')">
                                 <input type="number" class="score-input bracket-score-input bo3-input hidden" id="sf2-t1-g2" min="0" oninput="handleBracketManualInput('sf2-t1-g2', 'sf2-t2-g2', 'sf2-t1-name', 'sf2-t2-name')">
@@ -519,7 +521,7 @@
                             </div>
                         </div>
                         <div class="team-input">
-                            <span id="sf2-t2-name">Seed 3</span>
+                            <span><span id="sf2-t2-name">Seed 3</span><span class="pickle-icon hidden" id="pickle_sf2-t2">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="sf2-t2-g1" min="0" oninput="handleBracketManualInput('sf2-t2-g1', 'sf2-t1-g1', 'sf2-t2-name', 'sf2-t1-name')">
                                 <input type="number" class="score-input bracket-score-input bo3-input hidden" id="sf2-t2-g2" min="0" oninput="handleBracketManualInput('sf2-t2-g2', 'sf2-t1-g2', 'sf2-t2-name', 'sf2-t1-name')">
@@ -529,12 +531,13 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="bracket-column">
                     <h3>Championship!</h3>
                     <div class="card" style="background: rgba(255, 94, 0, 0.04); border-color: var(--neon-orange); box-shadow: 0 0 10px rgba(255, 94, 0, 0.15); padding: 15px;">
                         <strong style="color: var(--neon-orange); font-size:14px;">Gold Tier Apex (Court 8)</strong>
                         <div class="team-input" style="margin-top:10px;">
-                            <span id="f1-t1-name" style="color: var(--text-muted)">Awaiting Node 5...</span>
+                            <span><span id="f1-t1-name" style="color: var(--text-muted)">Awaiting Node 5...</span><span class="pickle-icon hidden" id="pickle_f1-t1">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="f1-t1-g1" min="0" oninput="handleBracketManualInput('f1-t1-g1', 'f1-t2-g1', 'f1-t1-name', 'f1-t2-name')">
                                 <input type="number" class="score-input bracket-score-input bo3-input hidden" id="f1-t1-g2" min="0" oninput="handleBracketManualInput('f1-t1-g2', 'f1-t2-g2', 'f1-t1-name', 'f1-t2-name')">
@@ -543,7 +546,7 @@
                             </div>
                         </div>
                         <div class="team-input">
-                            <span id="f1-t2-name" style="color: var(--text-muted)">Awaiting Node 6...</span>
+                            <span><span id="f1-t2-name" style="color: var(--text-muted)">Awaiting Node 6...</span><span class="pickle-icon hidden" id="pickle_f1-t2">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="f1-t2-g1" min="0" oninput="handleBracketManualInput('f1-t2-g1', 'f1-t1-g1', 'f1-t2-name', 'f1-t1-name')">
                                 <input type="number" class="score-input bracket-score-input bo3-input hidden" id="f1-t2-g2" min="0" oninput="handleBracketManualInput('f1-t2-g2', 'f1-t1-g2', 'f1-t2-name', 'f1-t1-name')">
@@ -595,13 +598,12 @@ function playVictoryFanfare() {
 const MATRIX_6P = [ { round: 1, t1: [0, 1], t2: [2, 3] }, { round: 2, t1: [0, 4], t2: [1, 5] }, { round: 3, t1: [2, 4], t2: [3, 5] }, { round: 4, t1: [0, 2], t2: [1, 4] }, { round: 5, t1: [1, 3], t2: [2, 5] } ];
 const MATRIX_5P = [ { round: 1, t1: [0, 3], t2: [1, 2] }, { round: 2, t1: [0, 1], t2: [2, 4] }, { round: 3, t1: [0, 4], t2: [3, 1] }, { round: 4, t1: [0, 2], t2: [4, 3] }, { round: 5, t1: [1, 4], t2: [2, 3] } ];
 const MATRIX_4P = [ { round: 1, t1: [0, 1], t2: [2, 3] }, { round: 2, t1: [0, 2], t2: [1, 3] }, { round: 3, t1: [0, 3], t2: [1, 2] } ];
-
 const T_MATRIX_3 = [ { round: 1, matches: [{t1: 0, t2: 1}] }, { round: 2, matches: [{t1: 0, t2: 2}] }, { round: 3, matches: [{t1: 1, t2: 2}] } ];
 const T_MATRIX_4 = [ { round: 1, matches: [{t1: 0, t2: 1}, {t1: 2, t2: 3}] }, { round: 2, matches: [{t1: 0, t2: 2}, {t1: 1, t2: 3}] }, { round: 3, matches: [{t1: 0, t2: 3}, {t1: 1, t2: 2}] } ];
 const T_MATRIX_5 = [ { round: 1, matches: [{t1: 0, t2: 1}, {t1: 2, t2: 3}] }, { round: 2, matches: [{t1: 0, t2: 2}, {t1: 1, t2: 4}] }, { round: 3, matches: [{t1: 0, t2: 3}, {t1: 2, t2: 4}] }, { round: 4, matches: [{t1: 0, t2: 4}, {t1: 1, t2: 3}] }, { round: 5, matches: [{t1: 1, t2: 2}, {t1: 3, t2: 4}] } ];
 const T_MATRIX_6 = [ { round: 1, matches: [{t1: 0, t2: 1}, {t1: 2, t2: 3}, {t1: 4, t2: 5}] }, { round: 2, matches: [{t1: 0, t2: 2}, {t1: 1, t2: 4}, {t1: 3, t2: 5}] }, { round: 3, matches: [{t1: 0, t2: 3}, {t1: 1, t2: 5}, {t1: 2, t2: 4}] }, { round: 4, matches: [{t1: 0, t2: 4}, {t1: 1, t2: 3}, {t1: 2, t2: 5}] }, { round: 5, matches: [{t1: 0, t2: 5}, {t1: 1, t2: 2}, {t1: 3, t2: 4}] } ];
 
-let players = []; let waveSchedules = {}; let skunkAlertsCount = 0; let globalMuteShots = false; let topList = []; let lastAnnouncedChamp = "";
+let players = []; let waveSchedules = {}; let globalMuteShots = false; let topList = []; let lastAnnouncedChamp = "";
 let isTeamMode = false; let bracketMode = 'SF';
 let unassignedTemp = []; let manualTeamsTemp = []; let selectedForTeam = [];
 
@@ -630,19 +632,9 @@ function getCurrentStateObject() {
             }
         });
     });
-
     const bracketScores = {};
-    document.querySelectorAll('.bracket-score-input').forEach(el => {
-        bracketScores[el.id] = el.value;
-    });
-
-    return {
-        players, waveSchedules, skunkAlertsCount, lastAnnouncedChamp, isTeamMode, bracketMode,
-        matchScores, bracketScores,
-        isBo3Active: document.getElementById('bo3-toggle').checked,
-        isBracketActive: !document.getElementById('bracket-section').classList.contains('hidden'),
-        rawNamesInput: document.getElementById('player-names-input').value
-    };
+    document.querySelectorAll('.bracket-score-input').forEach(el => { bracketScores[el.id] = el.value; });
+    return { players, waveSchedules, lastAnnouncedChamp, isTeamMode, bracketMode, matchScores, bracketScores, isBo3Active: document.getElementById('bo3-toggle').checked, isBracketActive: !document.getElementById('bracket-section').classList.contains('hidden'), rawNamesInput: document.getElementById('player-names-input').value };
 }
 
 function autoSaveState() {
@@ -650,21 +642,13 @@ function autoSaveState() {
     const state = getCurrentStateObject();
     localStorage.setItem('pickleMatrixAutoSave', JSON.stringify(state));
     const flash = document.getElementById('auto-save-flash');
-    if (flash) {
-        flash.classList.add('pulse');
-        setTimeout(() => flash.classList.remove('pulse'), 800);
-    }
+    if (flash) { flash.classList.add('pulse'); setTimeout(() => flash.classList.remove('pulse'), 800); }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
     const savedData = localStorage.getItem('pickleMatrixAutoSave');
     if (savedData) {
-        try {
-            const state = JSON.parse(savedData);
-            if (state.players && state.players.length > 0) {
-                restoreStateData(state);
-            }
-        } catch(e) {}
+        try { const state = JSON.parse(savedData); if (state.players && state.players.length > 0) restoreStateData(state); } catch(e) {}
     }
 });
 
@@ -675,112 +659,10 @@ function loadDemoPlayers(count) {
     document.getElementById('player-names-input').value = demo.join('\n');
 }
 
-function openManualTeamBuilder() {
-    const rawNames = document.getElementById('player-names-input').value.split('\n').map(n => n.replace(/\r/g, '').trim()).filter(n => n !== "");
-    if(rawNames.length < 4) { alert("Matrix Error: Need at least 4 active entities."); return; }
-    playBleep(600, 0.1, 'sawtooth');
-    unassignedTemp = [...rawNames]; manualTeamsTemp = []; selectedForTeam = [];
-    document.getElementById('setup-stage').classList.add('hidden');
-    document.getElementById('team-builder-stage').classList.remove('hidden');
-    renderTeamBuilder();
-}
-
-function renderTeamBuilder() {
-    const unassMount = document.getElementById('tb-unassigned-mount');
-    unassMount.innerHTML = '';
-    unassignedTemp.forEach((name, idx) => {
-        const isSel = selectedForTeam.includes(idx);
-        unassMount.innerHTML += `<div class="tb-chip ${isSel ? 'selected' : ''}" onclick="toggleTbSelect(${idx})">${name}</div>`;
-    });
-    const teamsMount = document.getElementById('tb-teams-mount');
-    teamsMount.innerHTML = '';
-    manualTeamsTemp.forEach((team, idx) => {
-        teamsMount.innerHTML += `
-            <div class="tb-formed-team">
-                <span>${team}</span> 
-                <button class="btn-max" style="border-color:#ff003c; color:#ff003c;" onclick="removeTbTeam(${idx})">X</button>
-            </div>`;
-    });
-}
-
-function toggleTbSelect(idx) {
-    playBleep(400, 0.05);
-    if(selectedForTeam.includes(idx)) {
-        selectedForTeam = selectedForTeam.filter(i => i !== idx);
-    } else {
-        selectedForTeam.push(idx);
-        if(selectedForTeam.length === 2) {
-            const p1 = unassignedTemp[selectedForTeam[0]];
-            const p2 = unassignedTemp[selectedForTeam[1]];
-            manualTeamsTemp.push(`${p1} & ${p2}`);
-            selectedForTeam.sort((a,b) => b-a).forEach(i => unassignedTemp.splice(i, 1));
-            selectedForTeam = [];
-            playBleep(800, 0.1, 'triangle');
-        }
-    }
-    renderTeamBuilder();
-}
-
-function forceSoloTeam() {
-    if(selectedForTeam.length === 1) {
-        const p = unassignedTemp[selectedForTeam[0]];
-        manualTeamsTemp.push(`${p} (Solo)`);
-        unassignedTemp.splice(selectedForTeam[0], 1);
-        selectedForTeam = [];
-        playBleep(800, 0.1, 'triangle');
-        renderTeamBuilder();
-    }
-}
-
-function removeTbTeam(idx) {
-    const t = manualTeamsTemp[idx];
-    manualTeamsTemp.splice(idx, 1);
-    const parts = t.replace(' (Solo)', '').split(' & ');
-    unassignedTemp.push(...parts);
-    renderTeamBuilder();
-}
-
-function cancelTeamBuilder() {
-    document.getElementById('team-builder-stage').classList.add('hidden');
-    document.getElementById('setup-stage').classList.remove('hidden');
-}
-
-function launchManualTeams() {
-    if(unassignedTemp.length > 0) {
-        if(!confirm("Warning: You have unassigned players. They will be ignored. Launch anyway?")) return;
-    }
-    if(manualTeamsTemp.length < 4) { alert("Matrix Error: Need at least 4 formed teams."); return; }
-    document.getElementById('team-builder-stage').classList.add('hidden');
-    startTournament(true, manualTeamsTemp);
-}
-
-function generateRandomTeams() {
-    const rawNames = document.getElementById('player-names-input').value.split('\n').map(n => n.replace(/\r/g, '').trim()).filter(n => n !== "");
-    if(rawNames.length < 4) { alert("Matrix Error: Need at least 4 active entities."); return; }
-    for (let i = rawNames.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [rawNames[i], rawNames[j]] = [rawNames[j], rawNames[i]];
-    }
-    const randomTeams = [];
-    for(let i=0; i < rawNames.length; i+=2) {
-        if(i+1 < rawNames.length) randomTeams.push(`${rawNames[i]} & ${rawNames[i+1]}`);
-        else randomTeams.push(`${rawNames[i]} (Solo)`);
-    }
-    startTournament(true, randomTeams);
-}
-
 function startTournament(teamsFormat = false, prebuiltTeams = null) {
     isTeamMode = teamsFormat;
-    let entities = [];
-    if (isTeamMode && prebuiltTeams) {
-        entities = prebuiltTeams;
-    } else {
-        entities = document.getElementById('player-names-input').value.split('\n').map(n => n.replace(/\r/g, '').trim()).filter(n => n !== "");
-    }
-    if (entities.length < (isTeamMode ? 4 : 12)) {
-        alert(`Mainframe exception: Minimum ${isTeamMode ? 4 : 12} system nodes needed to establish integrity.`);
-        return;
-    }
+    let entities = (isTeamMode && prebuiltTeams) ? prebuiltTeams : document.getElementById('player-names-input').value.split('\n').map(n => n.replace(/\r/g, '').trim()).filter(n => n !== "");
+    if (entities.length < (isTeamMode ? 4 : 12)) { alert(`Mainframe exception: Minimum ${isTeamMode ? 4 : 12} system nodes needed.`); return; }
     playBleep(800, 0.15, 'triangle');
     players = entities.map((name, idx) => ({ id: idx, name: name, wave: 'A', poolId: 8, wins: 0, points: 0 }));
     let totalPlayers = players.length;
@@ -832,14 +714,14 @@ function buildInterface() {
                         const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
                         courtHtml += `
                             <div class="team-input" style="margin-top: 10px;">
-                                <span id="name_t1_${uid}">${courtPlayers[game.t1]?.name} <span class="pickle-icon hidden" id="pickle_t1_${uid}">🥒</span></span>
+                                <span><span id="name_t1_${uid}">${courtPlayers[game.t1]?.name}</span> <span class="pickle-icon hidden" id="pickle_t1_${uid}">🥒</span></span>
                                 <div class="control-set">
                                     <input type="number" class="score-input" id="score_t1_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't1', 't2')">
                                     <button class="btn-max" onclick="quickSetInputOnly('score_t1_${uid}', '${uid}', 't1', 't2', 'name_t1_${uid}', 'name_t2_${uid}')">11</button>
                                 </div>
                             </div>
                             <div class="team-input">
-                                <span id="name_t2_${uid}">${courtPlayers[game.t2]?.name} <span class="pickle-icon hidden" id="pickle_t2_${uid}">🥒</span></span>
+                                <span><span id="name_t2_${uid}">${courtPlayers[game.t2]?.name}</span> <span class="pickle-icon hidden" id="pickle_t2_${uid}">🥒</span></span>
                                 <div class="control-set">
                                     <input type="number" class="score-input" id="score_t2_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't2', 't1')">
                                     <button class="btn-max" onclick="quickSetInputOnly('score_t2_${uid}', '${uid}', 't2', 't1', 'name_t2_${uid}', 'name_t1_${uid}')">11</button>
@@ -857,14 +739,14 @@ function buildInterface() {
                         <div class="match-row">
                             <strong style="color:var(--neon-pink)">MATCH ${m.round}</strong>
                             <div class="team-input">
-                                <span id="name_t1_${uid}">${courtPlayers[m.t1[0]]?.name} + ${courtPlayers[m.t1[1]]?.name} <span class="pickle-icon hidden" id="pickle_t1_${uid}">🥒</span></span>
+                                <span><span id="name_t1_${uid}">${courtPlayers[m.t1[0]]?.name} + ${courtPlayers[m.t1[1]]?.name}</span> <span class="pickle-icon hidden" id="pickle_t1_${uid}">🥒</span></span>
                                 <div class="control-set">
                                     <input type="number" class="score-input" id="score_t1_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't1', 't2')">
                                     <button class="btn-max" onclick="quickSetInputOnly('score_t1_${uid}', '${uid}', 't1', 't2', 'name_t1_${uid}', 'name_t2_${uid}')">11</button>
                                 </div>
                             </div>
                             <div class="team-input">
-                                <span id="name_t2_${uid}">${courtPlayers[m.t2[0]]?.name} + ${courtPlayers[m.t2[1]]?.name} <span class="pickle-icon hidden" id="pickle_t2_${uid}">🥒</span></span>
+                                <span><span id="name_t2_${uid}">${courtPlayers[m.t2[0]]?.name} + ${courtPlayers[m.t2[1]]?.name}</span> <span class="pickle-icon hidden" id="pickle_t2_${uid}">🥒</span></span>
                                 <div class="control-set">
                                     <input type="number" class="score-input" id="score_t2_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't2', 't1')">
                                     <button class="btn-max" onclick="quickSetInputOnly('score_t2_${uid}', '${uid}', 't2', 't1', 'name_t2_${uid}', 'name_t1_${uid}')">11</button>
@@ -891,8 +773,6 @@ function switchWave(wave) {
 
 function triggerShotPopup(loserString) {
     if (globalMuteShots) return;
-    skunkAlertsCount++;
-    document.getElementById('hud-skunk-count').innerHTML = `⚡ PICKLE ALERTS LOGGED: ${skunkAlertsCount} <span class="auto-save-indicator" id="auto-save-flash">Memory Synced</span>`;
     document.getElementById('modal-loser-names').innerText = loserString;
     playSkunkSiren();
     document.getElementById('shot-modal').classList.add('active');
@@ -912,7 +792,7 @@ function handleManualInput(uid, currentKey, opposingKey) {
     if (!el1 || !el2) return;
     const v1 = parseInt(el1.value, 10); const v2 = parseInt(el2.value, 10);
     if (!isNaN(v1)) playBleep(550 + (v1 * 15), 0.04);
-    if ((v1 === 11 && v2 === 0) || (v1 === 0 && v2 === 11)) {
+    if ((v1 >= 11 && v2 === 0) || (v1 === 0 && v2 >= 11)) {
         triggerShotPopup(v1 === 0 ? document.getElementById(`name_${currentKey}_${uid}`).innerText : document.getElementById(`name_${opposingKey}_${uid}`).innerText);
     }
     calculateScores();
@@ -924,7 +804,7 @@ function handleBracketManualInput(currentId, opposingId, currentNamesId, opposin
     if (!el1 || !el2) return;
     const s1 = parseInt(el1.value, 10); const s2 = parseInt(el2.value, 10);
     if (!isNaN(s1)) playBleep(550 + (s1 * 15), 0.04);
-    if ((s1 === 15 && s2 === 0) || (s1 === 0 && s2 === 15)) {
+    if ((s1 >= 15 && s2 === 0) || (s1 === 0 && s2 >= 15)) {
         triggerShotPopup(s1 === 0 ? document.getElementById(currentNamesId).innerText : document.getElementById(opposingNamesId).innerText);
     }
     updateBracketLogic();
@@ -934,6 +814,12 @@ function quickSetInputOnly(inputId, uid, currentKey, opposingKey, currentNameId,
     const target = document.getElementById(inputId);
     if (!target) return;
     target.value = 11; playBleep(900, 0.08);
+    let opposingEl;
+    if (uid) opposingEl = document.getElementById(`score_${opposingKey}_${uid}`);
+    else opposingEl = document.getElementById(opposingKey);
+    if (opposingEl && parseInt(opposingEl.value, 10) === 0) {
+        triggerShotPopup(document.getElementById(opposingNameId).innerText);
+    }
     calculateScores();
 }
 
@@ -946,6 +832,12 @@ function quickSetBracket(teamPrefix, opposingPrefix, nameId) {
         if (el && el.value === '') {
             el.value = 15;
             playBleep(900, 0.08);
+            let oppEl = document.getElementById(`${opposingPrefix}-g${g}`);
+            if (oppEl && parseInt(oppEl.value, 10) === 0) {
+                let oppTeamKey = opposingPrefix.split('-')[1]; let currentTeamKey = teamPrefix.split('-')[1]; 
+                let loserName = document.getElementById(nameId.replace(currentTeamKey, oppTeamKey)).innerText;
+                triggerShotPopup(loserName);
+            }
             updateBracketLogic();
             return;
         }
@@ -1013,12 +905,12 @@ function calculateScores() {
 
                         if (!s1Input || !s2Input) return;
                         const s1 = parseInt(s1Input.value, 10); const s2 = parseInt(s2Input.value, 10);
-                        s1Input.classList.toggle('pickled', s1 === 11 && s2 === 0);
-                        s2Input.classList.toggle('pickled', s2 === 11 && s1 === 0);
+                        s1Input.classList.toggle('pickled', s1 >= 11 && s2 === 0);
+                        s2Input.classList.toggle('pickled', s2 >= 11 && s1 === 0);
                         
                         if (!isNaN(s1) && !isNaN(s2)) {
-                            if (s1 === 0 && s2 === 11 && p1Pickle) p1Pickle.classList.remove('hidden');
-                            if (s2 === 0 && s1 === 11 && p2Pickle) p2Pickle.classList.remove('hidden');
+                            if (s1 === 0 && s2 >= 11 && p1Pickle) p1Pickle.classList.remove('hidden');
+                            if (s2 === 0 && s1 >= 11 && p2Pickle) p2Pickle.classList.remove('hidden');
                             
                             if (s1 >= 11 || s2 >= 11) {
                                 if (s1 > s2 && name1) name1.classList.add('match-winner');
@@ -1049,12 +941,12 @@ function calculateScores() {
 
                     if (!s1Input || !s2Input) return;
                     const s1 = parseInt(s1Input.value, 10); const s2 = parseInt(s2Input.value, 10);
-                    s1Input.classList.toggle('pickled', s1 === 11 && s2 === 0);
-                    s2Input.classList.toggle('pickled', s2 === 11 && s1 === 0);
+                    s1Input.classList.toggle('pickled', s1 >= 11 && s2 === 0);
+                    s2Input.classList.toggle('pickled', s2 >= 11 && s1 === 0);
                     
                     if (!isNaN(s1) && !isNaN(s2)) {
-                        if (s1 === 0 && s2 === 11 && p1Pickle) p1Pickle.classList.remove('hidden');
-                        if (s2 === 0 && s1 === 11 && p2Pickle) p2Pickle.classList.remove('hidden');
+                        if (s1 === 0 && s2 >= 11 && p1Pickle) p1Pickle.classList.remove('hidden');
+                        if (s2 === 0 && s1 >= 11 && p2Pickle) p2Pickle.classList.remove('hidden');
 
                         if (s1 >= 11 || s2 >= 11) {
                             if (s1 > s2 && name1) name1.classList.add('match-winner');
@@ -1077,13 +969,13 @@ function calculateScores() {
         });
     });
     updateLeaderboard();
+    refreshPickleCount();
     autoSaveState(); 
 }
 
 function updateLeaderboard() {
     const sorted = [...players].sort((a, b) => b.wins - a.wins || b.points - a.points);
     topList = sorted.slice(0, 16); 
-    
     let advanceCutoff = 4; 
     if (isTeamMode) {
         advanceCutoff = players.length >= 8 ? 8 : 4;
@@ -1100,6 +992,16 @@ function updateLeaderboard() {
         const rowStyle = idx < advanceCutoff ? 'style="background-color: rgba(0, 240, 255, 0.08); color: #fff; font-weight: bold; border-left: 3px solid var(--neon-cyan);"' : '';
         tbody.innerHTML += `<tr ${rowStyle}><td>${idx + 1}</td><td>${p.name} ⚡</td><td>Wave ${p.wave}</td><td>Pool ${p.poolId}</td><td><strong style="color: var(--neon-pink)">${p.wins}</strong></td><td>${p.points}</td></tr>`;
     });
+}
+
+function toggleBo3UI() {
+    playBleep(300, 0.05);
+    const isBo3 = document.getElementById('bo3-toggle').checked;
+    document.querySelectorAll('.bo3-input').forEach(el => {
+        if(isBo3) el.classList.remove('hidden');
+        else { el.classList.add('hidden'); el.value = ''; }
+    });
+    updateBracketLogic();
 }
 
 function resetBracketText(nodePrefix) {
@@ -1144,23 +1046,33 @@ function lockAndBuildBracket() {
         }
         resetBracketText('f');
     }
+    
     document.getElementById('bracket-section').classList.remove('hidden'); document.getElementById('qualifier-section').classList.add('hidden');
     document.getElementById('bracket-section').scrollIntoView({ behavior: 'smooth' });
+    
+    toggleBo3UI();
     autoSaveState();
 }
 
 function applyBracketHighlight(prefix, allowBo3) {
     const name1 = document.getElementById(`${prefix}-t1-name`);
     const name2 = document.getElementById(`${prefix}-t2-name`);
+    const pickle1 = document.getElementById(`pickle_${prefix}-t1`);
+    const pickle2 = document.getElementById(`pickle_${prefix}-t2`);
+    
     if(!name1 || !name2) return;
     
     name1.classList.remove('match-winner');
     name2.classList.remove('match-winner');
+    if(pickle1) pickle1.classList.add('hidden');
+    if(pickle2) pickle2.classList.add('hidden');
 
     if (name1.innerText.includes("Awaiting") || name2.innerText.includes("Awaiting")) return;
 
     const isBo3 = allowBo3 && document.getElementById('bo3-toggle').checked;
     let winsT1 = 0; let winsT2 = 0;
+    let pickled1 = false; let pickled2 = false;
+
     const games = isBo3 ? [1, 2, 3] : [1];
     
     for(let g of games) {
@@ -1168,12 +1080,17 @@ function applyBracketHighlight(prefix, allowBo3) {
         const s2 = parseInt(document.getElementById(`${prefix}-t2-g${g}`)?.value, 10);
         if(!isNaN(s1) && !isNaN(s2) && s1 !== s2) {
             if (s1 > s2) winsT1++; else winsT2++;
+            if (s1 === 0 && s2 >= 15) pickled1 = true;
+            if (s2 === 0 && s1 >= 15) pickled2 = true;
         }
     }
 
     const reqWins = isBo3 ? 2 : 1;
     if (winsT1 >= reqWins) name1.classList.add('match-winner');
     else if (winsT2 >= reqWins) name2.classList.add('match-winner');
+    
+    if (pickled1 && pickle1) pickle1.classList.remove('hidden');
+    if (pickled2 && pickle2) pickle2.classList.remove('hidden');
 }
 
 function getMatchWinner(prefix, allowBo3) {
@@ -1181,10 +1098,8 @@ function getMatchWinner(prefix, allowBo3) {
     const t1Name = document.getElementById(`${prefix}-t1-name`).innerText;
     const t2Name = document.getElementById(`${prefix}-t2-name`).innerText;
     if(t1Name.includes("Awaiting") || t2Name.includes("Awaiting")) return null;
-
     let winsT1 = 0; let winsT2 = 0;
     const games = isBo3 ? [1, 2, 3] : [1];
-    
     for(let g of games) {
         const s1 = parseInt(document.getElementById(`${prefix}-t1-g${g}`)?.value, 10);
         const s2 = parseInt(document.getElementById(`${prefix}-t2-g${g}`)?.value, 10);
@@ -1192,7 +1107,6 @@ function getMatchWinner(prefix, allowBo3) {
             if (s1 > s2) winsT1++; else winsT2++;
         }
     }
-
     const reqWins = isBo3 ? 2 : 1;
     if (winsT1 >= reqWins) return t1Name;
     if (winsT2 >= reqWins) return t2Name;
@@ -1236,6 +1150,7 @@ function updateBracketLogic() {
         document.getElementById('reset-container').classList.add('hidden'); 
         lastAnnouncedChamp = "";
     }
+    refreshPickleCount();
     autoSaveState(); 
 }
 
@@ -1248,8 +1163,7 @@ function hardReset() {
 
 function resetSystemTerminal() {
     playBleep(300, 0.4, 'sawtooth'); document.getElementById('player-names-input').value = '';
-    players = []; waveSchedules = {}; skunkAlertsCount = 0; lastAnnouncedChamp = ""; isTeamMode = false;
-    document.getElementById('hud-skunk-count').innerHTML = `⚡ PICKLE ALERTS LOGGED: 0 <span class="auto-save-indicator" id="auto-save-flash">Memory Synced</span>`;
+    players = []; waveSchedules = {}; lastAnnouncedChamp = ""; isTeamMode = false;
     
     document.querySelectorAll('.bracket-score-input').forEach(el => el.value = '');
     resetBracketText('sf'); resetBracketText('f'); resetBracketText('qf');
@@ -1258,6 +1172,8 @@ function resetSystemTerminal() {
     document.querySelectorAll('.pickle-icon').forEach(el => el.classList.add('hidden'));
     
     document.getElementById('bracket-section').classList.add('hidden'); document.getElementById('champ-display').classList.add('hidden'); document.getElementById('reset-container').classList.add('hidden'); document.getElementById('tournament-stage').classList.add('hidden'); document.getElementById('qualifier-section').classList.remove('hidden'); document.getElementById('setup-stage').classList.remove('hidden');
+    
+    refreshPickleCount();
     localStorage.removeItem('pickleMatrixAutoSave');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1287,10 +1203,8 @@ function restoreStateData(state) {
         });
     });
     waveSchedules = loadedSchedules;
-    skunkAlertsCount = state.skunkAlertsCount || 0;
     lastAnnouncedChamp = state.lastAnnouncedChamp || "";
     document.getElementById('player-names-input').value = state.rawNamesInput || "";
-    document.getElementById('hud-skunk-count').innerHTML = `⚡ PICKLE ALERTS LOGGED: ${skunkAlertsCount} <span class="auto-save-indicator" id="auto-save-flash">Memory Synced</span>`;
     document.getElementById('mainframe-subhead').innerText = `${players.length} ${isTeamMode ? 'TEAMS' : 'PLAYERS'} // ${Object.keys(waveSchedules).length} WAVES MODULE`;
     if (isTeamMode) {
         document.getElementById('leaderboard-title').innerText = `Team Standings (Top ${players.length >= 8 ? 8 : 4} Advance)`;
@@ -1313,10 +1227,9 @@ function restoreStateData(state) {
     calculateScores();
     if (state.isBracketActive) {
         lockAndBuildBracket();
-        if(state.isBo3Active) {
-            document.getElementById('bo3-toggle').checked = true;
-            toggleBo3UI();
-        }
+        document.getElementById('bo3-toggle').checked = state.isBo3Active === true;
+        toggleBo3UI();
+        
         if (state.bracketScores) {
             Object.keys(state.bracketScores).forEach(id => {
                 const el = document.getElementById(id);
@@ -1342,6 +1255,14 @@ function loadState(event) {
     };
     reader.readAsText(file);
     event.target.value = ''; 
+}
+
+function refreshPickleCount() {
+    let count = document.querySelectorAll('.pickle-icon:not(.hidden)').length;
+    const hud = document.getElementById('hud-skunk-count');
+    if (hud) {
+        hud.innerHTML = `⚡ PICKLE ALERTS LOGGED: ${count} <span class="auto-save-indicator" id="auto-save-flash">Memory Synced</span>`;
+    }
 }
 </script>
 </body>
