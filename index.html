@@ -140,6 +140,7 @@
             letter-spacing: 1px;
         }
 
+        /* CUSTOM COURT NAME INPUT */
         .court-name-input {
             background: rgba(0, 0, 0, 0.3);
             border: 1px dashed var(--neon-cyan);
@@ -296,6 +297,7 @@
         .toggle-switch { display: flex; align-items: center; gap: 10px; font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); font-size: 14px; text-shadow: 0 0 5px rgba(0,240,255,0.5); cursor: pointer;}
         .toggle-switch input { width: 18px; height: 18px; cursor: pointer; accent-color: var(--neon-pink); }
 
+        /* WINNER HIGHLIGHT & PICKLE ICON STYLING */
         .match-winner {
             background-color: rgba(127, 255, 0, 0.15);
             padding: 4px 10px;
@@ -974,6 +976,7 @@ function assignPoolsAndBuild() {
     poolsArray.forEach((poolPlayers, idx) => {
         let actualPoolId = idx + 8; 
         poolPlayers.forEach(p => { p.poolId = actualPoolId; p.wave = currentWave; });
+        
         if (!waveSchedules[currentWave]) waveSchedules[currentWave] = [];
         waveSchedules[currentWave].push(poolPlayers);
         
@@ -1309,19 +1312,30 @@ function updateLeaderboard() {
     tbody.innerHTML = '';
     
     sorted.forEach((p, idx) => {
-        const rowStyle = idx < advanceCutoff ? 'style="background-color: rgba(0, 240, 255, 0.08); color: #fff; font-weight: bold; border-left: 3px solid var(--neon-cyan);"' : '';
-        const bolt = idx < advanceCutoff ? ' ⚡' : '';
+        const hasEarnedStats = p.wins > 0 || p.points > 0;
+        const rowStyle = (idx < advanceCutoff && hasEarnedStats) ? 'style="background-color: rgba(0, 240, 255, 0.08); color: #fff; font-weight: bold; border-left: 3px solid var(--neon-cyan);"' : '';
+        const bolt = (idx < advanceCutoff && hasEarnedStats) ? ' ⚡' : '';
         tbody.innerHTML += `<tr ${rowStyle}><td>${idx + 1}</td><td>${p.name}${bolt}</td><td>Wave ${p.wave}</td><td>Court ${p.poolId}</td><td><strong style="color: var(--neon-pink)">${p.wins}</strong></td><td>${p.points}</td></tr>`;
     });
 
-    // Populate Floating Mini Leaderboard
+    // Populate Floating Mini Leaderboard (Only show active contenders)
     const miniTbody = document.querySelector('#mini-leaderboard tbody');
     if (miniTbody) {
         miniTbody.innerHTML = '';
+        let hasData = false;
         topList.forEach((p, idx) => {
-            const bolt = idx < advanceCutoff ? ' ⚡' : '';
-            miniTbody.innerHTML += `<tr><td style="color:var(--neon-pink); font-weight:bold; width: 30px;">#${idx+1}</td><td>${p.name}${bolt}</td></tr>`;
+            const hasEarnedStats = p.wins > 0 || p.points > 0;
+            if (hasEarnedStats) {
+                hasData = true;
+                const bolt = (idx < advanceCutoff) ? ' ⚡' : '';
+                miniTbody.innerHTML += `<tr><td style="color:var(--neon-pink); font-weight:bold; width: 30px;">#${idx+1}</td><td>${p.name}${bolt}</td></tr>`;
+            }
         });
+        
+        // Show neutral placeholder if tournament just started
+        if (!hasData) {
+            miniTbody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--text-muted); padding: 20px;">Awaiting Match Results...</td></tr>`;
+        }
     }
 }
 
@@ -1472,7 +1486,7 @@ function getMatchWinner(prefix, allowBo3) {
 }
 
 function updateBracketLogic() {
-    // Resolve QF -> SF
+    // 1. Resolve QF -> SF
     if (bracketMode === 'QF') {
         const qf1W = getMatchWinner('qf1', false); const qf2W = getMatchWinner('qf2', false);
         const qf3W = getMatchWinner('qf3', false); const qf4W = getMatchWinner('qf4', false);
@@ -1490,7 +1504,7 @@ function updateBracketLogic() {
         applyBracketHighlight('qf3', false); applyBracketHighlight('qf4', false);
     }
 
-    // Resolve SF -> Finals
+    // 2. Resolve SF -> Finals
     const sf1W = getMatchWinner('sf1', true);
     const sf2W = getMatchWinner('sf2', true);
     
@@ -1504,7 +1518,7 @@ function updateBracketLogic() {
     applyBracketHighlight('sf1', true);
     applyBracketHighlight('sf2', true);
 
-    // Resolve Finals -> Champ
+    // 3. Resolve Finals -> Champ
     const champ = getMatchWinner('f1', true);
     applyBracketHighlight('f1', true);
 
@@ -1527,6 +1541,7 @@ function updateBracketLogic() {
     calculateScores();
 }
 
+// ⚠️ THE ULTIMATE EMERGENCY RESET
 function hardReset() {
     if (confirm("WARNING: This will permanently erase the current tournament and wipe all auto-saves. Are you sure?")) {
         localStorage.removeItem('pickleMatrixAutoSave');
