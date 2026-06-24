@@ -140,6 +140,29 @@
             letter-spacing: 1px;
         }
 
+        /* CUSTOM COURT NAME INPUT */
+        .court-name-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px dashed var(--neon-cyan);
+            color: var(--neon-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            width: 220px;
+            padding: 4px 8px;
+            margin: 0 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .court-name-input:focus {
+            outline: none;
+            border-color: var(--neon-pink);
+            box-shadow: var(--border-glow);
+            background: rgba(255, 0, 127, 0.1);
+            color: #fff;
+        }
+
         .bracket-title {
             background: linear-gradient(90deg, var(--neon-orange), rgba(255,94,0,0)); 
             color: var(--text-light);
@@ -151,7 +174,7 @@
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .wave-toggle-container { margin-bottom: 30px; display: flex; flex-wrap: wrap; gap: 15px; align-items: center; }
+        .wave-toggle-container { margin-bottom: 30px; display: flex; flex-wrap: wrap; gap: 15px; align-items: center; justify-content: space-between; }
         
         .btn-wave { border-color: #4c3a70; color: #8b7fa3; box-shadow: none; }
         .btn-wave.active { border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: var(--border-glow); }
@@ -295,6 +318,12 @@
             text-shadow: 0 0 5px var(--neon-green);
         }
 
+        .pool-manager {
+            display: flex; align-items: center; gap: 10px; 
+            background: rgba(0,0,0,0.4); padding: 5px 15px; 
+            border-radius: 8px; border: 1px dashed var(--neon-purple);
+        }
+
         @media (max-width: 768px) {
             .btn-panic { top: 10px; right: 10px; font-size: 9px; padding: 4px 6px; }
             .system-clock { bottom: 10px; left: 10px; font-size: 10px; }
@@ -338,6 +367,7 @@
         <textarea id="player-names-input"></textarea>
         
         <div style="margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px;">
+            <button onclick="loadDemoPlayers(50)" style="font-size:12px; padding:6px 12px; border-color: #4c3a70; color: #8b7fa3; box-shadow:none;">Demo 50</button>
             <button onclick="loadDemoPlayers(24)" style="font-size:12px; padding:6px 12px; border-color: #4c3a70; color: #8b7fa3; box-shadow:none;">Demo 24</button>
             <button onclick="loadDemoPlayers(16)" style="font-size:12px; padding:6px 12px; border-color: #4c3a70; color: #8b7fa3; box-shadow:none;">Demo 16</button>
             <button onclick="loadDemoPlayers(12)" style="font-size:12px; padding:6px 12px; border-color: #4c3a70; color: #8b7fa3; box-shadow:none;">Demo 12</button>
@@ -381,7 +411,7 @@
             <h2 id="leaderboard-title">Player Standings</h2>
             <table id="leaderboard">
                 <thead>
-                    <tr><th>Rank</th><th id="th-name">Player Name</th><th>Pool</th><th>Node</th><th>Wins</th><th>Points Scored</th></tr>
+                    <tr><th>Rank</th><th id="th-name">Player Name</th><th>Wave</th><th id="th-pool">Court</th><th>Wins</th><th>Points Scored</th></tr>
                 </thead>
                 <tbody></tbody>
             </table>
@@ -392,8 +422,19 @@
         </div>
 
         <div id="qualifier-section">
-            <h2>Active Court Matrix & Logs</h2>
-            <p>Cycle local grid channels to log match datasets:</p>
+            <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap: 15px; margin-bottom: 20px;">
+                <div>
+                    <h2>Active Court Matrix & Logs</h2>
+                    <p style="margin:0;">Cycle local grid channels to log match datasets:</p>
+                </div>
+                <div class="pool-manager">
+                    <span style="color:var(--text-muted); font-size:14px;">ACTIVE POOLS:</span>
+                    <button onclick="changePoolCount(-1)" style="margin:0; padding:2px 8px; border-color:var(--text-muted); color:var(--text-muted); box-shadow:none;">-</button>
+                    <strong id="pool-count-display" style="color:var(--neon-purple); font-size:20px; min-width:20px; text-align:center;">8</strong>
+                    <button onclick="changePoolCount(1)" style="margin:0; padding:2px 8px; border-color:var(--neon-purple); box-shadow:0 0 5px rgba(157,0,255,0.5);">+</button>
+                </div>
+            </div>
+
             <div class="wave-toggle-container">
                 <div id="wave-buttons-mount" style="display:inline-block;"></div>
                 <button onclick="simulateScores()" style="border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 8px rgba(255,94,0,0.4);">⚡ Inject Random Scores</button>
@@ -417,7 +458,7 @@
                 <div class="bracket-column hidden" id="col-qf">
                     <h3>Quarterfinals</h3>
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
-                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 1 (Court 8) - Seed 1 v 8</strong>
+                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 1 - Seed 1 v 8</strong>
                         <div class="team-input" style="margin-top:10px;">
                             <span><span id="qf1-t1-name">Seed 1</span><span class="pickle-icon hidden" id="pickle_qf1-t1">🥒</span></span>
                             <div class="control-set">
@@ -434,7 +475,7 @@
                         </div>
                     </div>
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
-                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 2 (Court 9) - Seed 4 v 5</strong>
+                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 2 - Seed 4 v 5</strong>
                         <div class="team-input" style="margin-top:10px;">
                             <span><span id="qf2-t1-name">Seed 4</span><span class="pickle-icon hidden" id="pickle_qf2-t1">🥒</span></span>
                             <div class="control-set">
@@ -451,7 +492,7 @@
                         </div>
                     </div>
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
-                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 3 (Court 10) - Seed 2 v 7</strong>
+                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 3 - Seed 2 v 7</strong>
                         <div class="team-input" style="margin-top:10px;">
                             <span><span id="qf3-t1-name">Seed 2</span><span class="pickle-icon hidden" id="pickle_qf3-t1">🥒</span></span>
                             <div class="control-set">
@@ -468,7 +509,7 @@
                         </div>
                     </div>
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
-                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 4 (Court 8) - Seed 3 v 6</strong>
+                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 4 - Seed 3 v 6</strong>
                         <div class="team-input" style="margin-top:10px;">
                             <span><span id="qf4-t1-name">Seed 3</span><span class="pickle-icon hidden" id="pickle_qf4-t1">🥒</span></span>
                             <div class="control-set">
@@ -489,7 +530,7 @@
                 <div class="bracket-column">
                     <h3>Semifinals</h3>
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
-                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 5 (Court 9)</strong>
+                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 5</strong>
                         <div class="team-input" style="margin-top:10px;">
                             <span><span id="sf1-t1-name">Seed 1</span><span class="pickle-icon hidden" id="pickle_sf1-t1">🥒</span></span>
                             <div class="control-set">
@@ -510,7 +551,7 @@
                         </div>
                     </div>
                     <div class="card" style="background: rgba(10,6,18,0.5); border-color: rgba(255,255,255,0.1); box-shadow: none; padding: 15px;">
-                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 6 (Court 10)</strong>
+                        <strong style="color: var(--neon-cyan); font-size:14px;">Node 6</strong>
                         <div class="team-input" style="margin-top:10px;">
                             <span><span id="sf2-t1-name">Seed 2</span><span class="pickle-icon hidden" id="pickle_sf2-t1">🥒</span></span>
                             <div class="control-set">
@@ -535,7 +576,7 @@
                 <div class="bracket-column">
                     <h3>Championship!</h3>
                     <div class="card" style="background: rgba(255, 94, 0, 0.04); border-color: var(--neon-orange); box-shadow: 0 0 10px rgba(255, 94, 0, 0.15); padding: 15px;">
-                        <strong style="color: var(--neon-orange); font-size:14px;">Gold Tier Apex (Court 8)</strong>
+                        <strong style="color: var(--neon-orange); font-size:14px;">Gold Tier Apex</strong>
                         <div class="team-input" style="margin-top:10px;">
                             <span><span id="f1-t1-name" style="color: var(--text-muted)">Awaiting Node 5...</span><span class="pickle-icon hidden" id="pickle_f1-t1">🥒</span></span>
                             <div class="control-set">
@@ -603,38 +644,69 @@ const T_MATRIX_4 = [ { round: 1, matches: [{t1: 0, t2: 1}, {t1: 2, t2: 3}] }, { 
 const T_MATRIX_5 = [ { round: 1, matches: [{t1: 0, t2: 1}, {t1: 2, t2: 3}] }, { round: 2, matches: [{t1: 0, t2: 2}, {t1: 1, t2: 4}] }, { round: 3, matches: [{t1: 0, t2: 3}, {t1: 2, t2: 4}] }, { round: 4, matches: [{t1: 0, t2: 4}, {t1: 1, t2: 3}] }, { round: 5, matches: [{t1: 1, t2: 2}, {t1: 3, t2: 4}] } ];
 const T_MATRIX_6 = [ { round: 1, matches: [{t1: 0, t2: 1}, {t1: 2, t2: 3}, {t1: 4, t2: 5}] }, { round: 2, matches: [{t1: 0, t2: 2}, {t1: 1, t2: 4}, {t1: 3, t2: 5}] }, { round: 3, matches: [{t1: 0, t2: 3}, {t1: 1, t2: 5}, {t1: 2, t2: 4}] }, { round: 4, matches: [{t1: 0, t2: 4}, {t1: 1, t2: 3}, {t1: 2, t2: 5}] }, { round: 5, matches: [{t1: 0, t2: 5}, {t1: 1, t2: 2}, {t1: 3, t2: 4}] } ];
 
+function getDynamicFFAMatrix(n) {
+    let matrix = []; let rounds = 5; 
+    for(let r=0; r<rounds; r++) {
+        let p = Array.from({length: n}, (_, i) => i);
+        p.sort((a,b) => ((a * 13 + r*7) % n) - ((b * 13 + r*7) % n));
+        let matches = [];
+        for(let i=0; i+3 < n; i+=4) matches.push({ t1: [p[i], p[i+1]], t2: [p[i+2], p[i+3]] });
+        if (matches.length > 0) matrix.push({ round: r+1, matches: matches });
+    }
+    if (matrix.length === 0) matrix.push({ round: 1, matches: [] });
+    return matrix;
+}
+
+function getDynamicTeamMatrix(n) {
+    let matrix = []; let teams = Array.from({length: n}, (_, i) => i);
+    if (n % 2 !== 0) teams.push(null); 
+    let rounds = teams.length - 1; if (rounds > 5) rounds = 5; 
+    for (let r = 0; r < rounds; r++) {
+        let matches = [];
+        for (let i = 0; i < teams.length / 2; i++) {
+            let t1 = teams[i]; let t2 = teams[teams.length - 1 - i];
+            if (t1 !== null && t2 !== null) matches.push({ t1: t1, t2: t2 });
+        }
+        if (matches.length > 0) matrix.push({ round: r + 1, matches: matches });
+        teams.splice(1, 0, teams.pop());
+    }
+    if (matrix.length === 0) matrix.push({ round: 1, matches: [] });
+    return matrix;
+}
+
 let players = []; let waveSchedules = {}; let globalMuteShots = false; let topList = []; let lastAnnouncedChamp = "";
-let isTeamMode = false; let bracketMode = 'SF';
+let isTeamMode = false; let bracketMode = 'SF'; let desiredPoolCount = 1;
 let unassignedTemp = []; let manualTeamsTemp = []; let selectedForTeam = [];
 
 function getCurrentStateObject() {
     const matchScores = {};
     Object.keys(waveSchedules).forEach(wKey => {
         waveSchedules[wKey].forEach((courtPlayers, courtIdx) => {
-            if (isTeamMode) {
-                let matrix = courtPlayers.length >= 6 ? T_MATRIX_6 : courtPlayers.length === 5 ? T_MATRIX_5 : courtPlayers.length === 4 ? T_MATRIX_4 : T_MATRIX_3;
-                matrix.forEach((m, roundIdx) => {
-                    m.matches.forEach((_, gameIdx) => {
-                        const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
-                        const el1 = document.getElementById(`score_t1_${uid}`);
-                        const el2 = document.getElementById(`score_t2_${uid}`);
-                        if (el1 && el2) matchScores[uid] = { t1: el1.value, t2: el2.value };
-                    });
-                });
-            } else {
-                let matrix = courtPlayers.length >= 6 ? MATRIX_6P : courtPlayers.length === 5 ? MATRIX_5P : MATRIX_4P;
-                matrix.forEach((_, matchIdx) => {
-                    const uid = `${wKey}_${courtIdx}_${matchIdx}`;
+            let matrix = isTeamMode ? getDynamicTeamMatrix(courtPlayers.length) : getDynamicFFAMatrix(courtPlayers.length);
+            matrix.forEach((m, roundIdx) => {
+                m.matches.forEach((_, gameIdx) => {
+                    const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
                     const el1 = document.getElementById(`score_t1_${uid}`);
                     const el2 = document.getElementById(`score_t2_${uid}`);
                     if (el1 && el2) matchScores[uid] = { t1: el1.value, t2: el2.value };
                 });
-            }
+            });
         });
     });
+
     const bracketScores = {};
     document.querySelectorAll('.bracket-score-input').forEach(el => { bracketScores[el.id] = el.value; });
-    return { players, waveSchedules, lastAnnouncedChamp, isTeamMode, bracketMode, matchScores, bracketScores, isBo3Active: document.getElementById('bo3-toggle').checked, isBracketActive: !document.getElementById('bracket-section').classList.contains('hidden'), rawNamesInput: document.getElementById('player-names-input').value };
+
+    const courtNames = {};
+    document.querySelectorAll('.court-name-input').forEach(el => { courtNames[el.id] = el.value; });
+
+    return {
+        players, waveSchedules, lastAnnouncedChamp, isTeamMode, bracketMode, desiredPoolCount, courtNames,
+        matchScores, bracketScores,
+        isBo3Active: document.getElementById('bo3-toggle').checked,
+        isBracketActive: !document.getElementById('bracket-section').classList.contains('hidden'),
+        rawNamesInput: document.getElementById('player-names-input').value
+    };
 }
 
 function autoSaveState() {
@@ -659,33 +731,149 @@ function loadDemoPlayers(count) {
     document.getElementById('player-names-input').value = demo.join('\n');
 }
 
+function openManualTeamBuilder() {
+    const rawNames = document.getElementById('player-names-input').value.split('\n').map(n => n.replace(/\r/g, '').trim()).filter(n => n !== "");
+    if(rawNames.length < 4) { alert("Matrix Error: Need at least 4 active entities."); return; }
+    playBleep(600, 0.1, 'sawtooth');
+    unassignedTemp = [...rawNames]; manualTeamsTemp = []; selectedForTeam = [];
+    document.getElementById('setup-stage').classList.add('hidden');
+    document.getElementById('team-builder-stage').classList.remove('hidden');
+    renderTeamBuilder();
+}
+
+function renderTeamBuilder() {
+    const unassMount = document.getElementById('tb-unassigned-mount');
+    unassMount.innerHTML = '';
+    unassignedTemp.forEach((name, idx) => {
+        const isSel = selectedForTeam.includes(idx);
+        unassMount.innerHTML += `<div class="tb-chip ${isSel ? 'selected' : ''}" onclick="toggleTbSelect(${idx})">${name}</div>`;
+    });
+    const teamsMount = document.getElementById('tb-teams-mount');
+    teamsMount.innerHTML = '';
+    manualTeamsTemp.forEach((team, idx) => {
+        teamsMount.innerHTML += `
+            <div class="tb-formed-team">
+                <span>${team}</span> 
+                <button class="btn-max" style="border-color:#ff003c; color:#ff003c;" onclick="removeTbTeam(${idx})">X</button>
+            </div>`;
+    });
+}
+
+function toggleTbSelect(idx) {
+    playBleep(400, 0.05);
+    if(selectedForTeam.includes(idx)) {
+        selectedForTeam = selectedForTeam.filter(i => i !== idx);
+    } else {
+        selectedForTeam.push(idx);
+        if(selectedForTeam.length === 2) {
+            const p1 = unassignedTemp[selectedForTeam[0]];
+            const p2 = unassignedTemp[selectedForTeam[1]];
+            manualTeamsTemp.push(`${p1} & ${p2}`);
+            selectedForTeam.sort((a,b) => b-a).forEach(i => unassignedTemp.splice(i, 1));
+            selectedForTeam = [];
+            playBleep(800, 0.1, 'triangle');
+        }
+    }
+    renderTeamBuilder();
+}
+
+function forceSoloTeam() {
+    if(selectedForTeam.length === 1) {
+        const p = unassignedTemp[selectedForTeam[0]];
+        manualTeamsTemp.push(`${p} (Solo)`);
+        unassignedTemp.splice(selectedForTeam[0], 1);
+        selectedForTeam = [];
+        playBleep(800, 0.1, 'triangle');
+        renderTeamBuilder();
+    }
+}
+
+function removeTbTeam(idx) {
+    const t = manualTeamsTemp[idx];
+    manualTeamsTemp.splice(idx, 1);
+    const parts = t.replace(' (Solo)', '').split(' & ');
+    unassignedTemp.push(...parts);
+    renderTeamBuilder();
+}
+
+function cancelTeamBuilder() {
+    document.getElementById('team-builder-stage').classList.add('hidden');
+    document.getElementById('setup-stage').classList.remove('hidden');
+}
+
+function launchManualTeams() {
+    if(unassignedTemp.length > 0) {
+        if(!confirm("Warning: You have unassigned players. They will be ignored. Launch anyway?")) return;
+    }
+    if(manualTeamsTemp.length < 4) { alert("Matrix Error: Need at least 4 formed teams."); return; }
+    document.getElementById('team-builder-stage').classList.add('hidden');
+    startTournament(true, manualTeamsTemp);
+}
+
+function generateRandomTeams() {
+    const rawNames = document.getElementById('player-names-input').value.split('\n').map(n => n.replace(/\r/g, '').trim()).filter(n => n !== "");
+    if(rawNames.length < 4) { alert("Matrix Error: Need at least 4 active entities."); return; }
+    for (let i = rawNames.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [rawNames[i], rawNames[j]] = [rawNames[j], rawNames[i]];
+    }
+    const randomTeams = [];
+    for(let i=0; i < rawNames.length; i+=2) {
+        if(i+1 < rawNames.length) randomTeams.push(`${rawNames[i]} & ${rawNames[i+1]}`);
+        else randomTeams.push(`${rawNames[i]} (Solo)`);
+    }
+    startTournament(true, randomTeams);
+}
+
+function changePoolCount(delta) {
+    if (!confirm("Reorganizing pools will reset all current match scores. Proceed?")) return;
+    desiredPoolCount += delta;
+    if (desiredPoolCount < 1) desiredPoolCount = 1;
+    let max = isTeamMode ? Math.floor(players.length / 2) : Math.floor(players.length / 4);
+    if (desiredPoolCount > max && max > 0) desiredPoolCount = max;
+    assignPoolsAndBuild();
+}
+
 function startTournament(teamsFormat = false, prebuiltTeams = null) {
     isTeamMode = teamsFormat;
     let entities = (isTeamMode && prebuiltTeams) ? prebuiltTeams : document.getElementById('player-names-input').value.split('\n').map(n => n.replace(/\r/g, '').trim()).filter(n => n !== "");
     if (entities.length < (isTeamMode ? 4 : 12)) { alert(`Mainframe exception: Minimum ${isTeamMode ? 4 : 12} system nodes needed.`); return; }
     playBleep(800, 0.15, 'triangle');
-    players = entities.map((name, idx) => ({ id: idx, name: name, wave: 'A', poolId: 8, wins: 0, points: 0 }));
-    let totalPlayers = players.length;
-    let waveSize = Math.ceil(totalPlayers / 2);
-    if (totalPlayers <= 15) waveSize = totalPlayers; 
+    players = entities.map((name, idx) => ({ id: idx, name: name, wave: 'A', poolId: null, wins: 0, points: 0 }));
+    let defaultPools = Math.floor(players.length / (isTeamMode ? 6 : 8));
+    if (defaultPools < 1) defaultPools = 1;
+    desiredPoolCount = defaultPools;
+    document.getElementById('mainframe-subhead').innerText = `${players.length} ${isTeamMode ? 'TEAMS' : 'PLAYERS'} // DYNAMIC ROUTING`;
+    assignPoolsAndBuild();
+}
+
+function assignPoolsAndBuild() {
+    players.forEach(p => { p.poolId = null; p.wins = 0; p.points = 0; });
     waveSchedules = {};
-    let waveLetter = 'A';
-    for (let i = 0; i < totalPlayers; i += waveSize) {
-        let waveChunk = players.slice(i, i + waveSize);
-        waveChunk.forEach(p => p.wave = waveLetter);
-        let numCourts = Math.floor(waveChunk.length / (isTeamMode ? 6 : 4));
-        if (numCourts > 3) numCourts = 3;
-        if (numCourts === 0) numCourts = 1;
-        let courtsArray = Array.from({length: numCourts}, () => []);
-        waveChunk.forEach((p, cIdx) => {
-            let targetCourt = cIdx % numCourts;
-            courtsArray[targetCourt].push(p);
-            p.poolId = targetCourt + 8;
-        });
-        waveSchedules[waveLetter] = courtsArray;
-        waveLetter = String.fromCharCode(waveLetter.charCodeAt(0) + 1);
-    }
-    document.getElementById('mainframe-subhead').innerText = `${totalPlayers} ${isTeamMode ? 'TEAMS' : 'PLAYERS'} // ${Object.keys(waveSchedules).length} WAVES MODULE`;
+    let maxPoolsPerWave = 4;
+    let currentWave = 'A';
+    let poolsInCurrentWave = 0;
+    
+    let poolsArray = Array.from({length: desiredPoolCount}, () => []);
+    players.forEach((p, idx) => {
+        let poolIdx = idx % desiredPoolCount;
+        poolsArray[poolIdx].push(p);
+    });
+
+    poolsArray.forEach((poolPlayers, idx) => {
+        let actualPoolId = idx + 8; 
+        poolPlayers.forEach(p => { p.poolId = actualPoolId; p.wave = currentWave; });
+        if (!waveSchedules[currentWave]) waveSchedules[currentWave] = [];
+        waveSchedules[currentWave].push(poolPlayers);
+        poolsInCurrentWave++;
+        if (poolsInCurrentWave >= maxPoolsPerWave) {
+            currentWave = String.fromCharCode(currentWave.charCodeAt(0) + 1);
+            poolsInCurrentWave = 0;
+        }
+    });
+    
+    let pcd = document.getElementById('pool-count-display');
+    if(pcd) pcd.innerText = desiredPoolCount;
     buildInterface();
 }
 
@@ -698,63 +886,51 @@ function buildInterface() {
     waveKeys.forEach((wKey, idx) => {
         mountBtn.innerHTML += `<button id="btn-wave${wKey}" class="btn-wave ${idx===0?'active':''}" onclick="switchWave('${wKey}')">Channel Wave ${wKey}</button>`;
     });
+
     let mountZone = document.getElementById('courts-mount-zone');
     mountZone.innerHTML = '';
+
     waveKeys.forEach(wKey => {
         let waveWrapper = document.createElement('div');
         waveWrapper.id = `courts-wave${wKey}`;
         waveWrapper.className = `grid ${wKey !== waveKeys[0] ? 'hidden' : ''}`;
+        
         waveSchedules[wKey].forEach((courtPlayers, courtIdx) => {
-            let courtHtml = `<div class="card"><div class="court-title">/// MATCH POOL ${courtIdx + 8} (${wKey})</div>`;
-            if (isTeamMode) {
-                let matrix = courtPlayers.length >= 6 ? T_MATRIX_6 : courtPlayers.length === 5 ? T_MATRIX_5 : courtPlayers.length === 4 ? T_MATRIX_4 : T_MATRIX_3;
-                matrix.forEach((m, roundIdx) => {
-                    courtHtml += `<div class="match-row"><strong style="color:var(--neon-pink)">MATCH ${m.round}</strong>`;
-                    m.matches.forEach((game, gameIdx) => {
-                        const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
-                        courtHtml += `
-                            <div class="team-input" style="margin-top: 10px;">
-                                <span><span id="name_t1_${uid}">${courtPlayers[game.t1]?.name}</span> <span class="pickle-icon hidden" id="pickle_t1_${uid}">🥒</span></span>
-                                <div class="control-set">
-                                    <input type="number" class="score-input" id="score_t1_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't1', 't2')">
-                                    <button class="btn-max" onclick="quickSetInputOnly('score_t1_${uid}', '${uid}', 't1', 't2', 'name_t1_${uid}', 'name_t2_${uid}')">11</button>
-                                </div>
-                            </div>
-                            <div class="team-input">
-                                <span><span id="name_t2_${uid}">${courtPlayers[game.t2]?.name}</span> <span class="pickle-icon hidden" id="pickle_t2_${uid}">🥒</span></span>
-                                <div class="control-set">
-                                    <input type="number" class="score-input" id="score_t2_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't2', 't1')">
-                                    <button class="btn-max" onclick="quickSetInputOnly('score_t2_${uid}', '${uid}', 't2', 't1', 'name_t2_${uid}', 'name_t1_${uid}')">11</button>
-                                </div>
-                            </div>
-                            <div style="border-bottom: 1px solid rgba(0,240,255,0.1); margin: 10px 0; width: 100%;"></div>`;
-                    });
-                    courtHtml += `</div>`;
-                });
-            } else {
-                let matrix = courtPlayers.length >= 6 ? MATRIX_6P : courtPlayers.length === 5 ? MATRIX_5P : MATRIX_4P;
-                matrix.forEach((m, matchIdx) => {
-                    const uid = `${wKey}_${courtIdx}_${matchIdx}`;
+            let courtHtml = `<div class="card"><div class="court-title" style="display:flex; align-items:center;">/// <input type="text" class="court-name-input" id="court_name_${wKey}_${courtIdx}" value="COURT ${courtPlayers[0]?.poolId || 8}" onchange="autoSaveState()"> <span style="margin-left: 5px;">(${wKey})</span></div>`;
+            let matrix = isTeamMode ? getDynamicTeamMatrix(courtPlayers.length) : getDynamicFFAMatrix(courtPlayers.length);
+            
+            matrix.forEach((m, roundIdx) => {
+                courtHtml += `<div class="match-row"><strong style="color:var(--neon-pink)">GROUP ${m.round}</strong>`;
+                m.matches.forEach((game, gameIdx) => {
+                    const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
+                    let name1, name2;
+                    if (isTeamMode) {
+                        name1 = courtPlayers[game.t1]?.name || 'BYE';
+                        name2 = courtPlayers[game.t2]?.name || 'BYE';
+                    } else {
+                        name1 = (courtPlayers[game.t1[0]]?.name || 'TBD') + ' & ' + (courtPlayers[game.t1[1]]?.name || 'TBD');
+                        name2 = (courtPlayers[game.t2[0]]?.name || 'TBD') + ' & ' + (courtPlayers[game.t2[1]]?.name || 'TBD');
+                    }
+                    
                     courtHtml += `
-                        <div class="match-row">
-                            <strong style="color:var(--neon-pink)">MATCH ${m.round}</strong>
-                            <div class="team-input">
-                                <span><span id="name_t1_${uid}">${courtPlayers[m.t1[0]]?.name} + ${courtPlayers[m.t1[1]]?.name}</span> <span class="pickle-icon hidden" id="pickle_t1_${uid}">🥒</span></span>
-                                <div class="control-set">
-                                    <input type="number" class="score-input" id="score_t1_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't1', 't2')">
-                                    <button class="btn-max" onclick="quickSetInputOnly('score_t1_${uid}', '${uid}', 't1', 't2', 'name_t1_${uid}', 'name_t2_${uid}')">11</button>
-                                </div>
+                        <div class="team-input" style="margin-top: 10px;">
+                            <span><span id="name_t1_${uid}">${name1}</span> <span class="pickle-icon hidden" id="pickle_t1_${uid}">🥒</span></span>
+                            <div class="control-set">
+                                <input type="number" class="score-input" id="score_t1_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't1', 't2')">
+                                <button class="btn-max" onclick="quickSetInputOnly('score_t1_${uid}', '${uid}', 't1', 't2', 'name_t1_${uid}', 'name_t2_${uid}')">11</button>
                             </div>
-                            <div class="team-input">
-                                <span><span id="name_t2_${uid}">${courtPlayers[m.t2[0]]?.name} + ${courtPlayers[m.t2[1]]?.name}</span> <span class="pickle-icon hidden" id="pickle_t2_${uid}">🥒</span></span>
-                                <div class="control-set">
-                                    <input type="number" class="score-input" id="score_t2_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't2', 't1')">
-                                    <button class="btn-max" onclick="quickSetInputOnly('score_t2_${uid}', '${uid}', 't2', 't1', 'name_t2_${uid}', 'name_t1_${uid}')">11</button>
-                                </div>
+                        </div>
+                        <div class="team-input">
+                            <span><span id="name_t2_${uid}">${name2}</span> <span class="pickle-icon hidden" id="pickle_t2_${uid}">🥒</span></span>
+                            <div class="control-set">
+                                <input type="number" class="score-input" id="score_t2_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't2', 't1')">
+                                <button class="btn-max" onclick="quickSetInputOnly('score_t2_${uid}', '${uid}', 't2', 't1', 'name_t2_${uid}', 'name_t1_${uid}')">11</button>
                             </div>
-                        </div>`;
+                        </div>
+                        <div style="border-bottom: 1px solid rgba(0,240,255,0.1); margin: 10px 0; width: 100%;"></div>`;
                 });
-            }
+                courtHtml += `</div>`;
+            });
             waveWrapper.innerHTML += courtHtml + `</div>`;
         });
         mountZone.appendChild(waveWrapper);
@@ -848,33 +1024,22 @@ function simulateScores() {
     globalMuteShots = true; let lastLoserString = "";
     Object.keys(waveSchedules).forEach(wKey => {
         waveSchedules[wKey].forEach((courtPlayers, courtIdx) => {
-            if (isTeamMode) {
-                let matrix = courtPlayers.length >= 6 ? T_MATRIX_6 : courtPlayers.length === 5 ? T_MATRIX_5 : courtPlayers.length === 4 ? T_MATRIX_4 : T_MATRIX_3;
-                matrix.forEach((m, roundIdx) => {
-                    m.matches.forEach((_, gameIdx) => {
-                        const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
-                        const t1Wins = Math.random() > 0.5;
-                        const score1 = t1Wins ? 11 : Math.floor(Math.random() * 11);
-                        const score2 = t1Wins ? Math.floor(Math.random() * 11) : 11;
-                        document.getElementById(`score_t1_${uid}`).value = score1;
-                        document.getElementById(`score_t2_${uid}`).value = score2;
-                        if (score1 === 11 && score2 === 0) lastLoserString = document.getElementById(`name_t2_${uid}`).innerText;
-                        else if (score1 === 0 && score2 === 11) lastLoserString = document.getElementById(`name_t1_${uid}`).innerText;
-                    });
-                });
-            } else {
-                let matrix = courtPlayers.length >= 6 ? MATRIX_6P : courtPlayers.length === 5 ? MATRIX_5P : MATRIX_4P;
-                matrix.forEach((_, matchIdx) => {
-                    const uid = `${wKey}_${courtIdx}_${matchIdx}`;
+            let matrix = isTeamMode ? getDynamicTeamMatrix(courtPlayers.length) : getDynamicFFAMatrix(courtPlayers.length);
+            matrix.forEach((m, roundIdx) => {
+                m.matches.forEach((_, gameIdx) => {
+                    const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
                     const t1Wins = Math.random() > 0.5;
                     const score1 = t1Wins ? 11 : Math.floor(Math.random() * 11);
                     const score2 = t1Wins ? Math.floor(Math.random() * 11) : 11;
-                    document.getElementById(`score_t1_${uid}`).value = score1;
-                    document.getElementById(`score_t2_${uid}`).value = score2;
-                    if (score1 === 11 && score2 === 0) lastLoserString = document.getElementById(`name_t2_${uid}`).innerText;
-                    else if (score1 === 0 && score2 === 11) lastLoserString = document.getElementById(`name_t1_${uid}`).innerText;
+                    const el1 = document.getElementById(`score_t1_${uid}`);
+                    const el2 = document.getElementById(`score_t2_${uid}`);
+                    if(el1) el1.value = score1;
+                    if(el2) el2.value = score2;
+                    
+                    if (score1 >= 11 && score2 === 0) lastLoserString = document.getElementById(`name_t2_${uid}`)?.innerText || "";
+                    else if (score1 === 0 && score2 >= 11) lastLoserString = document.getElementById(`name_t1_${uid}`)?.innerText || "";
                 });
-            }
+            });
         });
     });
     calculateScores(); globalMuteShots = false;
@@ -884,49 +1049,13 @@ function simulateScores() {
 
 function calculateScores() {
     players.forEach(p => { p.wins = 0; p.points = 0; });
+    
     Object.keys(waveSchedules).forEach(wKey => {
         waveSchedules[wKey].forEach((courtPlayers, courtIdx) => {
-            if (isTeamMode) {
-                let matrix = courtPlayers.length >= 6 ? T_MATRIX_6 : courtPlayers.length === 5 ? T_MATRIX_5 : courtPlayers.length === 4 ? T_MATRIX_4 : T_MATRIX_3;
-                matrix.forEach((m, roundIdx) => {
-                    m.matches.forEach((game, gameIdx) => {
-                        const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
-                        const s1Input = document.getElementById(`score_t1_${uid}`);
-                        const s2Input = document.getElementById(`score_t2_${uid}`);
-                        const name1 = document.getElementById(`name_t1_${uid}`);
-                        const name2 = document.getElementById(`name_t2_${uid}`);
-                        const p1Pickle = document.getElementById(`pickle_t1_${uid}`);
-                        const p2Pickle = document.getElementById(`pickle_t2_${uid}`);
-
-                        if (name1) name1.classList.remove('match-winner');
-                        if (name2) name2.classList.remove('match-winner');
-                        if (p1Pickle) p1Pickle.classList.add('hidden');
-                        if (p2Pickle) p2Pickle.classList.add('hidden');
-
-                        if (!s1Input || !s2Input) return;
-                        const s1 = parseInt(s1Input.value, 10); const s2 = parseInt(s2Input.value, 10);
-                        s1Input.classList.toggle('pickled', s1 >= 11 && s2 === 0);
-                        s2Input.classList.toggle('pickled', s2 >= 11 && s1 === 0);
-                        
-                        if (!isNaN(s1) && !isNaN(s2)) {
-                            if (s1 === 0 && s2 >= 11 && p1Pickle) p1Pickle.classList.remove('hidden');
-                            if (s2 === 0 && s1 >= 11 && p2Pickle) p2Pickle.classList.remove('hidden');
-                            
-                            if (s1 >= 11 || s2 >= 11) {
-                                if (s1 > s2 && name1) name1.classList.add('match-winner');
-                                else if (s2 > s1 && name2) name2.classList.add('match-winner');
-                            }
-                            if(courtPlayers[game.t1]) courtPlayers[game.t1].points += s1;
-                            if(courtPlayers[game.t2]) courtPlayers[game.t2].points += s2;
-                            if (s1 > s2) { if(courtPlayers[game.t1]) courtPlayers[game.t1].wins++; } 
-                            else if (s2 > s1) { if(courtPlayers[game.t2]) courtPlayers[game.t2].wins++; }
-                        }
-                    });
-                });
-            } else {
-                let matrix = courtPlayers.length >= 6 ? MATRIX_6P : courtPlayers.length === 5 ? MATRIX_5P : MATRIX_4P;
-                matrix.forEach((m, matchIdx) => {
-                    const uid = `${wKey}_${courtIdx}_${matchIdx}`;
+            let matrix = isTeamMode ? getDynamicTeamMatrix(courtPlayers.length) : getDynamicFFAMatrix(courtPlayers.length);
+            matrix.forEach((m, roundIdx) => {
+                m.matches.forEach((game, gameIdx) => {
+                    const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
                     const s1Input = document.getElementById(`score_t1_${uid}`);
                     const s2Input = document.getElementById(`score_t2_${uid}`);
                     const name1 = document.getElementById(`name_t1_${uid}`);
@@ -940,32 +1069,43 @@ function calculateScores() {
                     if (p2Pickle) p2Pickle.classList.add('hidden');
 
                     if (!s1Input || !s2Input) return;
-                    const s1 = parseInt(s1Input.value, 10); const s2 = parseInt(s2Input.value, 10);
+                    
+                    const s1 = parseInt(s1Input.value, 10); 
+                    const s2 = parseInt(s2Input.value, 10);
+                    
                     s1Input.classList.toggle('pickled', s1 >= 11 && s2 === 0);
                     s2Input.classList.toggle('pickled', s2 >= 11 && s1 === 0);
                     
                     if (!isNaN(s1) && !isNaN(s2)) {
                         if (s1 === 0 && s2 >= 11 && p1Pickle) p1Pickle.classList.remove('hidden');
                         if (s2 === 0 && s1 >= 11 && p2Pickle) p2Pickle.classList.remove('hidden');
-
+                        
                         if (s1 >= 11 || s2 >= 11) {
                             if (s1 > s2 && name1) name1.classList.add('match-winner');
                             else if (s2 > s1 && name2) name2.classList.add('match-winner');
                         }
-                        if(courtPlayers[m.t1[0]]) courtPlayers[m.t1[0]].points += s1; 
-                        if(courtPlayers[m.t1[1]]) courtPlayers[m.t1[1]].points += s1;
-                        if(courtPlayers[m.t2[0]]) courtPlayers[m.t2[0]].points += s2; 
-                        if(courtPlayers[m.t2[1]]) courtPlayers[m.t2[1]].points += s2;
-                        if (s1 > s2) { 
-                            if(courtPlayers[m.t1[0]]) courtPlayers[m.t1[0]].wins++; 
-                            if(courtPlayers[m.t1[1]]) courtPlayers[m.t1[1]].wins++; 
-                        } else if (s2 > s1) { 
-                            if(courtPlayers[m.t2[0]]) courtPlayers[m.t2[0]].wins++; 
-                            if(courtPlayers[m.t2[1]]) courtPlayers[m.t2[1]].wins++; 
+                        
+                        if (isTeamMode) {
+                            if(courtPlayers[game.t1]) courtPlayers[game.t1].points += s1;
+                            if(courtPlayers[game.t2]) courtPlayers[game.t2].points += s2;
+                            if (s1 > s2) { if(courtPlayers[game.t1]) courtPlayers[game.t1].wins++; } 
+                            else if (s2 > s1) { if(courtPlayers[game.t2]) courtPlayers[game.t2].wins++; }
+                        } else {
+                            if(courtPlayers[game.t1[0]]) courtPlayers[game.t1[0]].points += s1; 
+                            if(courtPlayers[game.t1[1]]) courtPlayers[game.t1[1]].points += s1;
+                            if(courtPlayers[game.t2[0]]) courtPlayers[game.t2[0]].points += s2; 
+                            if(courtPlayers[game.t2[1]]) courtPlayers[game.t2[1]].points += s2;
+                            if (s1 > s2) { 
+                                if(courtPlayers[game.t1[0]]) courtPlayers[game.t1[0]].wins++; 
+                                if(courtPlayers[game.t1[1]]) courtPlayers[game.t1[1]].wins++; 
+                            } else if (s2 > s1) { 
+                                if(courtPlayers[game.t2[0]]) courtPlayers[game.t2[0]].wins++; 
+                                if(courtPlayers[game.t2[1]]) courtPlayers[game.t2[1]].wins++; 
+                            }
                         }
                     }
                 });
-            }
+            });
         });
     });
     updateLeaderboard();
@@ -976,6 +1116,7 @@ function calculateScores() {
 function updateLeaderboard() {
     const sorted = [...players].sort((a, b) => b.wins - a.wins || b.points - a.points);
     topList = sorted.slice(0, 16); 
+    
     let advanceCutoff = 4; 
     if (isTeamMode) {
         advanceCutoff = players.length >= 8 ? 8 : 4;
@@ -986,11 +1127,13 @@ function updateLeaderboard() {
         document.getElementById('leaderboard-title').innerText = `Player Standings (Top ${advanceCutoff} Advance)`;
         document.getElementById('th-name').innerText = "Player Name";
     }
+
     const tbody = document.querySelector('#leaderboard tbody'); if (!tbody) return;
     tbody.innerHTML = '';
+    
     sorted.forEach((p, idx) => {
         const rowStyle = idx < advanceCutoff ? 'style="background-color: rgba(0, 240, 255, 0.08); color: #fff; font-weight: bold; border-left: 3px solid var(--neon-cyan);"' : '';
-        tbody.innerHTML += `<tr ${rowStyle}><td>${idx + 1}</td><td>${p.name} ⚡</td><td>Wave ${p.wave}</td><td>Pool ${p.poolId}</td><td><strong style="color: var(--neon-pink)">${p.wins}</strong></td><td>${p.points}</td></tr>`;
+        tbody.innerHTML += `<tr ${rowStyle}><td>${idx + 1}</td><td>${p.name} ⚡</td><td>Wave ${p.wave}</td><td>Court ${p.poolId}</td><td><strong style="color: var(--neon-pink)">${p.wins}</strong></td><td>${p.points}</td></tr>`;
     });
 }
 
@@ -1019,8 +1162,15 @@ function lockAndBuildBracket() {
         alert(`Matrix Error: Need top ${requiredSize} established to build playoff bracket.`);
         return;
     }
+    
     playLockBass();
-    if (isTeamMode) { bracketMode = (players.length >= 8) ? 'QF' : 'SF'; } else { bracketMode = (players.length >= 16) ? 'QF' : 'SF'; }
+    
+    if (isTeamMode) {
+        bracketMode = (players.length >= 8) ? 'QF' : 'SF';
+    } else {
+        bracketMode = (players.length >= 16) ? 'QF' : 'SF';
+    }
+
     if (bracketMode === 'QF') {
         document.getElementById('col-qf').classList.remove('hidden');
         if (isTeamMode) {
@@ -1029,10 +1179,10 @@ function lockAndBuildBracket() {
             document.getElementById('qf3-t1-name').innerText = topList[1].name; document.getElementById('qf3-t2-name').innerText = topList[6].name;
             document.getElementById('qf4-t1-name').innerText = topList[2].name; document.getElementById('qf4-t2-name').innerText = topList[5].name;
         } else {
-            document.getElementById('qf1-t1-name').innerText = `${topList[0].name} / ${topList[15].name}`; document.getElementById('qf1-t2-name').innerText = `${topList[7].name} / ${topList[8].name}`;
-            document.getElementById('qf2-t1-name').innerText = `${topList[3].name} / ${topList[12].name}`; document.getElementById('qf2-t2-name').innerText = `${topList[4].name} / ${topList[11].name}`;
-            document.getElementById('qf3-t1-name').innerText = `${topList[1].name} / ${topList[14].name}`; document.getElementById('qf3-t2-name').innerText = `${topList[6].name} / ${topList[9].name}`;
-            document.getElementById('qf4-t1-name').innerText = `${topList[2].name} / ${topList[13].name}`; document.getElementById('qf4-t2-name').innerText = `${topList[5].name} / ${topList[10].name}`;
+            document.getElementById('qf1-t1-name').innerText = `${topList[0].name} & ${topList[15].name}`; document.getElementById('qf1-t2-name').innerText = `${topList[7].name} & ${topList[8].name}`;
+            document.getElementById('qf2-t1-name').innerText = `${topList[3].name} & ${topList[12].name}`; document.getElementById('qf2-t2-name').innerText = `${topList[4].name} & ${topList[11].name}`;
+            document.getElementById('qf3-t1-name').innerText = `${topList[1].name} & ${topList[14].name}`; document.getElementById('qf3-t2-name').innerText = `${topList[6].name} & ${topList[9].name}`;
+            document.getElementById('qf4-t1-name').innerText = `${topList[2].name} & ${topList[13].name}`; document.getElementById('qf4-t2-name').innerText = `${topList[5].name} & ${topList[10].name}`;
         }
         resetBracketText('sf'); resetBracketText('f');
     } else {
@@ -1041,8 +1191,8 @@ function lockAndBuildBracket() {
             document.getElementById('sf1-t1-name').innerText = topList[0].name; document.getElementById('sf1-t2-name').innerText = topList[3].name;
             document.getElementById('sf2-t1-name').innerText = topList[1].name; document.getElementById('sf2-t2-name').innerText = topList[2].name;
         } else {
-            document.getElementById('sf1-t1-name').innerText = `${topList[0].name} / ${topList[7].name}`; document.getElementById('sf1-t2-name').innerText = `${topList[3].name} / ${topList[4].name}`;
-            document.getElementById('sf2-t1-name').innerText = `${topList[1].name} / ${topList[6].name}`; document.getElementById('sf2-t2-name').innerText = `${topList[2].name} / ${topList[5].name}`;
+            document.getElementById('sf1-t1-name').innerText = `${topList[0].name} & ${topList[7].name}`; document.getElementById('sf1-t2-name').innerText = `${topList[3].name} & ${topList[4].name}`;
+            document.getElementById('sf2-t1-name').innerText = `${topList[1].name} & ${topList[6].name}`; document.getElementById('sf2-t2-name').innerText = `${topList[2].name} & ${topList[5].name}`;
         }
         resetBracketText('f');
     }
@@ -1098,8 +1248,10 @@ function getMatchWinner(prefix, allowBo3) {
     const t1Name = document.getElementById(`${prefix}-t1-name`).innerText;
     const t2Name = document.getElementById(`${prefix}-t2-name`).innerText;
     if(t1Name.includes("Awaiting") || t2Name.includes("Awaiting")) return null;
+
     let winsT1 = 0; let winsT2 = 0;
     const games = isBo3 ? [1, 2, 3] : [1];
+    
     for(let g of games) {
         const s1 = parseInt(document.getElementById(`${prefix}-t1-g${g}`)?.value, 10);
         const s2 = parseInt(document.getElementById(`${prefix}-t2-g${g}`)?.value, 10);
@@ -1107,6 +1259,7 @@ function getMatchWinner(prefix, allowBo3) {
             if (s1 > s2) winsT1++; else winsT2++;
         }
     }
+
     const reqWins = isBo3 ? 2 : 1;
     if (winsT1 >= reqWins) return t1Name;
     if (winsT2 >= reqWins) return t2Name;
@@ -1114,33 +1267,47 @@ function getMatchWinner(prefix, allowBo3) {
 }
 
 function updateBracketLogic() {
+    // 1. Resolve QF -> SF
     if (bracketMode === 'QF') {
         const qf1W = getMatchWinner('qf1', false); const qf2W = getMatchWinner('qf2', false);
         const qf3W = getMatchWinner('qf3', false); const qf4W = getMatchWinner('qf4', false);
+        
         document.getElementById('sf1-t1-name').innerText = qf1W || "Awaiting Node 1...";
         document.getElementById('sf1-t2-name').innerText = qf2W || "Awaiting Node 2...";
         document.getElementById('sf2-t1-name').innerText = qf3W || "Awaiting Node 3...";
         document.getElementById('sf2-t2-name').innerText = qf4W || "Awaiting Node 4...";
+        
         ['sf1-t1', 'sf1-t2', 'sf2-t1', 'sf2-t2'].forEach(id => {
             document.getElementById(id+'-name').style.color = document.getElementById(id+'-name').innerText.includes("Awaiting") ? "var(--text-muted)" : "var(--neon-cyan)";
         });
+        
         applyBracketHighlight('qf1', false); applyBracketHighlight('qf2', false);
         applyBracketHighlight('qf3', false); applyBracketHighlight('qf4', false);
     }
+
+    // 2. Resolve SF -> Finals
     const sf1W = getMatchWinner('sf1', true);
     const sf2W = getMatchWinner('sf2', true);
+    
     document.getElementById('f1-t1-name').innerText = sf1W || "Awaiting Semifinal 1...";
     document.getElementById('f1-t2-name').innerText = sf2W || "Awaiting Semifinal 2...";
+    
     ['f1-t1', 'f1-t2'].forEach(id => {
         document.getElementById(id+'-name').style.color = document.getElementById(id+'-name').innerText.includes("Awaiting") ? "var(--text-muted)" : "var(--neon-cyan)";
     });
-    applyBracketHighlight('sf1', true); applyBracketHighlight('sf2', true);
+
+    applyBracketHighlight('sf1', true);
+    applyBracketHighlight('sf2', true);
+
+    // 3. Resolve Finals -> Champ
     const champ = getMatchWinner('f1', true);
     applyBracketHighlight('f1', true);
+
     if (champ) {
         document.getElementById('champ-names').innerText = champ;
         document.getElementById('champ-display').classList.remove('hidden');
         document.getElementById('reset-container').classList.remove('hidden');
+        
         if (lastAnnouncedChamp !== champ) {
             triggerChampPopup(champ);
             lastAnnouncedChamp = champ;
@@ -1154,6 +1321,7 @@ function updateBracketLogic() {
     autoSaveState(); 
 }
 
+// ⚠️ THE ULTIMATE EMERGENCY RESET
 function hardReset() {
     if (confirm("WARNING: This will permanently erase the current tournament and wipe all auto-saves. Are you sure?")) {
         localStorage.removeItem('pickleMatrixAutoSave');
@@ -1168,6 +1336,7 @@ function resetSystemTerminal() {
     document.querySelectorAll('.bracket-score-input').forEach(el => el.value = '');
     resetBracketText('sf'); resetBracketText('f'); resetBracketText('qf');
     document.getElementById('champ-names').innerText = "---";
+    
     document.querySelectorAll('.match-winner').forEach(el => el.classList.remove('match-winner'));
     document.querySelectorAll('.pickle-icon').forEach(el => el.classList.add('hidden'));
     
@@ -1194,7 +1363,9 @@ function restoreStateData(state) {
     players = state.players || [];
     isTeamMode = state.isTeamMode || false;
     bracketMode = state.bracketMode || 'SF';
+    desiredPoolCount = state.desiredPoolCount || 1;
     let loadedSchedules = state.waveSchedules || {};
+
     Object.keys(loadedSchedules).forEach(wKey => {
         loadedSchedules[wKey].forEach(court => {
             for (let i = 0; i < court.length; i++) {
@@ -1203,9 +1374,14 @@ function restoreStateData(state) {
         });
     });
     waveSchedules = loadedSchedules;
+
     lastAnnouncedChamp = state.lastAnnouncedChamp || "";
+    
     document.getElementById('player-names-input').value = state.rawNamesInput || "";
-    document.getElementById('mainframe-subhead').innerText = `${players.length} ${isTeamMode ? 'TEAMS' : 'PLAYERS'} // ${Object.keys(waveSchedules).length} WAVES MODULE`;
+    document.getElementById('mainframe-subhead').innerText = `${players.length} ${isTeamMode ? 'TEAMS' : 'PLAYERS'} // DYNAMIC ROUTING`;
+    let pcd = document.getElementById('pool-count-display');
+    if(pcd) pcd.innerText = desiredPoolCount;
+
     if (isTeamMode) {
         document.getElementById('leaderboard-title').innerText = `Team Standings (Top ${players.length >= 8 ? 8 : 4} Advance)`;
         document.getElementById('th-name').innerText = "Squad Name";
@@ -1213,9 +1389,19 @@ function restoreStateData(state) {
         document.getElementById('leaderboard-title').innerText = `Player Standings (Top ${players.length >= 16 ? 16 : 8} Advance)`;
         document.getElementById('th-name').innerText = "Player Name";
     }
+
     document.getElementById('setup-stage').classList.add('hidden');
     document.getElementById('tournament-stage').classList.remove('hidden');
+
     buildInterface(); 
+
+    if (state.courtNames) {
+        Object.keys(state.courtNames).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = state.courtNames[id];
+        });
+    }
+
     if (state.matchScores) {
         Object.keys(state.matchScores).forEach(uid => {
             const el1 = document.getElementById(`score_t1_${uid}`);
@@ -1224,12 +1410,15 @@ function restoreStateData(state) {
             if (el2) el2.value = state.matchScores[uid].t2;
         });
     }
+
     calculateScores();
+
     if (state.isBracketActive) {
         lockAndBuildBracket();
-        document.getElementById('bo3-toggle').checked = state.isBo3Active === true;
-        toggleBo3UI();
-        
+        if(state.isBo3Active) {
+            document.getElementById('bo3-toggle').checked = true;
+            toggleBo3UI();
+        }
         if (state.bracketScores) {
             Object.keys(state.bracketScores).forEach(id => {
                 const el = document.getElementById(id);
@@ -1243,6 +1432,7 @@ function restoreStateData(state) {
 function loadState(event) {
     const file = event.target.files[0];
     if (!file) return;
+    
     const reader = new FileReader();
     reader.onload = function(e) {
         try {
