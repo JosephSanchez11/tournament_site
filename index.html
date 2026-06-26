@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pickleball Synthwave Dynamic Wave Manager</title>
+    <!-- Include canvas-confetti library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap');
 
@@ -81,17 +83,7 @@
             margin-bottom: 30px;
             position: relative;
             overflow: hidden;
-        }
-
-        .card::before {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 255, 0, 0.06));
-            z-index: 2;
-            background-size: 100% 4px, 6px 100%;
-            pointer-events: none;
+            z-index: 1;
         }
 
         textarea {
@@ -140,7 +132,6 @@
             letter-spacing: 1px;
         }
 
-        /* CUSTOM COURT NAME INPUT */
         .court-name-input {
             background: rgba(0, 0, 0, 0.3);
             border: 1px dashed var(--neon-cyan);
@@ -149,7 +140,7 @@
             font-size: 18px;
             font-weight: bold;
             text-transform: uppercase;
-            width: 220px;
+            width: 250px;
             padding: 4px 8px;
             margin: 0 10px;
             border-radius: 4px;
@@ -163,6 +154,23 @@
             color: #fff;
         }
 
+        .match-court-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px dashed rgba(0, 240, 255, 0.5);
+            color: var(--neon-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 15px;
+            width: 160px;
+            outline: none;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .match-court-input:focus {
+            border-bottom: 1px solid var(--neon-pink);
+            color: #fff;
+        }
+
         .bracket-title {
             background: linear-gradient(90deg, var(--neon-orange), rgba(255,94,0,0)); 
             color: var(--text-light);
@@ -172,16 +180,17 @@
             border-bottom: 1px solid var(--neon-orange);
             letter-spacing: 1px;
             display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
-        .wave-toggle-container { margin-bottom: 30px; display: flex; flex-wrap: wrap; gap: 15px; align-items: center; justify-content: space-between; }
+        .wave-toggle-container { margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 15px; align-items: center; justify-content: space-between; }
         
         .btn-wave { border-color: #4c3a70; color: #8b7fa3; box-shadow: none; }
         .btn-wave.active { border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: var(--border-glow); }
         .btn-wave.active:hover { background-color: var(--neon-pink); color: var(--bg-dark); box-shadow: 0 0 15px var(--neon-pink); }
 
-        .match-row { border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding: 15px 0; }
-        .match-row:last-child { border-bottom: none; }
+        .match-row { padding: 15px 0; }
         
         .team-input { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; }
         
@@ -214,6 +223,22 @@
             color: var(--neon-green) !important;
         }
 
+        .match-winner {
+            color: var(--neon-green) !important;
+            text-shadow: 0 0 8px var(--neon-green);
+            transition: all 0.3s ease;
+        }
+        .match-winner::after {
+            content: " 🏆 WINNER";
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7em;
+            vertical-align: middle;
+            margin-left: 8px;
+            color: var(--neon-green);
+            text-shadow: 0 0 5px var(--neon-green);
+            opacity: 0.9;
+        }
+
         .btn-max { padding: 4px 8px; font-size: 11px; border-radius: 4px; margin: 0; border-color: rgba(0, 240, 255, 0.4); }
 
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
@@ -235,7 +260,7 @@
             background: rgba(10,6,18,0.8); border: 1px solid var(--neon-green);
             box-shadow: var(--green-glow); color: var(--neon-green);
             font-family: 'Orbitron', sans-serif; font-size: 13px; letter-spacing: 1px;
-            padding: 8px 16px; border-radius: 6px; font-weight: bold; margin-left: auto;
+            padding: 8px 16px; border-radius: 6px; font-weight: bold;
             position: relative;
         }
         
@@ -297,31 +322,16 @@
         .toggle-switch { display: flex; align-items: center; gap: 10px; font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); font-size: 14px; text-shadow: 0 0 5px rgba(0,240,255,0.5); cursor: pointer;}
         .toggle-switch input { width: 18px; height: 18px; cursor: pointer; accent-color: var(--neon-pink); }
 
-        /* WINNER HIGHLIGHT & PICKLE ICON STYLING */
-        .match-winner {
-            background-color: rgba(127, 255, 0, 0.15);
-            padding: 4px 10px;
-            border-radius: 6px;
-            color: var(--neon-green) !important;
-            text-shadow: 0 0 8px var(--neon-green);
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-        .match-winner::after {
-            content: " 🏆 WINNER";
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.7em;
-            vertical-align: middle;
-            margin-left: 8px;
-            color: var(--neon-green);
-            text-shadow: 0 0 5px var(--neon-green);
-            opacity: 0.9;
-        }
         .pickle-icon {
             color: var(--neon-green);
             font-size: 1.1em;
             margin-left: 5px;
             text-shadow: 0 0 5px var(--neon-green);
+        }
+
+        .pink-pickle {
+            filter: hue-rotate(220deg) brightness(1.2);
+            display: inline-block;
         }
 
         .pool-manager {
@@ -330,16 +340,13 @@
             border-radius: 8px; border: 1px dashed var(--neon-purple);
         }
 
-        /* FLOATING MINI-LEADERBOARD */
+        /* TWIN ISOLATED FLOATING INTERFACES */
         .floating-lb {
             position: fixed;
             bottom: 20px;
-            right: 20px;
             width: 260px;
             background: rgba(10, 6, 18, 0.95);
-            border: 1px solid var(--neon-cyan);
             border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
             z-index: 1000;
             backdrop-filter: blur(5px);
             transition: transform 0.3s ease;
@@ -347,6 +354,18 @@
         .floating-lb.minimized {
             transform: translateY(calc(100% - 41px));
         }
+        
+        #floating-leaderboard-top {
+            right: 20px;
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+        }
+        #floating-leaderboard-bottom {
+            left: 20px;
+            border: 1px solid var(--neon-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+        }
+
         .lb-header {
             background: rgba(0, 240, 255, 0.15);
             border-bottom: 1px solid var(--neon-cyan);
@@ -361,6 +380,12 @@
             align-items: center;
             border-radius: 8px 8px 0 0;
         }
+        #floating-leaderboard-bottom .lb-header {
+            background: rgba(255, 0, 127, 0.15);
+            border-bottom: 1px solid var(--neon-pink);
+            color: var(--neon-pink);
+        }
+
         .lb-content {
             max-height: 350px;
             overflow-y: auto;
@@ -374,7 +399,9 @@
             .btn-panic { top: 10px; right: 10px; font-size: 9px; padding: 4px 6px; }
             .system-clock { bottom: 10px; left: 10px; font-size: 10px; }
             .score-input { width: 40px; padding: 4px; font-size: 14px;}
-            .floating-lb { width: 200px; right: 10px; bottom: 10px; }
+            .floating-lb { width: 200px; bottom: 10px; }
+            #floating-leaderboard-top { right: 10px; }
+            #floating-leaderboard-bottom { left: 10px; }
         }
     </style>
 </head>
@@ -398,13 +425,25 @@
     </div>
 </div>
 
-<!-- FLOATING MINI LEADERBOARD -->
-<div id="floating-leaderboard" class="floating-lb hidden">
-    <div class="lb-header" onclick="toggleFloatingLB()">
-        🏆 TOP 16 LIVE <span id="lb-toggle-icon">▼</span>
+<!-- FLOATING TOP 10 WINDOW -->
+<div id="floating-leaderboard-top" class="floating-lb hidden">
+    <div class="lb-header" onclick="toggleTopLB()">
+        🏆 TOP 10 LIVE <span id="lb-top-toggle-icon">▼</span>
     </div>
-    <div class="lb-content" id="lb-content">
-        <table id="mini-leaderboard">
+    <div class="lb-content">
+        <table id="mini-leaderboard-top">
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- FLOATING BOTTOM 5 WINDOW -->
+<div id="floating-leaderboard-bottom" class="floating-lb hidden">
+    <div class="lb-header" onclick="toggleBottomLB()">
+        💀 BOTTOM 5 LIVE <span id="lb-bottom-toggle-icon">▼</span>
+    </div>
+    <div class="lb-content">
+        <table id="mini-leaderboard-bottom">
             <tbody></tbody>
         </table>
     </div>
@@ -422,19 +461,25 @@
 
     <div id="setup-stage" class="card">
         <h2>1. Registration Terminal</h2>
-        <p>Drop your player pool below. Play a classic Free-For-All mixer, or generate Fixed Teams.</p>
+        <p>Drop your player pool below.</p>
         <textarea id="player-names-input"></textarea>
+        <div id="pool-warning" style="color:var(--neon-orange); font-size: 13px; margin-top: 10px; display: none;">⚠️ Uneven distribution detected. Try adjusting pools!</div>
         
         <div style="margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px;">
             <button onclick="loadDemoPlayers(50)" style="font-size:12px; padding:6px 12px; border-color: #4c3a70; color: #8b7fa3; box-shadow:none;">Demo 50</button>
+            <button onclick="loadDemoPlayers(33)" style="font-size:12px; padding:6px 12px; border-color: #4c3a70; color: #8b7fa3; box-shadow:none;">Demo 33</button>
+            <button onclick="loadDemoPlayers(30)" style="font-size:12px; padding:6px 12px; border-color: #4c3a70; color: #8b7fa3; box-shadow:none;">Demo 30</button>
             <button onclick="loadDemoPlayers(24)" style="font-size:12px; padding:6px 12px; border-color: #4c3a70; color: #8b7fa3; box-shadow:none;">Demo 24</button>
             <button onclick="loadDemoPlayers(16)" style="font-size:12px; padding:6px 12px; border-color: #4c3a70; color: #8b7fa3; box-shadow:none;">Demo 16</button>
-            <button onclick="loadDemoPlayers(12)" style="font-size:12px; padding:6px 12px; border-color: #4c3a70; color: #8b7fa3; box-shadow:none;">Demo 12</button>
             <input type="file" id="state-upload" accept=".json" style="display:none;" onchange="loadState(event)">
             <button onclick="document.getElementById('state-upload').click()" style="font-size:12px; padding:6px 12px; border-color: var(--neon-purple); color: var(--neon-purple); box-shadow: 0 0 8px rgba(157,0,255,0.4); margin-left: auto;">📂 Load Backup</button>
         </div>
 
         <div style="margin-top: 25px; border-top: 1px solid rgba(0, 240, 255, 0.2); padding-top: 20px; display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+            <div style="display:flex; align-items:center; gap: 10px; background: rgba(0,0,0,0.4); padding: 5px 15px; border-radius: 8px; border: 1px dashed var(--neon-cyan);">
+                <label style="color:var(--text-light); font-size:14px; font-family:'Orbitron', sans-serif;">TARGET GAMES / PLAYER:</label>
+                <input type="number" id="target-games-input" value="6" min="1" max="20" style="width: 50px; padding: 4px; text-align: center; background: rgba(10, 6, 18, 0.8); border: 1px solid var(--neon-cyan); border-radius: 4px; color: var(--neon-cyan); font-family: 'Orbitron', sans-serif; font-size: 15px;">
+            </div>
             <button onclick="startTournament(false)" style="border-color: var(--neon-cyan); color: var(--neon-cyan); box-shadow: var(--cyan-glow);">Initialize Free-For-All</button>
             <button onclick="generateRandomTeams()" style="border-color: var(--neon-green); color: var(--neon-green); box-shadow: var(--green-glow);">🎲 Randomize Teams</button>
             <button onclick="openManualTeamBuilder()" style="border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: var(--border-glow);">🛠️ Build Manual Teams</button>
@@ -444,8 +489,6 @@
     <!-- TEAM BUILDER UI -->
     <div id="team-builder-stage" class="card hidden" style="border-color: var(--neon-purple); box-shadow: 0 0 15px rgba(157,0,255,0.4);">
         <h2>Team Constructor Matrix</h2>
-        <p>Click any two players to bind them into a fixed duo.</p>
-        
         <div class="tb-grid">
             <div class="tb-col">
                 <h3 style="font-size: 16px; color: var(--text-muted); text-shadow:none;">Unassigned Elements</h3>
@@ -467,53 +510,63 @@
     </div>
 
     <div id="tournament-stage" class="hidden">
-        <div class="card" style="border-color: var(--neon-cyan); box-shadow: var(--cyan-glow);">
-            <h2 id="leaderboard-title">Player Standings</h2>
-            <table id="leaderboard">
-                <thead>
-                    <tr><th>Rank</th><th id="th-name">Player Name</th><th>Wave</th><th id="th-pool">Court</th><th>Wins</th><th>Points Scored</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: center;">
-                <button onclick="saveStateFile()" style="border-color: var(--neon-purple); color: var(--neon-purple); box-shadow: 0 0 8px rgba(157,0,255,0.4);">💾 Download Manual Backup</button>
-                <button onclick="lockAndBuildBracket()" style="border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 8px rgba(255,94,0,0.4);">FINALIZE GROUPS & START BRACKET</button>
+        
+        <!-- MASTER ADMIN CONTROL BAR -->
+        <div class="card" style="border-color: var(--neon-purple); box-shadow: 0 0 15px rgba(157,0,255,0.2); padding: 15px 25px; margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 15px; justify-content: space-between; align-items: center;">
+            <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                <div class="pool-manager" style="margin:0;">
+                    <span id="pool-manager-label" style="color:var(--text-muted); font-size:14px;">ACTIVE COURTS:</span>
+                    <input type="number" id="pool-count-input" value="3" min="1" max="50" onchange="setPoolCount(this.value)" style="width: 50px; padding: 4px; text-align: center; background: rgba(10, 6, 18, 0.8); border: 1px solid var(--neon-purple); border-radius: 4px; color: var(--neon-purple); font-family: 'Orbitron', sans-serif; font-size: 18px; box-shadow: 0 0 5px rgba(157,0,255,0.5);">
+                </div>
+                <div class="hud-inline-stat" id="hud-skunk-count" style="margin:0;">
+                    ⚡ PICKLE ALERTS LOGGED: 0
+                    <span class="auto-save-indicator" id="auto-save-flash">Memory Synced</span>
+                </div>
+                <button onclick="lockAndBuildBracket()" style="border-color: var(--neon-green); color: var(--bg-dark); background-color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); margin: 0; padding: 8px 15px; font-size: 12px; font-weight: bold; cursor: pointer;">🏆 FINALIZE GROUPS</button>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <button onclick="simulateScores()" style="border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 8px rgba(255,94,0,0.4); margin: 0; padding: 8px 15px; font-size: 12px;">⚡ Inject Scores</button>
+                <button onclick="saveStateFile()" style="border-color: var(--neon-purple); color: var(--neon-purple); box-shadow: 0 0 8px rgba(157,0,255,0.4); margin: 0; padding: 8px 15px; font-size: 12px;">💾 Backup</button>
             </div>
         </div>
 
         <div id="qualifier-section">
-            <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap: 15px; margin-bottom: 20px;">
-                <div>
-                    <h2>Active Court Matrix & Logs</h2>
-                    <p style="margin:0;">Cycle local grid channels to log match datasets:</p>
-                </div>
-                <div class="pool-manager">
-                    <span style="color:var(--text-muted); font-size:14px;">ACTIVE POOLS:</span>
-                    <button onclick="changePoolCount(-1)" style="margin:0; padding:2px 8px; border-color:var(--text-muted); color:var(--text-muted); box-shadow:none;">-</button>
-                    <strong id="pool-count-display" style="color:var(--neon-purple); font-size:20px; min-width:20px; text-align:center;">8</strong>
-                    <button onclick="changePoolCount(1)" style="margin:0; padding:2px 8px; border-color:var(--neon-purple); box-shadow:0 0 5px rgba(157,0,255,0.5);">+</button>
-                </div>
-            </div>
-
+            <h2 style="margin-bottom: 20px;">Active Court Matrix & Logs</h2>
             <div class="wave-toggle-container">
                 <div id="wave-buttons-mount" style="display:inline-block;"></div>
-                <button onclick="simulateScores()" style="border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 8px rgba(255,94,0,0.4);">⚡ Inject Random Scores</button>
-                <div class="hud-inline-stat" id="hud-skunk-count">
-                    ⚡ PICKLE ALERTS LOGGED: 0
-                    <span class="auto-save-indicator" id="auto-save-flash">Memory Synced</span>
-                </div>
             </div>
             <div id="courts-mount-zone"></div>
+        </div>
+
+        <!-- COLLAPSIBLE LEADERBOARD -->
+        <div class="card" style="border-color: var(--neon-cyan); box-shadow: var(--cyan-glow);">
+            <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleMainLeaderboard()">
+                <h2 id="leaderboard-title" style="margin: 0;">Player Standings</h2>
+                <span id="main-lb-toggle-icon" style="color: var(--neon-cyan); font-size: 20px;">▼</span>
+            </div>
+            <div id="main-leaderboard-content">
+                <table id="leaderboard">
+                    <thead>
+                        <tr><th>Rank</th><th id="th-name">Player Name</th><th>Wins</th><th>Points Scored</th><th>Played</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
 
         <div id="bracket-section" class="card hidden" style="border-color: var(--neon-orange); box-shadow: 0 0 12px rgba(255,94,0,0.3);">
             <div class="bracket-title">
                 <h2>2. Neon Finals</h2>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="bo3-toggle" onchange="toggleBo3UI()"> Enable Best 2 of 3 (SF/Finals)
-                </label>
+                <div style="display:flex; gap:15px; align-items:center; flex-wrap: wrap;">
+                    <label class="toggle-switch" style="color: var(--neon-green); text-shadow: 0 0 5px rgba(127, 255, 0, 0.5);">
+                        <input type="checkbox" id="pickledballs-toggle" onchange="updateBracketLogic(); autoSaveState();" style="accent-color: var(--neon-green);"> 🥒 Pickledballs Mode (Partner Swap)
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="bo3-toggle" onchange="toggleBo3UI()"> Enable Best 2 of 3 (SF/Finals)
+                    </label>
+                </div>
             </div>
-            <div class="bracket-flex">
+            <div class="bracket-flex" id="bracket-grid">
                 
                 <!-- QUARTERFINALS -->
                 <div class="bracket-column hidden" id="col-qf">
@@ -647,7 +700,7 @@
                     <div class="card" style="background: rgba(255, 94, 0, 0.04); border-color: var(--neon-orange); box-shadow: 0 0 10px rgba(255, 94, 0, 0.15); padding: 15px;">
                         <strong style="color: var(--neon-orange); font-size:14px;">Gold Tier Apex</strong>
                         <div class="team-input" style="margin-top:10px;">
-                            <span><span id="f1-t1-name" style="color: var(--text-muted)">Awaiting Node 5...</span><span class="pickle-icon hidden" id="pickle_f1-t1">🥒</span></span>
+                            <span><span id="f1-t1-name" style="color: var(--text-muted)">Awaiting Semifinal 1...</span><span class="pickle-icon hidden" id="pickle_f1-t1">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="f1-t1-g1" min="0" oninput="handleBracketManualInput('f1-t1-g1', 'f1-t2-g1', 'f1-t1-name', 'f1-t2-name')">
                                 <input type="number" class="score-input bracket-score-input bo3-input hidden" id="f1-t1-g2" min="0" oninput="handleBracketManualInput('f1-t1-g2', 'f1-t2-g2', 'f1-t1-name', 'f1-t2-name')">
@@ -656,7 +709,7 @@
                             </div>
                         </div>
                         <div class="team-input">
-                            <span><span id="f1-t2-name" style="color: var(--text-muted)">Awaiting Node 6...</span><span class="pickle-icon hidden" id="pickle_f1-t2">🥒</span></span>
+                            <span><span id="f1-t2-name" style="color: var(--text-muted)">Awaiting Semifinal 2...</span><span class="pickle-icon hidden" id="pickle_f1-t2">🥒</span></span>
                             <div class="control-set">
                                 <input type="number" class="score-input bracket-score-input" id="f1-t2-g1" min="0" oninput="handleBracketManualInput('f1-t2-g1', 'f1-t1-g1', 'f1-t2-name', 'f1-t1-name')">
                                 <input type="number" class="score-input bracket-score-input bo3-input hidden" id="f1-t2-g2" min="0" oninput="handleBracketManualInput('f1-t2-g2', 'f1-t1-g2', 'f1-t2-name', 'f1-t1-name')">
@@ -676,14 +729,44 @@
 </div>
 
 <script>
-function toggleFloatingLB() {
-    const lb = document.getElementById('floating-leaderboard');
-    const icon = document.getElementById('lb-toggle-icon');
+function toggleTopLB() {
+    const lb = document.getElementById('floating-leaderboard-top');
+    const icon = document.getElementById('lb-top-toggle-icon');
     lb.classList.toggle('minimized');
-    if(lb.classList.contains('minimized')) {
-        icon.innerText = '▲';
+    icon.innerText = lb.classList.contains('minimized') ? '▲' : '▼';
+}
+
+function toggleBottomLB() {
+    const lb = document.getElementById('floating-leaderboard-bottom');
+    const icon = document.getElementById('lb-bottom-toggle-icon');
+    lb.classList.toggle('minimized');
+    icon.innerText = lb.classList.contains('minimized') ? '▲' : '▼';
+}
+
+function toggleMainLeaderboard() {
+    const content = document.getElementById('main-leaderboard-content');
+    const icon = document.getElementById('main-lb-toggle-icon');
+    content.classList.toggle('hidden');
+    icon.innerText = content.classList.contains('hidden') ? '▲' : '▼';
+}
+
+document.addEventListener('keyup', (e) => {
+    if (e.target && e.target.id === 'player-names-input') {
+        checkPoolWarning();
+    }
+});
+
+function checkPoolWarning() {
+    const raw = document.getElementById('player-names-input').value.split('\n').filter(n => n.trim() !== "");
+    const warning = document.getElementById('pool-warning');
+    if (isTeamMode) {
+        if (raw.length === 30 && desiredPoolCount === 4) {
+            if(warning) { warning.innerText = "⚠️ Uneven distribution detected. Try adjusting pools!"; warning.style.display = 'block'; }
+        } else {
+            if(warning) warning.style.display = 'none';
+        }
     } else {
-        icon.innerText = '▼';
+        if(warning) warning.style.display = 'none';
     }
 }
 
@@ -703,70 +786,211 @@ updateSystemClock();
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let audioCtx = null;
 function initAudio() { if (!audioCtx) audioCtx = new AudioCtx(); }
+
 function playBleep(freq = 600, duration = 0.08, type = 'square') {
     try { initAudio(); let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain(); osc.type = type; osc.frequency.value = freq; gain.gain.setValueAtTime(0.15, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + duration); } catch(e){}
 }
+
 function playSkunkSiren() {
-    try { initAudio(); let now = audioCtx.currentTime; [0, 0.2, 0.4].forEach(delay => { let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain(); osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, now + delay); osc.frequency.linearRampToValueAtTime(700, now + delay + 0.15); gain.gain.setValueAtTime(0.2, now + delay); gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.18); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(now + delay); osc.stop(now + delay + 0.18); }); } catch(e){}
+    try { 
+        initAudio(); 
+        let now = audioCtx.currentTime;
+        // Bouncy descending "sad trombone" melody for getting Pickled
+        const notes = [
+            { f: 329.63, time: 0, dur: 0.25 },   // E4
+            { f: 311.13, time: 0.3, dur: 0.25 }, // Eb4
+            { f: 293.66, time: 0.6, dur: 0.25 }, // D4
+            { f: 277.18, time: 0.9, dur: 0.6 }   // Db4 (slide down)
+        ];
+        notes.forEach((n, idx) => {
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(n.f, now + n.time);
+            if (idx === 3) {
+                // Slide down on the last note for extra goofiness
+                osc.frequency.linearRampToValueAtTime(150, now + n.time + n.dur);
+            }
+            gain.gain.setValueAtTime(0.2, now + n.time);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + n.time + n.dur);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + n.time);
+            osc.stop(now + n.time + n.dur);
+        });
+    } catch(e){}
 }
+
 function playLockBass() {
     try { initAudio(); let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain(); osc.type = 'sine'; osc.frequency.setValueAtTime(120, audioCtx.currentTime); osc.frequency.linearRampToValueAtTime(40, audioCtx.currentTime + 0.4); gain.gain.setValueAtTime(0.3, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.4); } catch(e){}
 }
+
 function playVictoryFanfare() {
-    try { initAudio(); let now = audioCtx.currentTime; const notes = [440, 554, 659, 880]; notes.forEach((freq, idx) => { let osc = audioCtx.createOscillator(); let gain = audioCtx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + (idx * 0.15)); gain.gain.setValueAtTime(0.2, now + (idx * 0.15)); gain.gain.exponentialRampToValueAtTime(0.001, now + (idx * 0.15) + 0.3); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(now + (idx * 0.15)); osc.stop(now + (idx * 0.15) + 0.3); }); } catch(e){}
+    try { 
+        initAudio(); 
+        let now = audioCtx.currentTime; 
+        // 16-bit Triumphant Melody
+        const notes = [
+            { f: 523.25, time: 0, dur: 0.15 },    // C5
+            { f: 523.25, time: 0.15, dur: 0.15 }, // C5
+            { f: 523.25, time: 0.3, dur: 0.15 },  // C5
+            { f: 523.25, time: 0.45, dur: 0.4 },  // C5 (held)
+            { f: 415.30, time: 0.85, dur: 0.3 },  // G#4
+            { f: 466.16, time: 1.15, dur: 0.3 },  // A#4
+            { f: 523.25, time: 1.45, dur: 0.8 }   // C5
+        ];
+        notes.forEach(n => {
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = 'square'; // Synthwave feel
+            osc.frequency.setValueAtTime(n.f, now + n.time);
+            gain.gain.setValueAtTime(0.15, now + n.time);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + n.time + n.dur);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + n.time);
+            osc.stop(now + n.time + n.dur);
+        });
+    } catch(e){}
 }
 
-// ---------------------------------------------------------
-// DYNAMIC ROUND-ROBIN GENERATORS (SCALES TO INFINITY)
-// ---------------------------------------------------------
-function getDynamicFFAMatrix(n) {
+function getDynamicFFAMatrix(n, courts) {
     let matrix = [];
-    let rounds = 5; 
-    for(let r=0; r<rounds; r++) {
-        let p = Array.from({length: n}, (_, i) => i);
-        p.sort((a,b) => ((a * 13 + r*7) % n) - ((b * 13 + r*7) % n));
+    let maxPlaying = courts * 4;
+    if (maxPlaying > n) maxPlaying = n - (n % 4);
+    let playingCount = maxPlaying;
+    
+    if (playingCount === 0 || n < 4) return [{ round: 1, matches: [], byes: Array.from({length: n}, (_, i) => i) }];
+
+    let targetGamesPerPlayer = parseInt(document.getElementById('target-games-input')?.value) || 6;
+    let minRounds = Math.max(1, Math.ceil((targetGamesPerPlayer * n) / playingCount));
+    let rounds = minRounds;
+    
+    for (let i = minRounds; i <= minRounds + 3; i++) {
+        if ((i * playingCount) % n === 0) {
+            rounds = i;
+            break;
+        }
+    }
+
+    let playerStats = Array.from({length: n}, (_, i) => ({ id: i, byes: 0, lastBye: -1, played: 0 }));
+    
+    for (let r = 0; r < rounds; r++) {
+        playerStats.sort((a, b) => {
+            if (a.played !== b.played) return a.played - b.played; 
+            if (b.lastBye !== a.lastBye) return b.lastBye - a.lastBye; 
+            return ((a.id * 17 + r * 13) % n) - ((b.id * 17 + r * 13) % n); 
+        });
+        
+        let roundByes = [];
+        let roundPlaying = [];
+        
+        for (let i = 0; i < playingCount; i++) {
+            roundPlaying.push(playerStats[i].id);
+            playerStats[i].played++;
+        }
+        for (let i = playingCount; i < n; i++) {
+            roundByes.push(playerStats[i].id);
+            playerStats[i].byes++;
+            playerStats[i].lastBye = r;
+        }
+        
+        roundPlaying.sort((a, b) => a - b);
+        let p = [...roundPlaying];
+        
+        for (let i = 0; i < r; i++) {
+            let half = Math.floor(p.length / 2);
+            let shuffled = [];
+            for (let j = 0; j < half; j++) {
+                shuffled.push(p[j]);
+                shuffled.push(p[j + half]);
+            }
+            if (p.length % 2 !== 0) shuffled.push(p[p.length - 1]);
+            p = shuffled;
+        }
+        
+        let shift = r % p.length;
+        p = [...p.slice(shift), ...p.slice(0, shift)];
+        
         let matches = [];
-        for(let i=0; i+3 < n; i+=4) {
+        for (let i = 0; i + 3 < p.length; i += 4) {
             matches.push({ t1: [p[i], p[i+1]], t2: [p[i+2], p[i+3]] });
         }
-        if (matches.length > 0) matrix.push({ round: r+1, matches: matches });
+        matrix.push({ round: r+1, matches: matches, byes: roundByes });
     }
-    if (matrix.length === 0) matrix.push({ round: 1, matches: [] });
+    
     return matrix;
 }
 
 function getDynamicTeamMatrix(n) {
     let matrix = [];
     let teams = Array.from({length: n}, (_, i) => i);
-    if (n % 2 !== 0) teams.push(null); 
-    let rounds = teams.length - 1;
-    if (rounds > 5) rounds = 5; 
+    let hasBye = n % 2 !== 0;
+    if (hasBye) teams.push(null); 
     
-    for (let r = 0; r < rounds; r++) {
-        let matches = [];
-        for (let i = 0; i < teams.length / 2; i++) {
-            let t1 = teams[i];
-            let t2 = teams[teams.length - 1 - i];
-            if (t1 !== null && t2 !== null) {
-                matches.push({ t1: t1, t2: t2 });
-            }
+    let playingCount = n - (n % 2);
+    if (playingCount === 0) return [{ round: 1, matches: [], byes: Array.from({length: n}, (_, i) => i) }];
+    
+    let targetGamesPerTeam = parseInt(document.getElementById('target-games-input')?.value) || 6;
+    let minRounds = Math.max(1, Math.ceil((targetGamesPerTeam * n) / playingCount));
+    let rounds = minRounds;
+    
+    for (let i = minRounds; i <= minRounds + 3; i++) {
+        if ((i * playingCount) % n === 0) {
+            rounds = i;
+            break;
         }
-        if (matches.length > 0) matrix.push({ round: r + 1, matches: matches });
-        teams.splice(1, 0, teams.pop());
     }
-    if (matrix.length === 0) matrix.push({ round: 1, matches: [] });
+    
+    let playerStats = Array.from({length: n}, (_, i) => ({ id: i, byes: 0, lastBye: -1, played: 0 }));
+
+    for (let r = 0; r < rounds; r++) {
+        playerStats.sort((a, b) => {
+            if (a.played !== b.played) return a.played - b.played;
+            if (a.lastBye !== b.lastBye) return a.lastBye - b.lastBye; 
+            return ((a.id * 17 + r * 13) % n) - ((b.id * 17 + r * 13) % n); 
+        });
+        
+        let roundByes = [];
+        let roundPlaying = [];
+        
+        for (let i = 0; i < playingCount; i++) {
+            roundPlaying.push(playerStats[i].id);
+            playerStats[i].played++;
+        }
+        for (let i = playingCount; i < n; i++) {
+            roundByes.push(playerStats[i].id);
+            playerStats[i].byes++;
+            playerStats[i].lastBye = r;
+        }
+        
+        let p = [...roundPlaying];
+        
+        let shift = r % (p.length / 2);
+        let left = p.slice(0, p.length / 2);
+        let right = p.slice(p.length / 2);
+        right = [...right.slice(shift), ...right.slice(0, shift)];
+        
+        let matches = [];
+        for (let i = 0; i < left.length; i++) {
+            matches.push({ t1: left[i], t2: right[i] });
+        }
+        matrix.push({ round: r+1, matches: matches, byes: roundByes });
+    }
+    
     return matrix;
 }
 
 let players = []; let waveSchedules = {}; let globalMuteShots = false; let topList = []; let lastAnnouncedChamp = "";
-let isTeamMode = false; let bracketMode = 'SF'; let desiredPoolCount = 1;
+let isTeamMode = false; let bracketMode = 'SF'; let desiredPoolCount = 3;
 let unassignedTemp = []; let manualTeamsTemp = []; let selectedForTeam = []; let advanceCutoff = 4;
+let customMatchCourts = {};
 
 function getCurrentStateObject() {
     const matchScores = {};
     Object.keys(waveSchedules).forEach(wKey => {
         waveSchedules[wKey].forEach((courtPlayers, courtIdx) => {
-            let matrix = isTeamMode ? getDynamicTeamMatrix(courtPlayers.length) : getDynamicFFAMatrix(courtPlayers.length);
+            let matrix = isTeamMode ? getDynamicTeamMatrix(courtPlayers.length) : getDynamicFFAMatrix(courtPlayers.length, desiredPoolCount);
             matrix.forEach((m, roundIdx) => {
                 m.matches.forEach((_, gameIdx) => {
                     const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
@@ -790,8 +1014,10 @@ function getCurrentStateObject() {
 
     return {
         players, waveSchedules, lastAnnouncedChamp, isTeamMode, bracketMode, desiredPoolCount, courtNames,
-        matchScores, bracketScores,
+        matchScores, bracketScores, targetGames: document.getElementById('target-games-input').value,
+        customMatchCourts: customMatchCourts,
         isBo3Active: document.getElementById('bo3-toggle').checked,
+        isPickledballsActive: document.getElementById('pickledballs-toggle')?.checked || false,
         isBracketActive: !document.getElementById('bracket-section').classList.contains('hidden'),
         rawNamesInput: document.getElementById('player-names-input').value
     };
@@ -825,6 +1051,7 @@ function loadDemoPlayers(count) {
     let demo = Array.from({length: count}, (_, i) => `Neon_Racer_${i+1}`);
     demo[0] = "Joseph Sánchez"; 
     document.getElementById('player-names-input').value = demo.join('\n');
+    checkPoolWarning();
 }
 
 function openManualTeamBuilder() {
@@ -924,15 +1151,28 @@ function generateRandomTeams() {
     startTournament(true, randomTeams);
 }
 
-function changePoolCount(delta) {
-    if (!confirm("Reorganizing pools will reset all current match scores. Proceed?")) return;
-    desiredPoolCount += delta;
-    if (desiredPoolCount < 1) desiredPoolCount = 1;
+function setPoolCount(val) {
+    if (!confirm("Reorganizing will reset match scores. Proceed?")) {
+        document.getElementById('pool-count-input').value = desiredPoolCount;
+        return;
+    }
+    
+    let newVal = parseInt(val, 10);
+    if (isNaN(newVal) || newVal < 1) newVal = 1;
     
     let max = isTeamMode ? Math.floor(players.length / 2) : Math.floor(players.length / 4);
-    if (desiredPoolCount > max && max > 0) desiredPoolCount = max;
+    if (newVal > max && max > 0) newVal = max;
     
+    desiredPoolCount = newVal;
+    document.getElementById('pool-count-input').value = desiredPoolCount;
+    checkPoolWarning();
     assignPoolsAndBuild();
+}
+
+function updateMatchCourtName(idx, val) {
+    customMatchCourts[idx] = val;
+    document.querySelectorAll('.court-display-' + idx).forEach(el => el.innerText = val);
+    autoSaveState();
 }
 
 function startTournament(teamsFormat = false, prebuiltTeams = null) {
@@ -950,45 +1190,63 @@ function startTournament(teamsFormat = false, prebuiltTeams = null) {
     }
     playBleep(800, 0.15, 'triangle');
 
-    players = entities.map((name, idx) => ({ id: idx, name: name, wave: 'A', poolId: null, wins: 0, points: 0 }));
+    players = entities.map((name, idx) => ({ id: idx, name: name, wave: 'A', poolId: null, wins: 0, points: 0, played: 0 }));
     
-    let defaultPools = Math.floor(players.length / (isTeamMode ? 6 : 8));
+    let defaultPools = Math.floor(players.length / (isTeamMode ? 6 : 4));
     if (defaultPools < 1) defaultPools = 1;
     desiredPoolCount = defaultPools;
     
+    let pci = document.getElementById('pool-count-input');
+    if (pci) pci.value = desiredPoolCount;
+    
     document.getElementById('mainframe-subhead').innerText = `${players.length} ${isTeamMode ? 'TEAMS' : 'PLAYERS'} // DYNAMIC ROUTING`;
+    checkPoolWarning();
     assignPoolsAndBuild();
 }
 
 function assignPoolsAndBuild() {
-    players.forEach(p => { p.poolId = null; p.wins = 0; p.points = 0; });
+    players.forEach(p => { p.poolId = null; p.wins = 0; p.points = 0; p.played = 0; });
     waveSchedules = {};
-    let maxPoolsPerWave = 4;
     let currentWave = 'A';
-    let poolsInCurrentWave = 0;
     
-    let poolsArray = Array.from({length: desiredPoolCount}, () => []);
-    players.forEach((p, idx) => {
-        let poolIdx = idx % desiredPoolCount;
-        poolsArray[poolIdx].push(p);
-    });
+    document.getElementById('pool-manager-label').innerText = isTeamMode ? "ACTIVE POOLS:" : "ACTIVE COURTS:";
 
-    poolsArray.forEach((poolPlayers, idx) => {
-        let actualPoolId = idx + 8; 
-        poolPlayers.forEach(p => { p.poolId = actualPoolId; p.wave = currentWave; });
+    let pci = document.getElementById('pool-count-input');
+    if (pci) pci.value = desiredPoolCount;
+
+    if (!isTeamMode) {
+        players.forEach(p => { p.poolId = "MAIN"; p.wave = currentWave; });
+        waveSchedules[currentWave] = [players];
+    } else {
+        let maxPoolsPerWave = 4;
+        let poolsInCurrentWave = 0;
+        let poolsArray = Array.from({length: desiredPoolCount}, () => []);
         
-        if (!waveSchedules[currentWave]) waveSchedules[currentWave] = [];
-        waveSchedules[currentWave].push(poolPlayers);
+        let baseCount = Math.floor(players.length / desiredPoolCount);
+        let remainder = players.length % desiredPoolCount;
+        let currentIdx = 0;
         
-        poolsInCurrentWave++;
-        if (poolsInCurrentWave >= maxPoolsPerWave) {
-            currentWave = String.fromCharCode(currentWave.charCodeAt(0) + 1);
-            poolsInCurrentWave = 0;
+        for (let i = 0; i < desiredPoolCount; i++) {
+            let size = baseCount + (i < remainder ? 1 : 0);
+            for (let j = 0; j < size; j++) {
+                poolsArray[i].push(players[currentIdx++]);
+            }
         }
-    });
-    
-    let pcd = document.getElementById('pool-count-display');
-    if(pcd) pcd.innerText = desiredPoolCount;
+
+        poolsArray.forEach((poolPlayers, idx) => {
+            let actualPoolId = idx + 8; 
+            poolPlayers.forEach(p => { p.poolId = actualPoolId; p.wave = currentWave; });
+            
+            if (!waveSchedules[currentWave]) waveSchedules[currentWave] = [];
+            waveSchedules[currentWave].push(poolPlayers);
+            
+            poolsInCurrentWave++;
+            if (poolsInCurrentWave >= maxPoolsPerWave) {
+                currentWave = String.fromCharCode(currentWave.charCodeAt(0) + 1);
+                poolsInCurrentWave = 0;
+            }
+        });
+    }
 
     buildInterface();
 }
@@ -996,14 +1254,17 @@ function assignPoolsAndBuild() {
 function buildInterface() {
     document.getElementById('setup-stage').classList.add('hidden');
     document.getElementById('tournament-stage').classList.remove('hidden');
-    document.getElementById('floating-leaderboard').classList.remove('hidden');
+    document.getElementById('floating-leaderboard-top').classList.remove('hidden');
+    document.getElementById('floating-leaderboard-bottom').classList.remove('hidden');
 
     let mountBtn = document.getElementById('wave-buttons-mount');
     mountBtn.innerHTML = '';
     let waveKeys = Object.keys(waveSchedules);
-    waveKeys.forEach((wKey, idx) => {
-        mountBtn.innerHTML += `<button id="btn-wave${wKey}" class="btn-wave ${idx===0?'active':''}" onclick="switchWave('${wKey}')">Channel Wave ${wKey}</button>`;
-    });
+    if (waveKeys.length > 1) {
+        waveKeys.forEach((wKey, idx) => {
+            mountBtn.innerHTML += `<button id="btn-wave${wKey}" class="btn-wave ${idx===0?'active':''}" onclick="switchWave('${wKey}')">Channel Wave ${wKey}</button>`;
+        });
+    }
 
     let mountZone = document.getElementById('courts-mount-zone');
     mountZone.innerHTML = '';
@@ -1014,11 +1275,17 @@ function buildInterface() {
         waveWrapper.className = `grid ${wKey !== waveKeys[0] ? 'hidden' : ''}`;
         
         waveSchedules[wKey].forEach((courtPlayers, courtIdx) => {
-            let courtHtml = `<div class="card"><div class="court-title" style="display:flex; align-items:center;">/// <input type="text" class="court-name-input" id="court_name_${wKey}_${courtIdx}" value="COURT ${courtPlayers[0]?.poolId || 8}" onchange="autoSaveState()"> <span style="margin-left: 5px;">(${wKey})</span></div>`;
-            let matrix = isTeamMode ? getDynamicTeamMatrix(courtPlayers.length) : getDynamicFFAMatrix(courtPlayers.length);
+            let titleStr = isTeamMode ? `COURT ${courtPlayers[0]?.poolId || 8}` : `MAIN MIXER POOL`;
+            let waveDisplay = waveKeys.length > 1 ? `<span style="margin-left: 5px; opacity: 0.5;">(${wKey})</span>` : '';
+            let courtHtml = `<div class="card" style="width: 100%;"><div class="court-title" style="display:flex; align-items:center;">/// <input type="text" class="court-name-input" id="court_name_${wKey}_${courtIdx}" value="${titleStr}" onchange="autoSaveState()"> ${waveDisplay}</div>`;
+            let matrix = isTeamMode ? getDynamicTeamMatrix(courtPlayers.length) : getDynamicFFAMatrix(courtPlayers.length, desiredPoolCount);
             
             matrix.forEach((m, roundIdx) => {
-                courtHtml += `<div class="match-row"><strong style="color:var(--neon-pink)">GROUP ${m.round}</strong>`;
+                courtHtml += `<div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255, 0, 127, 0.3); border-radius: 8px; padding: 20px; margin-bottom: 25px;">`;
+                courtHtml += `<h3 style="color: var(--neon-pink); margin-top: 0; margin-bottom: 15px; text-align: center; border-bottom: 1px solid rgba(255,0,127,0.3); padding-bottom: 10px; font-size: 1.4rem;">ROUND ${roundIdx + 1}</h3>`;
+                
+                courtHtml += `<div class="grid" style="gap: 20px;">`;
+                
                 m.matches.forEach((game, gameIdx) => {
                     const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
                     
@@ -1031,24 +1298,48 @@ function buildInterface() {
                         name2 = (courtPlayers[game.t2[0]]?.name || 'TBD') + ' & ' + (courtPlayers[game.t2[1]]?.name || 'TBD');
                     }
                     
+                    let courtTitle = customMatchCourts[gameIdx] || `COURT ${gameIdx + 1}`;
+                    let courtHeaderHtml = '';
+                    
+                    if (roundIdx === 0) {
+                        courtHeaderHtml = `<input type="text" class="match-court-input" data-idx="${gameIdx}" value="${courtTitle}" onchange="updateMatchCourtName(${gameIdx}, this.value)">`;
+                    } else {
+                        courtHeaderHtml = `<span class="court-display-${gameIdx}">${courtTitle}</span>`;
+                    }
+
                     courtHtml += `
-                        <div class="team-input" style="margin-top: 10px;">
-                            <span><span id="name_t1_${uid}">${name1}</span> <span class="pickle-icon hidden" id="pickle_t1_${uid}">🥒</span></span>
-                            <div class="control-set">
-                                <input type="number" class="score-input" id="score_t1_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't1', 't2')">
-                                <button class="btn-max" onclick="quickSetInputOnly('score_t1_${uid}', '${uid}', 't1', 't2', 'name_t1_${uid}', 'name_t2_${uid}')">11</button>
+                        <div style="background: rgba(10,6,18,0.6); padding: 15px; border-radius: 8px; border: 1px solid rgba(0, 240, 255, 0.1);">
+                            <div style="color: var(--neon-cyan); font-family: 'Orbitron', sans-serif; font-size: 15px; margin-bottom: 12px; letter-spacing: 1px; border-bottom: 1px dashed rgba(0, 240, 255, 0.2); padding-bottom: 5px;">/// ${courtHeaderHtml}</div>
+                            <div class="team-input">
+                                <span><span id="name_t1_${uid}">${name1}</span> <span class="pickle-icon hidden" id="pickle_t1_${uid}">🥒</span></span>
+                                <div class="control-set">
+                                    <input type="number" class="score-input" id="score_t1_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't1', 't2')">
+                                    <button class="btn-max" onclick="quickSetInputOnly('score_t1_${uid}', '${uid}', 't1', 't2', 'name_t1_${uid}', 'name_t2_${uid}')">11</button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="team-input">
-                            <span><span id="name_t2_${uid}">${name2}</span> <span class="pickle-icon hidden" id="pickle_t2_${uid}">🥒</span></span>
-                            <div class="control-set">
-                                <input type="number" class="score-input" id="score_t2_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't2', 't1')">
-                                <button class="btn-max" onclick="quickSetInputOnly('score_t2_${uid}', '${uid}', 't2', 't1', 'name_t2_${uid}', 'name_t1_${uid}')">11</button>
+                            <div class="team-input">
+                                <span><span id="name_t2_${uid}">${name2}</span> <span class="pickle-icon hidden" id="pickle_t2_${uid}">🥒</span></span>
+                                <div class="control-set">
+                                    <input type="number" class="score-input" id="score_t2_${uid}" min="0" placeholder="0" oninput="handleManualInput('${uid}', 't2', 't1')">
+                                    <button class="btn-max" onclick="quickSetInputOnly('score_t2_${uid}', '${uid}', 't2', 't1', 'name_t2_${uid}', 'name_t1_${uid}')">11</button>
+                                </div>
                             </div>
-                        </div>
-                        <div style="border-bottom: 2px dashed var(--neon-pink); opacity: 0.5; margin: 15px 0; width: 100%;"></div>`;
+                        </div>`; 
                 });
-                courtHtml += `</div>`;
+                
+                courtHtml += `</div>`; 
+
+                if (m.byes && m.byes.length > 0) {
+                    let byeNames = isTeamMode 
+                        ? m.byes.map(tIdx => courtPlayers[tIdx]?.name || 'Unknown')
+                        : m.byes.map(pIdx => courtPlayers[pIdx]?.name || 'Unknown');
+                    
+                    courtHtml += `<div style="text-align: center; color: var(--neon-cyan); font-size: 14px; margin-top: 20px; padding: 10px; background: rgba(0, 240, 255, 0.1); border: 1px dashed var(--neon-cyan); border-radius: 4px; font-family: 'Orbitron', sans-serif;">
+                        🍹 <strong>DINKS & DRINKS!:</strong> <span style="color:var(--text-light); font-family: 'Rajdhani', sans-serif; font-size: 16px;">${byeNames.join(' • ')}</span>
+                    </div>`;
+                }
+                
+                courtHtml += `</div>`; 
             });
             waveWrapper.innerHTML += courtHtml + `</div>`;
         });
@@ -1072,6 +1363,30 @@ function triggerShotPopup(loserString) {
     document.getElementById('modal-loser-names').innerText = loserString;
     playSkunkSiren();
     document.getElementById('shot-modal').classList.add('active');
+
+    // Synthwave Pickle Explosion
+    try {
+        var pickle = confetti.shapeFromText({ text: '🥒', scalar: 3 });
+        var duration = 2 * 1000;
+        var animationEnd = Date.now() + duration;
+
+        var interval = setInterval(function() {
+            var timeLeft = animationEnd - Date.now();
+            if (timeLeft <= 0) { return clearInterval(interval); }
+            
+            // zIndex 10000 ensures it explodes OVER the modal overlay (which is 9999)
+            confetti({
+                particleCount: 10,
+                spread: 120,
+                startVelocity: 45,
+                origin: { x: 0.5, y: 0.5 }, // Burst from center
+                shapes: [pickle],
+                scalar: 2,
+                zIndex: 10000, 
+                disableForReducedMotion: true
+            });
+        }, 200);
+    } catch(e) { console.log(e); }
 }
 function closeShotModal() { document.getElementById('shot-modal').classList.remove('active'); }
 
@@ -1079,6 +1394,22 @@ function triggerChampPopup(champString) {
     document.getElementById('modal-champ-names').innerText = champString;
     playVictoryFanfare();
     document.getElementById('champ-modal').classList.add('active');
+
+    // Sustained Neon Confetti Barrage
+    var duration = 3 * 1000;
+    var animationEnd = Date.now() + duration;
+    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 10000, colors: ['#ff007f', '#00f0ff', '#ff5e00', '#7fff00'] };
+
+    function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+    var interval = setInterval(function() {
+        var timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) { return clearInterval(interval); }
+        var particleCount = 50 * (timeLeft / duration);
+        
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+    }, 250);
 }
 function closeChampModal() { document.getElementById('champ-modal').classList.remove('active'); }
 
@@ -1156,7 +1487,7 @@ function simulateScores() {
     globalMuteShots = true; let lastLoserString = "";
     Object.keys(waveSchedules).forEach(wKey => {
         waveSchedules[wKey].forEach((courtPlayers, courtIdx) => {
-            let matrix = isTeamMode ? getDynamicTeamMatrix(courtPlayers.length) : getDynamicFFAMatrix(courtPlayers.length);
+            let matrix = isTeamMode ? getDynamicTeamMatrix(courtPlayers.length) : getDynamicFFAMatrix(courtPlayers.length, desiredPoolCount);
             matrix.forEach((m, roundIdx) => {
                 m.matches.forEach((_, gameIdx) => {
                     const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
@@ -1180,24 +1511,23 @@ function simulateScores() {
 }
 
 function calculateScores() {
-    players.forEach(p => { p.wins = 0; p.points = 0; });
+    players.forEach(p => { p.wins = 0; p.points = 0; p.played = 0; });
     
-    // 1. CALCULATE POOL PLAY STATS
+    document.querySelectorAll('.match-winner').forEach(el => el.classList.remove('match-winner'));
+
     Object.keys(waveSchedules).forEach(wKey => {
         waveSchedules[wKey].forEach((courtPlayers, courtIdx) => {
-            let matrix = isTeamMode ? getDynamicTeamMatrix(courtPlayers.length) : getDynamicFFAMatrix(courtPlayers.length);
+            let matrix = isTeamMode ? getDynamicTeamMatrix(courtPlayers.length) : getDynamicFFAMatrix(courtPlayers.length, desiredPoolCount);
             matrix.forEach((m, roundIdx) => {
                 m.matches.forEach((game, gameIdx) => {
                     const uid = `${wKey}_${courtIdx}_${roundIdx}_${gameIdx}`;
                     const s1Input = document.getElementById(`score_t1_${uid}`);
                     const s2Input = document.getElementById(`score_t2_${uid}`);
-                    const name1 = document.getElementById(`name_t1_${uid}`);
-                    const name2 = document.getElementById(`name_t2_${uid}`);
                     const p1Pickle = document.getElementById(`pickle_t1_${uid}`);
                     const p2Pickle = document.getElementById(`pickle_t2_${uid}`);
+                    const name1 = document.getElementById(`name_t1_${uid}`);
+                    const name2 = document.getElementById(`name_t2_${uid}`);
 
-                    if (name1) name1.classList.remove('match-winner');
-                    if (name2) name2.classList.remove('match-winner');
                     if (s1Input) s1Input.classList.remove('score-winner');
                     if (s2Input) s2Input.classList.remove('score-winner');
                     if (p1Pickle) p1Pickle.classList.add('hidden');
@@ -1217,24 +1547,24 @@ function calculateScores() {
                         
                         if (s1 >= 11 || s2 >= 11) {
                             if (s1 > s2) {
-                                if (name1) name1.classList.add('match-winner');
                                 if (s1Input) s1Input.classList.add('score-winner');
+                                if (name1) name1.classList.add('match-winner');
                             } else if (s2 > s1) {
-                                if (name2) name2.classList.add('match-winner');
                                 if (s2Input) s2Input.classList.add('score-winner');
+                                if (name2) name2.classList.add('match-winner');
                             }
                         }
                         
                         if (isTeamMode) {
-                            if(courtPlayers[game.t1]) courtPlayers[game.t1].points += s1;
-                            if(courtPlayers[game.t2]) courtPlayers[game.t2].points += s2;
+                            if(courtPlayers[game.t1]) { courtPlayers[game.t1].points += s1; courtPlayers[game.t1].played++; }
+                            if(courtPlayers[game.t2]) { courtPlayers[game.t2].points += s2; courtPlayers[game.t2].played++; }
                             if (s1 > s2) { if(courtPlayers[game.t1]) courtPlayers[game.t1].wins++; } 
                             else if (s2 > s1) { if(courtPlayers[game.t2]) courtPlayers[game.t2].wins++; }
                         } else {
-                            if(courtPlayers[game.t1[0]]) courtPlayers[game.t1[0]].points += s1; 
-                            if(courtPlayers[game.t1[1]]) courtPlayers[game.t1[1]].points += s1;
-                            if(courtPlayers[game.t2[0]]) courtPlayers[game.t2[0]].points += s2; 
-                            if(courtPlayers[game.t2[1]]) courtPlayers[game.t2[1]].points += s2;
+                            if(courtPlayers[game.t1[0]]) { courtPlayers[game.t1[0]].points += s1; courtPlayers[game.t1[0]].played++; }
+                            if(courtPlayers[game.t1[1]]) { courtPlayers[game.t1[1]].points += s1; courtPlayers[game.t1[1]].played++; }
+                            if(courtPlayers[game.t2[0]]) { courtPlayers[game.t2[0]].points += s2; courtPlayers[game.t2[0]].played++; }
+                            if(courtPlayers[game.t2[1]]) { courtPlayers[game.t2[1]].points += s2; courtPlayers[game.t2[1]].played++; }
                             if (s1 > s2) { 
                                 if(courtPlayers[game.t1[0]]) courtPlayers[game.t1[0]].wins++; 
                                 if(courtPlayers[game.t1[1]]) courtPlayers[game.t1[1]].wins++; 
@@ -1249,12 +1579,11 @@ function calculateScores() {
         });
     });
 
-    // 2. CALCULATE BRACKET STATS (So stats keep compiling till the end)
     const bracketMatchIds = ['qf1', 'qf2', 'qf3', 'qf4', 'sf1', 'sf2', 'f1'];
     bracketMatchIds.forEach(prefix => {
         const t1NameStr = document.getElementById(`${prefix}-t1-name`)?.innerText;
         const t2NameStr = document.getElementById(`${prefix}-t2-name`)?.innerText;
-        if (!t1NameStr || !t2NameStr || t1NameStr.includes("Awaiting") || t2NameStr.includes("Awaiting")) return;
+        if (!t1NameStr || !t2NameStr || t1NameStr.includes("Awaiting") || t1NameStr.includes("all QF") || t1NameStr.includes("all SF")) return;
         
         let t1Players = []; let t2Players = [];
         if (isTeamMode) {
@@ -1278,8 +1607,8 @@ function calculateScores() {
             const s2 = parseInt(s2Input.value, 10);
             if(isNaN(s1) || isNaN(s2)) return;
             
-            t1Players.forEach(p => p.points += s1);
-            t2Players.forEach(p => p.points += s2);
+            t1Players.forEach(p => { p.points += s1; p.played++; });
+            t2Players.forEach(p => { p.points += s2; p.played++; });
             
             if (s1 > s2) {
                 t1Players.forEach(p => p.wins++);
@@ -1312,29 +1641,43 @@ function updateLeaderboard() {
     tbody.innerHTML = '';
     
     sorted.forEach((p, idx) => {
-        const hasEarnedStats = p.wins > 0 || p.points > 0;
+        const hasEarnedStats = p.played > 0;
         const rowStyle = (idx < advanceCutoff && hasEarnedStats) ? 'style="background-color: rgba(0, 240, 255, 0.08); color: #fff; font-weight: bold; border-left: 3px solid var(--neon-cyan);"' : '';
         const bolt = (idx < advanceCutoff && hasEarnedStats) ? ' ⚡' : '';
-        tbody.innerHTML += `<tr ${rowStyle}><td>${idx + 1}</td><td>${p.name}${bolt}</td><td>Wave ${p.wave}</td><td>Court ${p.poolId}</td><td><strong style="color: var(--neon-pink)">${p.wins}</strong></td><td>${p.points}</td></tr>`;
+        tbody.innerHTML += `<tr ${rowStyle}><td>${idx + 1}</td><td>${p.name}${bolt}</td><td><strong style="color: var(--neon-pink)">${p.wins}</strong></td><td>${p.points}</td><td>${p.played}</td></tr>`;
     });
 
-    // Populate Floating Mini Leaderboard (Only show active contenders)
-    const miniTbody = document.querySelector('#mini-leaderboard tbody');
-    if (miniTbody) {
-        miniTbody.innerHTML = '';
-        let hasData = false;
-        topList.forEach((p, idx) => {
-            const hasEarnedStats = p.wins > 0 || p.points > 0;
-            if (hasEarnedStats) {
-                hasData = true;
+    const activePlayers = players.filter(p => p.played > 0);
+    const sortedActiveTop = [...activePlayers].sort((a, b) => b.wins - a.wins || b.points - a.points);
+    const sortedActiveBottom = [...activePlayers].sort((a, b) => a.wins - b.wins || a.points - b.points);
+    
+    const top10 = sortedActiveTop.slice(0, 10);
+    const bottom5 = sortedActiveBottom.slice(0, 5);
+
+    const miniTopTbody = document.querySelector('#mini-leaderboard-top tbody');
+    if (miniTopTbody) {
+        miniTopTbody.innerHTML = '';
+        if (top10.length > 0) {
+            top10.forEach((p, idx) => {
                 const bolt = (idx < advanceCutoff) ? ' ⚡' : '';
-                miniTbody.innerHTML += `<tr><td style="color:var(--neon-pink); font-weight:bold; width: 30px;">#${idx+1}</td><td>${p.name}${bolt}</td></tr>`;
-            }
-        });
-        
-        // Show neutral placeholder if tournament just started
-        if (!hasData) {
-            miniTbody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--text-muted); padding: 20px;">Awaiting Match Results...</td></tr>`;
+                miniTopTbody.innerHTML += `<tr><td style="color:var(--neon-green); font-weight:bold; width: 30px;">#${idx+1}</td><td>${p.name}${bolt}</td></tr>`;
+            });
+        } else {
+            miniTopTbody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--text-muted); padding: 10px;">Awaiting Match Results...</td></tr>`;
+        }
+    }
+
+    const miniBottomTbody = document.querySelector('#mini-leaderboard-bottom tbody');
+    if (miniBottomTbody) {
+        miniBottomTbody.innerHTML = '';
+        if (bottom5.length > 0) {
+            bottom5.forEach((p, idx) => {
+                let flair = '<span class="pink-pickle">🥒</span>';
+                if (idx === 0) flair = '👑 <span class="pink-pickle">🥒</span>'; 
+                miniBottomTbody.innerHTML += `<tr><td style="color:var(--neon-pink); font-weight:bold; width: 30px;">#${activePlayers.length - idx}</td><td>${p.name} ${flair}</td></tr>`;
+            });
+        } else {
+            miniBottomTbody.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--text-muted); padding: 10px;">Awaiting Match Results...</td></tr>`;
         }
     }
 }
@@ -1399,10 +1742,9 @@ function lockAndBuildBracket() {
         resetBracketText('f');
     }
     
-    document.getElementById('bracket-section').classList.remove('hidden'); document.getElementById('qualifier-section').classList.add('hidden');
+    document.getElementById('bracket-section').classList.remove('hidden');
     document.getElementById('bracket-section').scrollIntoView({ behavior: 'smooth' });
     
-    // Always force UI sync for BO3 based on checkbox state
     const isBo3 = document.getElementById('bo3-toggle').checked;
     document.querySelectorAll('.bo3-input').forEach(el => {
         if(isBo3) el.classList.remove('hidden');
@@ -1413,19 +1755,19 @@ function lockAndBuildBracket() {
 }
 
 function applyBracketHighlight(prefix, allowBo3) {
-    const name1 = document.getElementById(`${prefix}-t1-name`);
-    const name2 = document.getElementById(`${prefix}-t2-name`);
     const pickle1 = document.getElementById(`pickle_${prefix}-t1`);
     const pickle2 = document.getElementById(`pickle_${prefix}-t2`);
     
-    if(!name1 || !name2) return;
-    
-    name1.classList.remove('match-winner');
-    name2.classList.remove('match-winner');
     if(pickle1) pickle1.classList.add('hidden');
     if(pickle2) pickle2.classList.add('hidden');
 
-    if (name1.innerText.includes("Awaiting") || name2.innerText.includes("Awaiting")) return;
+    const name1 = document.getElementById(`${prefix}-t1-name`);
+    const name2 = document.getElementById(`${prefix}-t2-name`);
+    if(!name1 || !name2) return;
+    if (name1.innerText.includes("Awaiting") || name1.innerText.includes("all QF") || name1.innerText.includes("all SF")) return;
+
+    name1.classList.remove('match-winner');
+    name2.classList.remove('match-winner');
 
     const isBo3 = allowBo3 && document.getElementById('bo3-toggle').checked;
     let winsT1 = 0; let winsT2 = 0;
@@ -1466,7 +1808,7 @@ function getMatchWinner(prefix, allowBo3) {
     const isBo3 = allowBo3 && document.getElementById('bo3-toggle').checked;
     const t1Name = document.getElementById(`${prefix}-t1-name`).innerText;
     const t2Name = document.getElementById(`${prefix}-t2-name`).innerText;
-    if(t1Name.includes("Awaiting") || t2Name.includes("Awaiting")) return null;
+    if(t1Name.includes("Awaiting") || t1Name.includes("all QF") || t1Name.includes("all SF")) return null;
 
     let winsT1 = 0; let winsT2 = 0;
     const games = isBo3 ? [1, 2, 3] : [1];
@@ -1485,40 +1827,94 @@ function getMatchWinner(prefix, allowBo3) {
     return null;
 }
 
+function getSwappedPair(name1, name2) {
+    let p1 = name1.split(' & ');
+    let p2 = name2.split(' & ');
+    
+    if (p1.length !== 2 || p2.length !== 2) {
+        return { t1: name1, t2: name2 }; 
+    }
+    return {
+        t1: `${p1[0]} & ${p2[0]}`,
+        t2: `${p1[1]} & ${p2[1]}`
+    };
+}
+
 function updateBracketLogic() {
-    // 1. Resolve QF -> SF
+    const isPickled = document.getElementById('pickledballs-toggle')?.checked;
+
     if (bracketMode === 'QF') {
         const qf1W = getMatchWinner('qf1', false); const qf2W = getMatchWinner('qf2', false);
         const qf3W = getMatchWinner('qf3', false); const qf4W = getMatchWinner('qf4', false);
         
-        document.getElementById('sf1-t1-name').innerText = qf1W || "Awaiting Node 1...";
-        document.getElementById('sf1-t2-name').innerText = qf2W || "Awaiting Node 2...";
-        document.getElementById('sf2-t1-name').innerText = qf3W || "Awaiting Node 3...";
-        document.getElementById('sf2-t2-name').innerText = qf4W || "Awaiting Node 4...";
+        if (isPickled) {
+            if (qf1W && qf2W && qf3W && qf4W) {
+                let p1 = qf1W.split(' & '); let p2 = qf2W.split(' & ');
+                let p3 = qf3W.split(' & '); let p4 = qf4W.split(' & ');
+                
+                if (p1.length===2 && p2.length===2 && p3.length===2 && p4.length===2) {
+                    document.getElementById('sf1-t1-name').innerText = `${p1[0]} & ${p3[0]}`;
+                    document.getElementById('sf1-t2-name').innerText = `${p2[0]} & ${p4[0]}`;
+                    document.getElementById('sf2-t1-name').innerText = `${p1[1]} & ${p3[1]}`;
+                    document.getElementById('sf2-t2-name').innerText = `${p2[1]} & ${p4[1]}`;
+                } else {
+                    document.getElementById('sf1-t1-name').innerText = qf1W;
+                    document.getElementById('sf1-t2-name').innerText = qf2W;
+                    document.getElementById('sf2-t1-name').innerText = qf3W;
+                    document.getElementById('sf2-t2-name').innerText = qf4W;
+                }
+            } else {
+                document.getElementById('sf1-t1-name').innerText = "Awaiting all QF Matches...";
+                document.getElementById('sf1-t2-name').innerText = "Awaiting all QF Matches...";
+                document.getElementById('sf2-t1-name').innerText = "Awaiting all QF Matches...";
+                document.getElementById('sf2-t2-name').innerText = "Awaiting all QF Matches...";
+            }
+        } else {
+            document.getElementById('sf1-t1-name').innerText = qf1W || "Awaiting Node 1...";
+            document.getElementById('sf1-t2-name').innerText = qf2W || "Awaiting Node 2...";
+            document.getElementById('sf2-t1-name').innerText = qf3W || "Awaiting Node 3...";
+            document.getElementById('sf2-t2-name').innerText = qf4W || "Awaiting Node 4...";
+        }
         
         ['sf1-t1', 'sf1-t2', 'sf2-t1', 'sf2-t2'].forEach(id => {
-            document.getElementById(id+'-name').style.color = document.getElementById(id+'-name').innerText.includes("Awaiting") ? "var(--text-muted)" : "var(--neon-cyan)";
+            const el = document.getElementById(id+'-name');
+            if (el) el.style.color = (el.innerText.includes("Awaiting") || el.innerText.includes("all QF")) ? "var(--text-muted)" : "var(--neon-cyan)";
         });
         
         applyBracketHighlight('qf1', false); applyBracketHighlight('qf2', false);
         applyBracketHighlight('qf3', false); applyBracketHighlight('qf4', false);
     }
 
-    // 2. Resolve SF -> Finals
     const sf1W = getMatchWinner('sf1', true);
     const sf2W = getMatchWinner('sf2', true);
     
-    document.getElementById('f1-t1-name').innerText = sf1W || "Awaiting Semifinal 1...";
-    document.getElementById('f1-t2-name').innerText = sf2W || "Awaiting Semifinal 2...";
+    if (isPickled) {
+        if (sf1W && sf2W) {
+            let p1 = sf1W.split(' & '); let p2 = sf2W.split(' & ');
+            if (p1.length===2 && p2.length===2) {
+                document.getElementById('f1-t1-name').innerText = `${p1[0]} & ${p2[1]}`;
+                document.getElementById('f1-t2-name').innerText = `${p1[1]} & ${p2[0]}`;
+            } else {
+                document.getElementById('f1-t1-name').innerText = sf1W;
+                document.getElementById('f1-t2-name').innerText = sf2W;
+            }
+        } else {
+            document.getElementById('f1-t1-name').innerText = "Awaiting all SF Matches...";
+            document.getElementById('f1-t2-name').innerText = "Awaiting all SF Matches...";
+        }
+    } else {
+        document.getElementById('f1-t1-name').innerText = sf1W || "Awaiting Semifinal 1...";
+        document.getElementById('f1-t2-name').innerText = sf2W || "Awaiting Semifinal 2...";
+    }
     
     ['f1-t1', 'f1-t2'].forEach(id => {
-        document.getElementById(id+'-name').style.color = document.getElementById(id+'-name').innerText.includes("Awaiting") ? "var(--text-muted)" : "var(--neon-cyan)";
+        const el = document.getElementById(id+'-name');
+        if(el) el.style.color = (el.innerText.includes("Awaiting") || el.innerText.includes("all SF")) ? "var(--text-muted)" : "var(--neon-cyan)";
     });
 
     applyBracketHighlight('sf1', true);
     applyBracketHighlight('sf2', true);
 
-    // 3. Resolve Finals -> Champ
     const champ = getMatchWinner('f1', true);
     applyBracketHighlight('f1', true);
 
@@ -1537,11 +1933,9 @@ function updateBracketLogic() {
         lastAnnouncedChamp = "";
     }
     
-    // Process final stats
     calculateScores();
 }
 
-// ⚠️ THE ULTIMATE EMERGENCY RESET
 function hardReset() {
     if (confirm("WARNING: This will permanently erase the current tournament and wipe all auto-saves. Are you sure?")) {
         localStorage.removeItem('pickleMatrixAutoSave');
@@ -1552,17 +1946,19 @@ function hardReset() {
 function resetSystemTerminal() {
     playBleep(300, 0.4, 'sawtooth'); document.getElementById('player-names-input').value = '';
     players = []; waveSchedules = {}; lastAnnouncedChamp = ""; isTeamMode = false;
+    customMatchCourts = {};
     
     document.querySelectorAll('.bracket-score-input').forEach(el => el.value = '');
     resetBracketText('sf'); resetBracketText('f'); resetBracketText('qf');
     document.getElementById('champ-names').innerText = "---";
     
-    document.querySelectorAll('.match-winner').forEach(el => el.classList.remove('match-winner'));
     document.querySelectorAll('.pickle-icon').forEach(el => el.classList.add('hidden'));
     document.querySelectorAll('.score-winner').forEach(el => el.classList.remove('score-winner'));
+    document.querySelectorAll('.match-winner').forEach(el => el.classList.remove('match-winner'));
     
     document.getElementById('bracket-section').classList.add('hidden'); document.getElementById('champ-display').classList.add('hidden'); document.getElementById('reset-container').classList.add('hidden'); document.getElementById('tournament-stage').classList.add('hidden'); document.getElementById('qualifier-section').classList.remove('hidden'); document.getElementById('setup-stage').classList.remove('hidden');
-    document.getElementById('floating-leaderboard').classList.add('hidden');
+    document.getElementById('floating-leaderboard-top').classList.add('hidden');
+    document.getElementById('floating-leaderboard-bottom').classList.add('hidden');
 
     refreshPickleCount();
     localStorage.removeItem('pickleMatrixAutoSave');
@@ -1586,6 +1982,8 @@ function restoreStateData(state) {
     isTeamMode = state.isTeamMode || false;
     bracketMode = state.bracketMode || 'SF';
     desiredPoolCount = state.desiredPoolCount || 1;
+    customMatchCourts = state.customMatchCourts || {};
+    
     let loadedSchedules = state.waveSchedules || {};
 
     Object.keys(loadedSchedules).forEach(wKey => {
@@ -1601,8 +1999,13 @@ function restoreStateData(state) {
     
     document.getElementById('player-names-input').value = state.rawNamesInput || "";
     document.getElementById('mainframe-subhead').innerText = `${players.length} ${isTeamMode ? 'TEAMS' : 'PLAYERS'} // DYNAMIC ROUTING`;
-    let pcd = document.getElementById('pool-count-display');
-    if(pcd) pcd.innerText = desiredPoolCount;
+    
+    let pci = document.getElementById('pool-count-input');
+    if (pci) pci.value = desiredPoolCount;
+    if (state.targetGames) {
+        let tgi = document.getElementById('target-games-input');
+        if (tgi) tgi.value = state.targetGames;
+    }
 
     if (isTeamMode) {
         document.getElementById('leaderboard-title').innerText = `Team Standings (Top ${players.length >= 8 ? 8 : 4} Advance)`;
@@ -1614,7 +2017,8 @@ function restoreStateData(state) {
 
     document.getElementById('setup-stage').classList.add('hidden');
     document.getElementById('tournament-stage').classList.remove('hidden');
-    document.getElementById('floating-leaderboard').classList.remove('hidden');
+    document.getElementById('floating-leaderboard-top').classList.remove('hidden');
+    document.getElementById('floating-leaderboard-bottom').classList.remove('hidden');
 
     buildInterface(); 
 
@@ -1647,6 +2051,9 @@ function restoreStateData(state) {
                 const el = document.getElementById(id);
                 if (el) el.value = state.bracketScores[id];
             });
+        }
+        if (document.getElementById('pickledballs-toggle')) {
+            document.getElementById('pickledballs-toggle').checked = state.isPickledballsActive === true;
         }
         updateBracketLogic();
     }
